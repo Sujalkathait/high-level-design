@@ -1,6 +1,6 @@
 # 🚀 Complete System Design Roadmap: Beginner → Expert
 > **171 Topics | 12 Phases | 6 Stages | Master High-Level Design (HLD)**
-> *Explained in Simple English with Rich Visuals & Diagrams*
+> *Explained in Simple English with  Visuals & Diagrams*
 
 ---
 
@@ -540,33 +540,59 @@ graph TD
 
 ---
 
-## 3.2 — Architecture Styles: Monolith vs Microservices vs Serverless
+## 3.2 — Architecture Styles: Monolith vs Modular Monolith vs Microservices
 
 ```mermaid
 graph TD
-    subgraph Monolith [Monolithic Architecture]
-        M_All["Single Unified Codebase & Deployment Unit\n- User Module\n- Payment Module\n- Order Module\n- Notification Module\nShared Single Database"]
+    subgraph ClassicMonolith [1. Classic Monolith - Spaghetti Risk]
+        M1["Everything in 1 Folder/App\nAny function calls any database table directly\nTangled spaghetti code over time"]
     end
 
-    subgraph Microservices [Microservices Architecture]
-        GW[API Gateway] --> S_User[User Service\n+ User DB]
-        GW --> S_Pay[Payment Service\n+ Payment DB]
-        GW --> S_Order[Order Service\n+ Order DB]
-        GW --> S_Notif[Notification Service]
-        S_Order -. Event Message Bus .-> S_Pay
+    subgraph ModularMonolith [2. Modular Monolith - Clean & Fast]
+        subgraph SingleBinary [Single Deployed Server / Process]
+            ModUser["User Module\n(Private Code)"]
+            ModPay["Payment Module\n(Private Code)"]
+            ModOrder["Order Module\n(Private Code)"]
+            ModUser <== Public Interface / In-Memory Events ==> ModOrder
+            ModOrder <== Public Interface / In-Memory Events ==> ModPay
+        end
+        SingleBinary --> DB[(Database with separate schemas per module)]
+    end
+
+    subgraph Microservices [3. Microservices - Distributed]
+        GW[API Gateway] --> S_User[User Service Node]
+        GW --> S_Pay[Payment Service Node]
+        GW --> S_Order[Order Service Node]
+        S_User --> DB_U[(User DB)]
+        S_Pay --> DB_P[(Pay DB)]
+        S_Order --> DB_O[(Order DB)]
+        S_Order -. Network HTTP/gRPC .-> S_Pay
     end
 ```
 
+### What is a Modular Monolith? (Explained Simply)
+Imagine you want to build a house:
+* **Classic Monolith:** One giant open room with no walls. The kitchen stove, bed, shower, and toilet are all in the same space. It's fast to build at first, but soon becomes a chaotic, messy disaster.
+* **Microservices:** You build 5 separate tiny houses across town. To go from the bedroom to the bathroom, you have to get in a car, drive 15 minutes, pay a toll, and hope there's no traffic (network latency & failures).
+* **Modular Monolith (The Sweet Spot):** One single big house, but with **proper solid walls, private rooms, and locked doors**. Everything is under one roof (zero driving/network delay), but code is strictly separated into independent modules!
+
+#### How a Modular Monolith Works in Real Life:
+1. **Strict Internal Boundaries:** The `Payment` module cannot directly query the `Users` database table. It must call a clean public in-memory function or interface (e.g. `UserService.getUser(id)`).
+2. **Zero Network Latency:** Modules talk through ordinary in-memory function calls (which take nanoseconds: `0.00001 ms`), unlike microservices that must send HTTP/gRPC packets over network cards (which take `5 - 50 ms`).
+3. **Single Deployment Unit:** You deploy one single binary or Docker container. No Kubernetes nightmare or distributed tracing needed.
+4. **The Ultimate Bridge:** If the `Payment` module ever needs to scale to 100x traffic later, you can easily cut it out and turn it into a microservice in an afternoon because its boundaries were already cleanly defined!
+
 ### Comparison Matrix:
 
-| Dimension | Monolithic Architecture | Microservices Architecture | Serverless (FaaS) |
+| Dimension | Classic Monolith | Modular Monolith | Microservices Architecture |
 | :--- | :--- | :--- | :--- |
-| **Codebase** | Single shared repository | Multiple decoupled repositories | Small standalone functions (AWS Lambda) |
-| **Deployment** | All-or-nothing deployment | Each service deployed independently | Automatic event-triggered deployment |
-| **Scaling** | Scale the whole app together | Scale only the bottleneck service | Automatic micro-scaling per request |
-| **Tech Stack** | Single language & framework | Polyglot (Service A = Go, Service B = Python) | Cloud provider runtime |
-| **Network Overhead**| Zero (In-memory function calls) | Network latency (HTTP/gRPC calls) | Cold-start latency |
-| **Best For** | Startups, MVP, small teams, low complexity | Large teams, complex domains, massive scale | Sporadic workloads, background jobs |
+| **Code Structure** | Spaghetti / Tightly coupled | Strictly isolated modules inside 1 repo | Decoupled separate services/repos |
+| **Communication** | Direct memory calls | In-memory public interfaces/events | Network calls (HTTP, gRPC, Kafka) |
+| **Network Latency** | `0 ms` (instant) | `0 ms` (instant) | `5 - 50 ms` per hop (adds up!) |
+| **Deployment** | 1 single deployable unit | 1 single deployable unit | 10 to 50+ independent deployments |
+| **Operational Cost**| Very Low | Very Low (1 server/container) | Very High (requires DevOps, K8s) |
+| **Data Consistency** | Easy ACID Transactions | Easy ACID Transactions | Hard (Eventual consistency, Saga) |
+| **Companies Using** | Small projects | **Shopify, Stack Overflow, Basecamp** | **Netflix, Uber, Amazon** |
 
 ---
 
@@ -808,31 +834,121 @@ graph TD
 ```mermaid
 graph LR
     subgraph Vertical [Vertical Scaling: Scale UP]
-        V1["Upgrade 1 Computer\n- Add more CPU cores\n- Add more RAM\n- Hardware limits\n- Single Point of Failure (SPOF)"]
+        V1["Upgrade 1 Computer\n- Add more CPU cores\n- Add more RAM\n- Physical hardware ceiling\n- Single Point of Failure (SPOF)\n- Requires downtime to upgrade"]
     end
 
     subgraph Horizontal [Horizontal Scaling: Scale OUT]
-        H1["Add Multiple Commodity Nodes\n- Unlimited scale potential\n- Fault tolerant: if 1 server dies, 99 others run\n- Requires Load Balancer & Stateless apps"]
+        H1["Add Multiple Commodity Nodes\n- Unlimited scaling potential\n- Fault tolerant: 1 server dies, 99 others run\n- Requires Load Balancer & Stateless apps\n- Zero-downtime rolling deploys"]
     end
+```
+
+### When to Use Vertical vs Horizontal Scaling? (The Decision Framework)
+
+```mermaid
+flowchart TD
+    Start[New System or Feature] --> Q1{Is it early stage / MVP / Small team?}
+    Q1 -- Yes --> V_Scale[✅ Scale Vertically: Buy a bigger $20-$100/mo server.\nFastest to ship, zero distributed complexity.]
+    Q1 -- No --> Q2{Is it a Primary Relational Database?}
+    Q2 -- Yes --> V_DB[✅ Scale Vertically First: Upgrade DB instance.\nDistributed multi-master databases are notoriously hard.]
+    Q2 -- No --> Q3{Is it a Stateless Web or API Server?}
+    Q3 -- Yes --> H_App[✅ Scale Horizontally: Add instances behind a Load Balancer.\nEnables auto-scaling & zero downtime.]
+    Q3 -- No --> Q4{Need High Availability 99.99% & Disaster Recovery?}
+    Q4 -- Yes --> H_HA[✅ Scale Horizontally: Distribute across multiple availability zones.]
+```
+
+| Decision Factor | Use Vertical Scaling (Scale Up) | Use Horizontal Scaling (Scale Out) |
+| :--- | :--- | :--- |
+| **Complexity** | Extremely simple (zero code changes) | Higher (requires Load Balancers, distributed state) |
+| **Downtime** | Requires brief downtime to resize hardware | Zero downtime (rolling updates across nodes) |
+| **Cost** | Cheap at low tiers; exponentially expensive at top tier | Linear cost (buy cheap commodity hardware) |
+| **Limit** | Strict physical hardware ceiling (e.g. 128 cores, 4TB RAM) | Virtually infinite (thousands of servers) |
+| **Failure Risk** | Single Point of Failure (if hardware dies, site is down) | Resilient (traffic shifts away from dead nodes) |
+| **Best Used For** | Databases (PostgreSQL/MySQL), Redis caches, MVPs | Stateless API servers, Web microservices, Big Data (Hadoop/Spark) |
+
+---
+
+## 6.2 — Latency vs Throughput (Performance Formulas & Server Capacity)
+
+### The Difference in Simple English:
+* **Latency (Speed):** How long **one single user** waits for their request to finish. Measured in milliseconds (`ms`).
+  - *Example:* "It takes 50ms to load my profile."
+* **Throughput (Capacity):** How many **total requests** the system can complete every second. Measured in **RPS** (Requests Per Second) or **QPS** (Queries Per Second).
+  - *Example:* "Our server handles 5,000 requests per second."
+
+```
+The Highway Analogy:
+- Latency    = The Speed Limit (How fast 1 car drives from City A to City B).
+- Throughput = The Number of Lanes (How many cars pass the toll booth per minute).
+Adding more lanes (Horizontal Scaling) allows more cars through, but does NOT make 1 car drive faster!
 ```
 
 ---
 
-## 6.2 — Latency vs Throughput (Performance Formulas)
+### 6.2.1 How Many Requests Can 1 Single Server Handle?
 
-* **Latency:** How *fast* a single packet or request completes its journey. Measured in milliseconds (ms).
-* **Throughput:** How *much* work or how many requests the system processes per unit of time. Measured in Requests Per Second (RPS) or Queries Per Second (QPS).
+A common interview question: *"Can 1 single server handle 10,000 requests per second?"*  
+The answer depends on whether your app is **I/O-Bound** or **CPU-Bound**, and its **Concurrency Model**:
 
-### The Highway Analogy:
-* **Latency = The Speed Limit.** (How long it takes 1 car to travel from City A to City B).
-* **Throughput = The Number of Highway Lanes.** (How many cars can pass through the toll booth per minute).
-* Adding more lanes (horizontal scaling) increases throughput, but does not increase the car's top speed (latency)!
+```mermaid
+graph TD
+    subgraph Bottlenecks [What Limits 1 Single Server?]
+        B1["1. CPU Limit: Complex calculations, cryptography, JSON parsing, video encoding"]
+        B2["2. Memory (RAM): Each thread consumes 1MB stack. 1,000 threads = 1GB RAM"]
+        B3["3. Network Sockets: Max 65,535 TCP ports / File Descriptors (ulimit -n)"]
+        B4["4. Database Connection Pool: Max 100-300 DB connections before DB chokes"]
+    end
+```
 
-### Little's Law:
-$$L = \lambda \times W$$
-* $L$ = Average number of concurrent requests in the system.
-* $\lambda$ = Arrival rate (Throughput in Requests per Second).
-* $W$ = Average response time (Latency in seconds).
+#### Real-World Server Benchmarks:
+1. **Thread-per-Request Model (Traditional Java Spring / Tomcat / Python WSGI):**
+   * Each incoming request claims 1 OS thread.
+   * Operating systems choke around **200 to 1,000 active concurrent threads** due to CPU context switching overhead.
+   * **Typical Capacity:** ~500 to 3,000 RPS on a standard 4-Core / 8GB RAM machine.
+2. **Event-Driven / Coroutine Non-Blocking Model (Node.js, Go Goroutines, Nginx):**
+   * A Go goroutine takes only ~2 KB of memory (compared to 1 MB for an OS thread).
+   * 1 single machine can easily hold **50,000 to 100,000 concurrent idle connections** (The C10K / C50K problem solved).
+   * **Typical Capacity:** ~10,000 to 40,000+ RPS for lightweight I/O requests.
+
+---
+
+### 6.2.2 Calculating Latency & Throughput (Step-by-Step Math)
+
+The golden formula connecting Concurrency, Latency, and Throughput is derived from **Little's Law**:
+
+$$\text{Throughput (RPS)} = \frac{\text{Concurrency (Number of Active Requests)}}{\text{Average Latency (in seconds)}}$$
+
+$$\text{Concurrency} = \text{Throughput} \times \text{Latency}$$
+
+#### Example 1: Fast In-Memory API
+* Your server has **200 worker threads**.
+* Each request takes **20 ms** (`0.02 seconds`) because data is cached in Redis.
+$$\text{Throughput} = \frac{200}{0.02\text{ s}} = \mathbf{10,000 \text{ Requests Per Second (RPS)}}$$
+
+#### Example 2: Slow Database Query (The Latency Disaster)
+* Your server still has **200 worker threads**.
+* A slow unindexed database query causes average response time to climb to **200 ms** (`0.2 seconds`).
+$$\text{Throughput} = \frac{200}{0.2\text{ s}} = \mathbf{1,000 \text{ Requests Per Second (RPS)}}$$
+> ⚠️ **Key Takeaway:** When latency increases by 10x, **your server throughput crashes by 90%**, and incoming requests begin queueing up and timing out with `HTTP 504 Gateway Timeout`!
+
+---
+
+### 6.2.3 Why the "Average" Latency is a Lie (p50, p95, p99)
+
+In system design, never use the "average" latency. Use **percentiles**:
+
+```mermaid
+graph LR
+    P50["p50 (Median)\n50% of users experience this speed or faster"]
+    P95["p95\n95% of users experience this speed or faster"]
+    P99["p99 (Tail Latency)\n99% of users experience this speed. 1% suffer worst delay!"]
+
+    P50 --> P95 --> P99
+```
+
+* **The Problem with Averages:** Suppose 99 users get a fast response in `10 ms`, but 1 user experiences a database lock timeout that takes `10,000 ms` (10 seconds).
+  $$\text{Average Latency} = \frac{(99 \times 10) + 10,000}{100} = \mathbf{109.9 \text{ ms}}$$
+  The average makes you think the system is performing around 100ms, completely hiding the fact that 1 out of every 100 users suffered an unacceptable 10-second freeze!
+* **Why Top Tech Companies Optimize for p99:** At Amazon's scale, 1% of users equals millions of paying customers. If p99 is slow, millions of customers abandon their shopping carts!
 
 ---
 
