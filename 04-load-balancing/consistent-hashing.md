@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** Consistent Hashing is an algorithm that maps both **data keys** and **servers** onto a virtual circular ring ($0$ to $2^{32}-1$). A key is assigned to the first server found by walking clockwise along the ring.
+Consistent Hashing is an algorithm that maps both **data keys** and **servers** onto a virtual circular ring ($0$ to $2^{32}-1$). A key is assigned to the first server found by walking clockwise along the ring.
 * **Why it exists:** When a server is added or removed, standard hashing (`hash(key) % N`) reshuffles **nearly 100% of your keys**, wiping out your cache and crashing your database. Consistent Hashing moves **only $1/N$ of keys**.
 
 ---

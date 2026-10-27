@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** Sharding is horizontally partitioning a large database table into smaller chunks (called **shards**) and distributing them across **multiple independent physical database servers**.
+Sharding is horizontally partitioning a large database table into smaller chunks (called **shards**) and distributing them across **multiple independent physical database servers**.
 * **Replication vs. Sharding:**
   * **Replication:** Copies the *entire* database to multiple machines (scales **reads**).
   * **Sharding:** Splits the database so each machine holds only a *fraction* of the rows (scales **writes and storage**).

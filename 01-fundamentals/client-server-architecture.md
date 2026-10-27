@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** Client-Server is a distributed relationship where one program (the **Client**) asks for information or actions, and another program (the **Server**) does the heavy lifting, holds the authoritative data, and sends back a response.
+Client-Server is a distributed relationship where one program (the **Client**) asks for information or actions, and another program (the **Server**) does the heavy lifting, holds the authoritative data, and sends back a response.
 * **The Division of Labor:**
   * **Client (Frontend):** Browser, iOS/Android app, or CLI. Responsible for UI, capturing user input, and rendering pixels.
   * **Server (Backend):** Node.js, Go, Java, or Python process. Responsible for business logic, authentication, and database access.

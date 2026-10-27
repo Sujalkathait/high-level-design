@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** Replication means keeping identical copies of the same database on multiple physical servers connected over a network.
+Replication means keeping identical copies of the same database on multiple physical servers connected over a network.
 * **The Core Purpose:**
   1. **Scale Reads:** Offload read traffic from the primary database to read replicas.
   2. **High Availability:** If the primary machine catches fire, promote a replica to primary in seconds.

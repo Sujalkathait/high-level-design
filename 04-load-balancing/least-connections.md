@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** The **Least Connections** algorithm routes each new incoming request to the server that currently has the **fewest active, in-flight connections**.
+The **Least Connections** algorithm routes each new incoming request to the server that currently has the **fewest active, in-flight connections**.
 * **Why it exists:** Round Robin fails when requests take unpredictable amounts of time (e.g. 5ms vs 5,000ms). Least Connections dynamically balances the actual workload on each machine.
 ```mermaid
 flowchart TD

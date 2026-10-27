@@ -19,12 +19,12 @@ A clean, visual, and practical guide to **High-Level System Design (HLD)**. No b
 | **03** | [System Evolution (1 to 10M Users)](#03-system-evolution-1-to-10-million-users) | Step-by-step scaling roadmap with diagrams |
 | **04** | [Scalability: Vertical vs. Horizontal](#04-scalability-vertical-vs-horizontal) | Scaling limits, statelessness, and concurrency |
 | **05** | [Communication Protocols](#05-communication-protocols) | REST vs. gRPC vs. WebSockets vs. GraphQL |
-| **06** | [Load Balancing & Proxies](#06-load-balancing--proxies) | Layer 4 vs. Layer 7, Consistent Hashing |
-| **07** | [Caching & Edge Acceleration](#07-caching--edge-acceleration) | Cache-aside, Eviction (LRU), Stampede fixes, CDNs |
-| **08** | [Databases: SQL vs. NoSQL & Scaling](#08-databases-sql-vs-nosql--scaling) | Indexes, Replication Lag, Partitioning & Sharding |
+| **06** | [Load Balancing & Proxies](#06-load-balancing-and-proxies) | Layer 4 vs. Layer 7, Consistent Hashing |
+| **07** | [Caching & Edge Acceleration](#07-caching-and-edge-acceleration) | Cache-aside, Eviction (LRU), Stampede fixes, CDNs |
+| **08** | [Databases: SQL vs. NoSQL & Scaling](#08-databases-sql-vs-nosql-and-scaling) | Indexes, Replication Lag, Partitioning & Sharding |
 | **09** | [Distributed Guarantees: CAP Simplified](#09-distributed-guarantees-cap-simplified) | CP vs. AP in plain English (No academic jargon) |
-| **10** | [Asynchronous Messaging & Streaming](#10-asynchronous-messaging--streaming) | RabbitMQ vs. Apache Kafka & Event-driven patterns |
-| **11** | [Reliability & Rate Limiting](#11-reliability--rate-limiting) | Circuit Breakers, Token Bucket, Retries with Jitter |
+| **10** | [Asynchronous Messaging & Streaming](#10-asynchronous-messaging-and-streaming) | RabbitMQ vs. Apache Kafka & Event-driven patterns |
+| **11** | [Reliability & Rate Limiting](#11-reliability-and-rate-limiting) | Circuit Breakers, Token Bucket, Retries with Jitter |
 | **12** | [The 10 Deadly Design Anti-Patterns](#12-the-10-deadly-system-design-anti-patterns) | What NOT to do in interviews and production |
 | **13** | [Engineering Cheat Sheets](#13-quick-engineering-cheat-sheets) | Latency numbers & Back-of-the-envelope math |
 
@@ -206,7 +206,7 @@ flowchart LR
 
 ---
 
-# 06. Load Balancing & Proxies
+# 06. Load Balancing and Proxies
 
 A **Load Balancer** sits between clients and backend servers to distribute incoming traffic, prevent hotspots, and failover when a server dies.
 
@@ -242,7 +242,7 @@ flowchart TD
 
 ---
 
-# 07. Caching & Edge Acceleration
+# 07. Caching and Edge Acceleration
 
 Caching stores the results of expensive calculations or database queries in fast RAM.
 
@@ -279,7 +279,7 @@ flowchart LR
 
 ---
 
-# 08. Databases: SQL vs. NoSQL & Scaling
+# 08. Databases: SQL vs NoSQL and Scaling
 
 ```mermaid
 graph TD
@@ -330,7 +330,7 @@ flowchart TD
 
 ---
 
-# 10. Asynchronous Messaging & Streaming
+# 10. Asynchronous Messaging and Streaming
 
 When an operation takes more than 100ms (sending emails, video encoding, push notifications), **never make the user wait on the HTTP request**. Offload it to a message broker.
 ```mermaid
@@ -356,7 +356,7 @@ flowchart LR
 
 ---
 
-# 11. Reliability & Rate Limiting
+# 11. Reliability and Rate Limiting
 
 ### The Circuit Breaker Pattern
 

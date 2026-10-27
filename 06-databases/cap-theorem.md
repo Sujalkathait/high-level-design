@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** The CAP Theorem states that a distributed data system can simultaneously provide at most **two out of three** guarantees:
+The CAP Theorem states that a distributed data system can simultaneously provide at most **two out of three** guarantees:
   1. **C — Consistency:** Every read receives the most recent write or an error.
   2. **A — Availability:** Every non-failing node returns a non-error response for every request (even if stale).
   3. **P — Partition Tolerance:** The system continues operating despite dropped or delayed network packets between nodes.

@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** Round Robin is the simplest load balancing algorithm. Incoming requests are forwarded to backend servers sequentially in a **repeating circular order**:
+Round Robin is the simplest load balancing algorithm. Incoming requests are forwarded to backend servers sequentially in a **repeating circular order**:
   * Request 1 $\to$ Server A
   * Request 2 $\to$ Server B
   * Request 3 $\to$ Server C

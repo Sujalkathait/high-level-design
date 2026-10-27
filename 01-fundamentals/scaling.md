@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** Scalability is the ability of a system to handle increasing amounts of traffic, data, or concurrent users **without degrading performance and without crashing**.
+Scalability is the ability of a system to handle increasing amounts of traffic, data, or concurrent users **without degrading performance and without crashing**.
 * **The Two Fundamental Scaling Paths:**
   1. **Vertical Scaling (Scale Up):** Buy a more powerful machine (more CPU cores, more RAM, faster NVMe SSD).
   2. **Horizontal Scaling (Scale Out):** Buy more machines (running identical instances of your application behind a Load Balancer).

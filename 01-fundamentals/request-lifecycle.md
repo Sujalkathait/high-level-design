@@ -6,7 +6,7 @@
 
 ### 1. What is it?
 
-* **Plain English:** The complete millisecond-by-millisecond journey of data from the exact moment a user taps a button on their phone until pixels render on screen.
+The complete millisecond-by-millisecond journey of data from the exact moment a user taps a button on their phone until pixels render on screen.
 * **Why it matters:** When an API response takes 800ms, you cannot fix it until you know where that time was spent:
   $$\text{Total Latency} = T_{\text{DNS}} + T_{\text{TCP}} + T_{\text{TLS}} + T_{\text{Network RTT}} + T_{\text{Server CPU}} + T_{\text{Database Query}}$$
 
