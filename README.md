@@ -1,6 +1,37 @@
 # 🚀 Complete System Design Roadmap: Beginner → Expert
-> **171 Topics | 12 Phases | 6 Stages | Master High-Level Design (HLD)**
-> *Explained in Simple English with  Visuals & Diagrams*
+> **171 Topics | 12 Phases | 6 Stages | Master High-Level Design (HLD)**  
+> *Every topic structured using the Standard 22-Section Architectural Presentation in Simple English*
+
+---
+
+## 🏛️ The Standard 22-Section Topic Presentation Framework
+
+Every topic in this repository is presented using this rigorous 22-section engineering framework:
+
+| Order | Section | Mandatory Presentation |
+|---|---|---|
+| **01** | **WHAT** | Simple definition + Technical definition |
+| **02** | **WHY** | Core benefits & reasons to use in bullet points |
+| **03** | **PROBLEM** | What breaks without it? Explanation + Before/After visual diagram |
+| **04** | **ANALOGY** | Relatable real-life analogy (restaurant, highway, postal system) |
+| **05** | **CONCEPTS** | Key terminology table with definitions & context |
+| **06** | **ARCHITECTURE** | High-level system architecture diagram |
+| **07** | **COMPONENTS** | Component table: Name, Role, Failure Impact |
+| **08** | **WORKING** | Numbered execution steps + logic flowchart |
+| **09** | **DATA FLOW** | End-to-end request sequence diagram |
+| **10** | **TYPES** | Classification & breakdown comparison table |
+| **11** | **COMPARISON** | Head-to-head comparison table against alternatives |
+| **12** | **EXAMPLES** | Simple Example $\rightarrow$ Technical Payload $\rightarrow$ Real-world FAANG case study |
+| **13** | **ADVANTAGES** | Explained pros in bullet points |
+| **14** | **DISADVANTAGES** | Explained cons and drawbacks |
+| **15** | **USE CASES** | Practical use-case scenario matrix |
+| **16** | **PERFORMANCE** | Performance metrics, throughput, latency & tuning points |
+| **17** | **SECURITY** | Security threats & mitigation table |
+| **18** | **TRADE-OFFS** | Architectural decision matrix |
+| **19** | **BEST PRACTICES** | Production engineering checklist |
+| **20** | **COMMON MISTAKES** | "Mistake vs Correction" anti-pattern table |
+| **21** | **INTERVIEW QUESTIONS** | Beginner $\rightarrow$ Intermediate $\rightarrow$ Advanced interview questions |
+| **22** | **SUMMARY** | Key takeaway points + Quick revision table |
 
 ---
 
@@ -8,33 +39,33 @@
 
 ```mermaid
 flowchart TD
-    subgraph Stage1 [🟢 STAGE 1: BEGINNER — CORE FUNDAMENTALS]
-        P1["📘 Phase 1: Networking & Internet (Topics 1–16) ✅"]
-        P2["📘 Phase 2: APIs & Web Communication (Topics 17–31) ✅"]
+    subgraph S1 [🟢 STAGE 1: BEGINNER — CORE FUNDAMENTALS]
+        P1["📘 Phase 1: Networking & Internet (Topics 1–16)"]
+        P2["📘 Phase 2: APIs & Communication Protocols (Topics 17–31)"]
     end
 
-    subgraph Stage2 [🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE]
-        P3["📘 Phase 3: Application Architecture (Topics 32–46) ✅"]
-        P4["📘 Phase 4: Database Fundamentals & Scaling (Topics 47–63) ✅"]
-        P5["📘 Phase 5: Caching, CDN & Storage (Topics 64–74) ✅"]
+    subgraph S2 [🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE]
+        P3["📘 Phase 3: Application Architecture & Modular Monolith (Topics 32–46)"]
+        P4["📘 Phase 4: Database Fundamentals, ACID/BASE & Scaling (Topics 47–63)"]
+        P5["📘 Phase 5: Caching Strategies, Eviction & Storage (Topics 64–74)"]
     end
 
-    subgraph Stage3 [🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS]
-        P6["📘 Phase 6: Scalability & Performance Engineering (Topics 75–91) ✅"]
+    subgraph S3 [🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS]
+        P6["📘 Phase 6: Scalability, Latency/Throughput & Load Balancers (Topics 75–91)"]
         P7["📘 Phase 7: Messaging & Event-Driven Systems (Topics 92–102)"]
         P8["📘 Phase 8: Reliability & Fault Tolerance (Topics 103–116)"]
     end
 
-    subgraph Stage4 [🔴 STAGE 4: PROFESSIONAL — SECURITY & PRODUCTION]
+    subgraph S4 [🔴 STAGE 4: PROFESSIONAL — SECURITY & PRODUCTION]
         P9["📘 Phase 9: Security, Auth & Identity (Topics 117–129)"]
         P10["📘 Phase 10: Observability & DevOps (Topics 130–144)"]
     end
 
-    subgraph Stage5 [🟣 STAGE 5: EXPERT — DISTRIBUTED PATTERNS]
+    subgraph S5 [🟣 STAGE 5: EXPERT — DISTRIBUTED PATTERNS]
         P11["📘 Phase 11: Advanced Architecture Patterns (Topics 145–156)"]
     end
 
-    subgraph Stage6 [🏆 STAGE 6: MASTERY — REAL-WORLD CASE STUDIES]
+    subgraph S6 [🏆 STAGE 6: MASTERY — REAL-WORLD CASE STUDIES]
         P12["📘 Phase 12: Real-World System Design (Topics 157–171)"]
     end
 
@@ -43,635 +74,734 @@ flowchart TD
 
 ---
 
-## 📑 Detailed Table of Contents
-
-- [🟢 STAGE 1: BEGINNER — CORE FUNDAMENTALS](#-stage-1-beginner--core-fundamentals)
-  - [📘 PHASE 1: Networking & Internet Fundamentals (Topics 1–16)](#-phase-1-networking--internet-fundamentals)
-    - [1.1 — Network Basics](#11--network-basics)
-      - [1. Network](#1-network)
-      - [2. Internet](#2-internet)
-      - [3. Client](#3-client)
-      - [4. Server](#4-server)
-      - [5. Client-Server Communication](#5-client-server-communication)
-      - [6. IP Address (IPv4 and IPv6)](#6-ip-address-ipv4-and-ipv6)
-      - [7. Port Numbers](#7-port-numbers)
-      - [8. Domain Name](#8-domain-name)
-      - [9. DNS (Domain Name System)](#9-dns-domain-name-system)
-    - [1.2 — Internet Protocols](#12--internet-protocols)
-      - [10. HTTP](#10-http)
-      - [11. HTTPS](#11-https)
-      - [12. HTTP Request and Response](#12-http-request-and-response)
-      - [13. URL vs URI](#13-url-vs-uri)
-      - [14. TCP vs UDP](#14-tcp-vs-udp)
-      - [15. Socket Types](#15-socket-types)
-      - [16. TLS/SSL](#16-tlsssl)
-  - [📘 PHASE 2: APIs & Communication Fundamentals (Topics 17–31)](#-phase-2-apis--communication-fundamentals)
-    - [2.1 — API Basics](#21--api-basics)
-      - [17. API (Application Programming Interface)](#17-api-application-programming-interface)
-      - [18. REST API](#18-rest-api)
-      - [19. HTTP Methods (GET, POST, PUT, PATCH, DELETE)](#19-http-methods-get-post-put-patch-delete)
-      - [20. HTTP Status Codes](#20-http-status-codes)
-      - [21. Request Headers and Body](#21-request-headers-and-body)
-      - [22. Response Headers and Body](#22-response-headers-and-body)
-      - [23. JSON](#23-json)
-    - [2.2 — API Processing](#22--api-processing)
-      - [24. API Authentication](#24-api-authentication)
-      - [25. Authorization](#25-authorization)
-      - [26. Middleware](#26-middleware)
-      - [27. API Gateway](#27-api-gateway)
-    - [2.3 — Communication Protocols](#23--communication-protocols)
-      - [28. WebSocket](#28-websocket)
-      - [29. GraphQL](#29-graphql)
-      - [30. gRPC](#30-grpc)
-      - [31. Synchronous vs Asynchronous Communication](#31-synchronous-vs-asynchronous-communication)
-- [🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE](#-stage-2-intermediate--backend--data-architecture)
-  - [📘 PHASE 3: Application & Software Architecture (Topics 32–46)](#-phase-3-application--software-architecture)
-    - [3.1 — Architecture Fundamentals: 1-Tier to N-Tier](#31--architecture-fundamentals-1-tier-to-n-tier)
-    - [3.2 — Architecture Styles: Monolith vs Microservices vs Serverless](#32--architecture-styles-monolith-vs-microservices-vs-serverless)
-    - [3.3 — Design Principles: Coupling & Boundaries](#33--design-principles-coupling--boundaries)
-  - [📘 PHASE 4: Database Fundamentals & Data Architecture (Topics 47–63)](#-phase-4-database-fundamentals--data-architecture)
-    - [4.1 — SQL vs NoSQL Databases](#41--sql-vs-nosql-databases)
-    - [4.2 — Transactions & ACID vs BASE](#42--transactions--acid-vs-base)
-    - [4.3 — The CAP Theorem & PACELC](#43--the-cap-theorem--pacelc)
-    - [4.4 — Database Scaling: Replication & Sharding](#44--database-scaling-replication--sharding)
-  - [📘 PHASE 5: Caching, CDN & Storage Systems (Topics 64–74)](#-phase-5-caching-cdn--storage-systems)
-    - [5.1 — Caching Fundamentals: Redis vs Memcached](#51--caching-fundamentals-redis-vs-memcached)
-    - [5.2 — Caching Strategies (Cache-Aside, Read/Write-Through, Write-Back, Write-Around)](#52--caching-strategies)
-    - [5.3 — Cache Eviction: LRU vs LFU & Invalidation](#53--cache-eviction-lru-vs-lfu--invalidation)
-    - [5.4 — CDN & Cloud Object Storage (S3)](#54--cdn--cloud-object-storage-s3)
-- [🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS](#-stage-3-advanced--scalability--distributed-systems)
-  - [📘 PHASE 6: Scalability & Performance Engineering (Topics 75–91)](#-phase-6-scalability--performance-engineering)
-    - [6.1 — Vertical vs Horizontal Scaling](#61--vertical-vs-horizontal-scaling)
-    - [6.2 — Latency vs Throughput (Performance Formulas)](#62--latency-vs-throughput-performance-formulas)
-    - [6.3 — Load Balancing Deep Dive (L4 vs L7 & Algorithms)](#63--load-balancing-deep-dive-l4-vs-l7--algorithms)
-    - [6.4 — Reverse Proxy (Nginx / Envoy / HAProxy)](#64--reverse-proxy-nginx--envoy--haproxy)
-- [🗺️ Upcoming Phases Overview (Phase 7 to Phase 12)](#️-upcoming-phases-overview-phase-7-to-phase-12)
+# 📚 22-Section Deep Dive Modules
 
 ---
 
-# 🟢 STAGE 1: BEGINNER — CORE FUNDAMENTALS
+# 🧱 MODULE 1: Application Architecture (Monolithic, Modular Monolith & Microservices)
+*(Covering Phase 3: Topics 32–46)*
 
----
+### 01. WHAT
+* **Simple Definition:** Software architecture is how you organize your code and servers so that your team can build, change, and scale the app without breaking everything.
+* **Technical Definition:** The structural blueprint of a software system, defining the internal modules, their responsibilities, communication protocols, boundaries, and deployment topology.
 
-# 📘 PHASE 1: Networking & Internet Fundamentals
+### 02. WHY
+* **Team Scalability:** Allows multiple developers to work without stepping on each other's toes.
+* **System Maintainability:** Isolates bugs so an error in the notification system doesn't crash user payments.
+* **Cost Efficiency:** Lets you scale only the parts of the app that are experiencing heavy traffic.
 
-Networking is the physical and logical highway of system design. Every request from an iPhone or browser travels across these layers.
-
----
-
-## 1.1 — Network Basics
-
-### 1. Network
-A **Computer Network** is a group of two or more computing devices connected together by cables (fiber, Ethernet) or radio signals (Wi-Fi, 4G/5G) so they can share data, files, and resources.
-
-* **LAN (Local Area Network):** Covers a small local area like your house, a classroom, or an office. Speeds are extremely fast (1 to 10 Gbps) and delay is less than 1 millisecond.
-* **WAN (Wide Area Network):** Connects computers across different cities, countries, or continents. The Internet is the world's biggest WAN.
-
-```mermaid
-graph LR
-    subgraph LAN [Your Home Network - LAN]
-        Phone[Mobile Phone] <--> Router[Wi-Fi Router]
-        Laptop[Laptop] <--> Router
-        SmartTV[Smart TV] <--> Router
-    end
-    Router <--> WAN((Public Internet / WAN))
-```
-
----
-
-### 2. Internet
-The **Internet** is a global "network of networks." It connects billions of private, corporate, university, and government networks together using the standardized **TCP/IP** rules.
-
-* **Physical Reality:** Data travels across the planet through thick undersea fiber-optic cables resting on ocean floors.
-* **Autonomous Systems (AS):** Huge tech networks (like Google, Cloudflare, Microsoft) connect to each other at Internet Exchange Points (IXPs) using a routing language called **BGP (Border Gateway Protocol)**.
+### 03. PROBLEM (What Breaks Without It?)
+Without a modular architecture, applications degrade into a **"Big Ball of Mud"**. Any function can query any database table, making changes risky and unpredictable.
 
 ```mermaid
 graph TD
-    UserDevice[Your Device] --> LocalISP[Local Internet Provider]
-    LocalISP --> NationalBackbone[National Fiber Backbone]
-    NationalBackbone --> UnderseaCable[Undersea Fiber Cable Across Oceans]
-    UnderseaCable --> Datacenter[Remote Cloud Datacenter]
-```
-
----
-
-### 3. Client
-A **Client** is the device or application that initiates a request for data or a service.
-* Examples: Google Chrome, an iPhone running Instagram, Spotify desktop app, or a terminal running `curl`.
-* **Behavior:** The client does not wait for incoming calls; it wakes up, creates an outbound request, receives the response, and renders it on your screen.
-
----
-
-### 4. Server
-A **Server** is a dedicated computer (or program) running continuously in a datacenter, listening for incoming client requests.
-* **Behavior:** It sits passively on a fixed IP address and a specific **Port Number**. When an order arrives, it processes business logic, queries a database, and returns the result.
-
-```mermaid
-graph LR
-    Client["Client (Browser / Mobile App)\n- Initiates requests\n- Uses dynamic port"]
-    Server["Server (Datacenter Node)\n- Listens 24/7\n- Uses fixed port (80/443)"]
-    Client -- "1. Request (GET /feed)" --> Server
-    Server -- "2. Response (200 OK + JSON)" --> Client
-```
-
----
-
-### 5. Client-Server Communication
-How clients and servers exchange data:
-
-1. **Request-Response (Half-Duplex):** Client sends a question, server sends an answer, connection closes or idles. Standard HTTP model.
-2. **Persistent Connection (HTTP Keep-Alive):** Reuses the same underlying TCP connection for multiple back-to-back requests, avoiding repeated handshake delays.
-3. **Full-Duplex (WebSockets):** A two-way open pipeline where both client and server can push messages at any split-second (used for chat and gaming).
-4. **Server-Sent Events (SSE):** One-way stream where the server continuously pushes updates to the client over standard HTTP.
-
----
-
-### 6. IP Address (IPv4 and IPv6)
-An **IP (Internet Protocol) Address** is the digital address of any machine connected to a network.
-
-```
-IPv4: 192 . 168 . 1 . 100
-      [8 bits].[8 bits].[8 bits].[8 bits] = 32 bits (~4.3 Billion total addresses)
-
-IPv6: 2001 : 0db8 : 85a3 : 0000 : 0000 : 8a2e : 0370 : 7334
-      8 groups of 16-bit hex numbers = 128 bits (~340 Undecillion addresses!)
-```
-
-```mermaid
-graph TD
-    subgraph IPv4 [IPv4 - 32 Bits]
-        V4Desc["- Dotted decimal format: 172.217.16.206\n- Ran out of addresses\n- Requires NAT (Network Address Translation)"]
+    subgraph WithoutArchitecture [Without Architecture: Spaghetti Code]
+        Spag["UI直接 queries DB directly\nPayment calls User directly\nOrder modifies Inventory directly\nResult: 1 bug crashes the entire system!"]
     end
-    subgraph IPv6 [IPv6 - 128 Bits]
-        V6Desc["- Hexadecimal format: 2607:f8b0:4005::200e\n- Virtually unlimited supply\n- Every single device gets its own direct IP"]
+
+    subgraph WithArchitecture [With Architecture: Clean Boundaries]
+        UI[UI Presentation] --> API[API Gateway]
+        API --> S_Order[Order Module]
+        API --> S_User[User Module]
+        S_Order -. Clean In-Memory Interface / Event .-> S_Payment[Payment Module]
+        S_Order --> DB_Order[(Order Schema)]
     end
 ```
 
----
+### 04. ANALOGY
+* **Classic Monolith:** One giant studio apartment with no walls. The kitchen, bed, shower, and toilet are in the same room. Cheap to start, but messy and chaotic.
+* **Microservices:** Building 5 separate houses across town. To go from the bedroom to the bathroom, you have to get in a car, pay tolls, and risk traffic jams (network latency).
+* **Modular Monolith:** One large mansion with **solid walls and locked doors**. Everything lives under one roof (zero travel time), but each room is strictly private!
 
-### 7. Port Numbers
-If the **IP address** is the street address of an apartment building, the **Port Number** is the specific apartment room number.
+### 05. CONCEPTS
 
-A single computer can run a web server, a database, and an email service all at the same time. Port numbers make sure incoming packets reach the exact software process intended.
-
-```mermaid
-graph LR
-    Incoming[Incoming Packet to IP: 192.168.1.50] --> RouterCheck{Check Port}
-    RouterCheck -- "Port 80 / 443" --> WebServer[Nginx Web Server]
-    RouterCheck -- "Port 3306" --> MySQL[MySQL Database]
-    RouterCheck -- "Port 6379" --> Redis[Redis Cache]
-    RouterCheck -- "Port 22" --> SSH[SSH Secure Shell]
-```
-
-* **Well-Known Ports (0 – 1023):** System/root services (`80` HTTP, `443` HTTPS, `22` SSH, `53` DNS).
-* **Registered Ports (1024 – 49151):** Specific software (`3306` MySQL, `5432` Postgres, `6379` Redis, `8000/8080` Dev).
-* **Ephemeral / Dynamic Ports (49152 – 65535):** Temporary outgoing ports picked automatically by client operating systems.
-
----
-
-### 8. Domain Name
-A **Domain Name** is a friendly, memorable nickname for a numeric IP address.
-* Example: `api.store.example.com`
-
-```
-Anatomy of a Domain:
-    api    .    store    .    example    .    com    .
-     ^            ^              ^             ^     ^
-     |            |              |             |     +-- Root Domain (implicit)
-     |            |              |             +-------- Top-Level Domain (TLD)
-     |            |              +---------------------- Second-Level Domain
-     |            +------------------------------------- Subdomain
-     +-------------------------------------------------- Host / Service
-```
-
----
-
-### 9. DNS (Domain Name System)
-DNS is the **Phonebook of the Internet**. It translates human words (`google.com`) into computer numbers (`142.250.190.46`).
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Browser as You (Browser)
-    participant Resolver as Recursive Resolver (ISP / 8.8.8.8)
-    participant Root as Root Server (.)
-    participant TLD as TLD Server (.com)
-    participant Auth as Authoritative Server (ns1.google.com)
-
-    Browser->>Resolver: 1. Where is google.com?
-    Note over Resolver: Checks cache. If Miss:
-    Resolver->>Root: 2. Where is .com?
-    Root-->>Resolver: 3. Ask .com TLD at [192.5.6.30]
-    Resolver->>TLD: 4. Where is google.com?
-    TLD-->>Resolver: 5. Ask Authoritative Name Server at [216.239.32.10]
-    Resolver->>Auth: 6. What is the IPv4 A record for google.com?
-    Auth-->>Resolver: 7. It is 142.250.190.46 (TTL = 300s)
-    Resolver-->>Browser: 8. IP is 142.250.190.46
-    Note over Browser: Browser connects directly to server IP!
-```
-
----
-
-## 1.2 — Internet Protocols
-
----
-
-### 10. HTTP (HyperText Transfer Protocol)
-**HTTP** is the universal protocol of the World Wide Web.
-* Operates at the **Application Layer (Layer 7)**.
-* Text-based, human-readable, and stateless.
-* **HTTP/1.1:** Introduced persistent connections (`Connection: keep-alive`).
-* **HTTP/2:** Introduced binary framing and multiplexing (multiple requests over one single connection).
-* **HTTP/3:** Replaced TCP with **QUIC (running over UDP)** to eliminate Head-of-Line packet blocking.
-
----
-
-### 11. HTTPS (Secure HTTP)
-$$\text{HTTPS} = \text{HTTP} + \text{TLS Encryption}$$
-
-* In plain HTTP, any attacker on your Wi-Fi router can read your passwords, cookies, and tokens.
-* In HTTPS, every character is encrypted using math before it leaves your device.
-* **Three Guarantees:**
-  1. **Confidentiality:** No eavesdropping.
-  2. **Integrity:** Packets cannot be modified in transit.
-  3. **Authentication:** Proves you are talking to the real server, not an imposter.
-
----
-
-### 12. HTTP Request and Response
-
-```mermaid
-graph TD
-    subgraph Req [HTTP Request]
-        R1["Request Line: GET /products HTTP/1.1"]
-        R2["Headers: Host, User-Agent, Authorization"]
-        R3["Empty Line: CRLF \r\n"]
-        R4["Body: Optional JSON payload"]
-    end
-
-    subgraph Res [HTTP Response]
-        S1["Status Line: HTTP/1.1 200 OK"]
-        S2["Headers: Content-Type, Content-Length, Set-Cookie"]
-        S3["Empty Line: CRLF \r\n"]
-        S4["Body: HTML, JSON data, or image bytes"]
-    end
-
-    Req --> Res
-```
-
----
-
-### 13. URL vs URI
-
-```
-                   URI (Uniform Resource Identifier)
-                   [Identifies ANY resource by name or location]
-                                    |
-      +-----------------------------+-----------------------------+
-      |                                                           |
-     URL (Uniform Resource Locator)                  URN (Uniform Resource Name)
-    [Tells WHAT and HOW to find it]                  [Identifies purely by name]
-https://example.com/books/index.html                     urn:isbn:0451450523
-```
-
----
-
-### 14. TCP vs UDP
-
-```mermaid
-graph TD
-    subgraph TCP [TCP: Transmission Control Protocol]
-        T1["✅ Connection-Oriented: 3-Way Handshake"]
-        T2["✅ 100% Guaranteed Delivery via ACKs"]
-        T3["✅ In-order packet sequencing"]
-        T4["✅ Flow and Congestion Control"]
-        T5["📌 Used in: HTTP/HTTPS, DBs, Email, Banking"]
-    end
-
-    subgraph UDP [UDP: User Datagram Protocol]
-        U1["⚡ Connectionless: Fire-and-forget"]
-        U2["⚡ No ACKs, No retransmissions"]
-        U3["⚡ Packets can arrive out-of-order or drop"]
-        U4["⚡ Zero handshake delay (Ultra low latency)"]
-        U5["📌 Used in: Gaming, Live Streaming, VoIP, DNS"]
-    end
-```
-
----
-
-### 15. Socket Types
-A **Socket** is an endpoint created by the operating system for network input/output:
-* **Stream Sockets (`SOCK_STREAM` / TCP):** Continuous, reliable, two-way byte stream.
-* **Datagram Sockets (`SOCK_DGRAM` / UDP):** Independent, bounded packets with no connection state.
-* **Raw Sockets (`SOCK_RAW`):** Bypasses transport layer to craft raw IP packets directly (used by `ping` for ICMP).
-
----
-
-### 16. TLS/SSL
-**TLS (Transport Layer Security)** is the cryptographic protocol powering HTTPS.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Client as Client (Browser)
-    participant Server as Web Server
-
-    Client->>Server: 1. ClientHello (Supported Cipher Suites + Client Random)
-    Server-->>Client: 2. ServerHello (Chosen Cipher + Server Random)
-    Server-->>Client: 3. Server Certificate (Contains Public Key + CA Signature)
-    Note over Client: Verifies Certificate with trusted Root Authorities
-    Client->>Server: 4. Key Exchange (Diffie-Hellman Key Share)
-    Note over Client,Server: Both derive identical symmetric session key
-    Client->>Server: 5. Encrypted Finished message
-    Server-->>Client: 6. Encrypted Finished message
-    Note over Client,Server: 🔒 Encrypted Tunnel Ready! (1-RTT in TLS 1.3)
-```
-
----
-
-# 📘 PHASE 2: APIs & Communication Fundamentals
-
----
-
-## 2.1 — API Basics
-
-### 17. API (Application Programming Interface)
-An **API** is a software contract. It defines the operations, inputs, outputs, and data formats one program allows other programs to use without exposing its internal code.
-
-* **The Restaurant Analogy:**
-  - You = Client
-  - Kitchen = Backend Database & Business Logic
-  - Waiter = **API** (takes your order menu request to the kitchen, brings back your food response)
-
----
-
-### 18. REST API (Representational State Transfer)
-**REST** is an architectural style designed around **Resources** identified by URLs.
-* **Stateless:** The server stores no client session state; every request contains full context.
-* **Client-Server Separation:** UI logic separated from data storage.
-* **Cacheable:** Responses declare caching headers.
-
----
-
-### 19. HTTP Methods (GET, POST, PUT, PATCH, DELETE)
-
-| Method | Purpose | Typical URL | Has Body? | Idempotent? | Safe? |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **GET** | Read/Fetch data | `/api/users/42` | No | ✅ Yes | ✅ Yes |
-| **POST** | Create new resource | `/api/users` | ✅ Yes | ❌ No | ❌ No |
-| **PUT** | Replace entire resource | `/api/users/42` | ✅ Yes | ✅ Yes | ❌ No |
-| **PATCH** | Partially update resource | `/api/users/42` | ✅ Yes | ❌ No | ❌ No |
-| **DELETE** | Remove resource | `/api/users/42` | No | ✅ Yes | ❌ No |
-
----
-
-### 20. HTTP Status Codes
-* **1xx (Informational):** `100 Continue`, `101 Switching Protocols` (WebSockets).
-* **2xx (Success):** `200 OK`, `201 Created`, `204 No Content`.
-* **3xx (Redirection):** `301 Moved Permanently`, `302 Found`, `304 Not Modified` (Cache hit).
-* **4xx (Client Error):** `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `429 Too Many Requests`.
-* **5xx (Server Error):** `500 Internal Error`, `502 Bad Gateway`, `503 Unavailable`, `504 Gateway Timeout`.
-
----
-
-### 21. Request Headers and Body & 22. Response Headers and Body
-Headers carry metadata (authorization, content format, cookies), while the Body carries the raw data (JSON/HTML).
-
----
-
-### 23. JSON (JavaScript Object Notation)
-The universal, lightweight text standard for data exchange:
-```json
-{
-  "id": 101,
-  "name": "Sujal",
-  "is_admin": true,
-  "roles": ["developer", "architect"]
-}
-```
-
----
-
-## 2.2 — API Processing
-
-### 24. API Authentication & 25. Authorization
-* **Authentication ("Who are you?"):** Verifying identity (API Keys, JWT Tokens, OAuth 2.0).
-* **Authorization ("What can you do?"):** Checking permissions (RBAC: Admin vs Viewer).
-
-```mermaid
-graph LR
-    Req[Incoming Request] --> AuthCheck{Authentication\nWho are you?}
-    AuthCheck -- Valid --> RoleCheck{Authorization\nPermitted?}
-    AuthCheck -- Invalid --> R401[401 Unauthorized]
-    RoleCheck -- Yes --> OK[200 OK Execution]
-    RoleCheck -- No --> R403[403 Forbidden]
-```
-
----
-
-### 26. Middleware & 27. API Gateway
-* **Middleware:** Processing functions executed in a chain (Logging $\rightarrow$ Rate Limiting $\rightarrow$ Auth $\rightarrow$ Handler).
-* **API Gateway:** The single front-door entry point into a microservices cluster.
-
----
-
-## 2.3 — Communication Protocols: REST vs RPC vs GraphQL vs WebSockets
-
-```mermaid
-graph TD
-    subgraph REST [REST: Resource Oriented]
-        M1[Multiple endpoints: /users, /orders\nFixed response schema\nUses HTTP/1.1]
-    end
-    subgraph GQL [GraphQL: Query Oriented]
-        M2[Single endpoint: /graphql\nClient asks for exact fields needed\nPrevents over/under-fetching]
-    end
-    subgraph WS [WebSockets: Event Stream]
-        M3[Persistent TCP connection\nFull-duplex real-time messages\nChat, Gaming, Tickers]
-    end
-    subgraph RPC [gRPC: Procedure Call]
-        M4[Fast binary Protocol Buffers\nRuns on HTTP/2 multiplexing\nService-to-Service microservices]
-    end
-```
-
----
-
-# 🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE
-
----
-
-# 📘 PHASE 3: Application & Software Architecture
-
-How you organize your software components determines how easy it is to scale, deploy, and maintain your system.
-
----
-
-## 3.1 — Architecture Fundamentals: 1-Tier to N-Tier
-
-```mermaid
-graph TD
-    subgraph T1 [1-Tier Architecture]
-        OneBox["Single Device: UI + Business Logic + Database all in 1 binary\n(e.g., Desktop SQLite App, MS Excel)"]
-    end
-
-    subgraph T2 [2-Tier Architecture]
-        Client2[Client App / Desktop] <--> DB2[(Direct Database Server)]
-    end
-
-    subgraph T3 [3-Tier Architecture]
-        Client3[Web Browser] <--> AppServer[Application Server: Business Logic]
-        AppServer <--> DB3[(Database Tier)]
-    end
-
-    subgraph TN [N-Tier / Multi-Tier Architecture]
-        ClientN[Global Clients] <--> CDN_Tier[CDN & Edge Tier]
-        CDN_Tier <--> LB_Tier[Load Balancer Tier]
-        LB_Tier <--> App_Tier[Stateless Web/App Services]
-        App_Tier <--> Cache_Tier[(In-Memory Cache Tier: Redis)]
-        App_Tier <--> Queue_Tier[(Message Queue Tier: Kafka)]
-        App_Tier <--> DB_Tier[(Distributed Database Tier)]
-    end
-```
-
-### The Evolution:
-* **1-Tier:** Everything runs on the client's local computer. Fast for a single user, but impossible to share real-time data across users.
-* **2-Tier (Client-Server):** Client talks directly to the database. Security risk (database credentials embedded in client software) and business logic cannot be updated without reinstalling the app.
-* **3-Tier:** Introduced the **Application Server**. Business logic lives safely on the server. Clients never touch the database directly.
-* **N-Tier:** Breaks large systems into specialized tiers (Presentation, Gateway, Application, Caching, Messaging, Database). Each tier can scale independently on separate server clusters!
-
----
-
-## 3.2 — Architecture Styles: Monolith vs Modular Monolith vs Microservices
-
-```mermaid
-graph TD
-    subgraph ClassicMonolith [1. Classic Monolith - Spaghetti Risk]
-        M1["Everything in 1 Folder/App\nAny function calls any database table directly\nTangled spaghetti code over time"]
-    end
-
-    subgraph ModularMonolith [2. Modular Monolith - Clean & Fast]
-        subgraph SingleBinary [Single Deployed Server / Process]
-            ModUser["User Module\n(Private Code)"]
-            ModPay["Payment Module\n(Private Code)"]
-            ModOrder["Order Module\n(Private Code)"]
-            ModUser <== Public Interface / In-Memory Events ==> ModOrder
-            ModOrder <== Public Interface / In-Memory Events ==> ModPay
-        end
-        SingleBinary --> DB[(Database with separate schemas per module)]
-    end
-
-    subgraph Microservices [3. Microservices - Distributed]
-        GW[API Gateway] --> S_User[User Service Node]
-        GW --> S_Pay[Payment Service Node]
-        GW --> S_Order[Order Service Node]
-        S_User --> DB_U[(User DB)]
-        S_Pay --> DB_P[(Pay DB)]
-        S_Order --> DB_O[(Order DB)]
-        S_Order -. Network HTTP/gRPC .-> S_Pay
-    end
-```
-
-### What is a Modular Monolith? (Explained Simply)
-Imagine you want to build a house:
-* **Classic Monolith:** One giant open room with no walls. The kitchen stove, bed, shower, and toilet are all in the same space. It's fast to build at first, but soon becomes a chaotic, messy disaster.
-* **Microservices:** You build 5 separate tiny houses across town. To go from the bedroom to the bathroom, you have to get in a car, drive 15 minutes, pay a toll, and hope there's no traffic (network latency & failures).
-* **Modular Monolith (The Sweet Spot):** One single big house, but with **proper solid walls, private rooms, and locked doors**. Everything is under one roof (zero driving/network delay), but code is strictly separated into independent modules!
-
-#### How a Modular Monolith Works in Real Life:
-1. **Strict Internal Boundaries:** The `Payment` module cannot directly query the `Users` database table. It must call a clean public in-memory function or interface (e.g. `UserService.getUser(id)`).
-2. **Zero Network Latency:** Modules talk through ordinary in-memory function calls (which take nanoseconds: `0.00001 ms`), unlike microservices that must send HTTP/gRPC packets over network cards (which take `5 - 50 ms`).
-3. **Single Deployment Unit:** You deploy one single binary or Docker container. No Kubernetes nightmare or distributed tracing needed.
-4. **The Ultimate Bridge:** If the `Payment` module ever needs to scale to 100x traffic later, you can easily cut it out and turn it into a microservice in an afternoon because its boundaries were already cleanly defined!
-
-### Comparison Matrix:
-
-| Dimension | Classic Monolith | Modular Monolith | Microservices Architecture |
-| :--- | :--- | :--- | :--- |
-| **Code Structure** | Spaghetti / Tightly coupled | Strictly isolated modules inside 1 repo | Decoupled separate services/repos |
-| **Communication** | Direct memory calls | In-memory public interfaces/events | Network calls (HTTP, gRPC, Kafka) |
-| **Network Latency** | `0 ms` (instant) | `0 ms` (instant) | `5 - 50 ms` per hop (adds up!) |
-| **Deployment** | 1 single deployable unit | 1 single deployable unit | 10 to 50+ independent deployments |
-| **Operational Cost**| Very Low | Very Low (1 server/container) | Very High (requires DevOps, K8s) |
-| **Data Consistency** | Easy ACID Transactions | Easy ACID Transactions | Hard (Eventual consistency, Saga) |
-| **Companies Using** | Small projects | **Shopify, Stack Overflow, Basecamp** | **Netflix, Uber, Amazon** |
-
----
-
-## 3.3 — Design Principles: Coupling & Boundaries
-
-```mermaid
-graph LR
-    subgraph Tight [Tight Coupling - Bad]
-        A1[Service A] -->|Direct Hardcoded Dependency| B1[Service B]
-        Note1["If B crashes, A crashes immediately!"]
-    end
-
-    subgraph Loose [Loose Coupling - Good]
-        A2[Service A] -->|Publishes Event| Q[(Message Broker)]
-        Q -->|Consumes Event| B2[Service B]
-        Note2["If B is temporarily down, messages wait safely in queue!"]
-    end
-```
-
-* **Tight Coupling:** Components know too much about each other. Modifying Service B breaks Service A.
-* **Loose Coupling:** Components communicate through abstract contracts, APIs, or message brokers. Services can be replaced, updated, or rebooted without affecting others.
-
----
-
-# 📘 PHASE 4: Database Fundamentals & Data Architecture
-
-Data is the most valuable and difficult component to scale in high-level design.
-
----
-
-## 4.1 — SQL vs NoSQL Databases
-
-```mermaid
-graph TD
-    DB[(Databases)] --> SQL[SQL / Relational DBs\nPostgreSQL, MySQL]
-    DB --> NoSQL[NoSQL / Non-Relational DBs]
-    NoSQL --> Doc[Document: MongoDB]
-    NoSQL --> KV[Key-Value: Redis, DynamoDB]
-    NoSQL --> Col[Wide-Column: Cassandra, ScyllaDB]
-    NoSQL --> Graph[Graph: Neo4j]
-```
-
-| Dimension | SQL (Relational) | NoSQL (Non-Relational) |
+| Term | Definition | Real-World Context |
 | :--- | :--- | :--- |
-| **Data Schema** | Rigid, predefined schema (Tables, Rows, Columns) | Flexible, dynamic schema (JSON, Key-Value) |
-| **Relationships** | First-class support via Foreign Keys & `JOIN`s | Denormalized data; joins avoided in application code |
-| **Transactions** | Strong **ACID** guarantees | Typically **BASE** (Eventual consistency) |
-| **Scaling** | Primarily Vertical (Bigger CPU/RAM); read replicas | Naturally Horizontal (Distributed sharding across nodes) |
-| **Ideal Use Case** | Financial ledgers, ERP, E-commerce transactions | Clickstreams, IoT logs, Social feeds, Big Data |
+| **Coupling** | How dependent two components are on each other. | Low coupling = if Service A dies, Service B keeps running. |
+| **Cohesion** | How closely related the code inside a single module is. | High cohesion = everything inside the `Payment` module handles payments only. |
+| **Domain Boundary** | A logical fence separating business domains. | `User` module cannot write to `Order` tables directly. |
+| **Deployment Unit** | The physical binary or container deployed to a server. | 1 container for Monolith vs 20 containers for Microservices. |
 
----
-
-## 4.2 — Transactions & ACID vs BASE
-
-### The ACID Properties (The Bank Standard):
-When transferring \$100 from Alice to Bob, both operations must succeed or both must fail:
-* **A — Atomicity ("All or Nothing"):** If debiting Alice succeeds but crediting Bob fails, the whole transaction rolls back.
-* **C — Consistency:** Database constraints (e.g. balance cannot be negative) are strictly enforced before and after the transaction.
-* **I — Isolation:** Concurrent transactions do not interfere with each other (simulated sequential execution).
-* **D — Durability:** Once committed, data survives power outages and hardware crashes.
-
-### The BASE Properties (The Distributed Standard):
-Used by massive distributed NoSQL systems (Amazon DynamoDB, Cassandra):
-* **BA — Basically Available:** The system guarantees availability, answering requests even during node failures.
-* **S — Soft State:** The state of data may change over time without user interaction due to background synchronization.
-* **E — Eventual Consistency:** If no new updates are made, all replicas will eventually become identical.
-
----
-
-## 4.3 — The CAP Theorem & PACELC
-
-### The CAP Theorem:
-In any distributed data store, you can only pick **two out of three** guarantees:
+### 06. ARCHITECTURE
 
 ```mermaid
 graph TD
-    C["Consistency (C)\nEvery read gets the most recent write or an error."]
-    A["Availability (A)\nEvery non-failing node returns a response, but not guaranteed to be latest."]
-    P["Partition Tolerance (P)\nSystem operates despite dropped or delayed network cables."]
+    subgraph ModularMonolithArchitecture [Modular Monolith Architecture]
+        subgraph SingleProcess [Single Deployed Process / Docker Container]
+            direction TB
+            subgraph UserDomain [User Domain]
+                U_API[Public User Interface]
+                U_Logic[Private Logic]
+                U_Repo[User Repository]
+            end
+            subgraph OrderDomain [Order Domain]
+                O_API[Public Order Interface]
+                O_Logic[Private Logic]
+                O_Repo[Order Repository]
+            end
+            subgraph PaymentDomain [Payment Domain]
+                P_API[Public Payment Interface]
+                P_Logic[Private Logic]
+                P_Repo[Payment Repository]
+            end
+            U_API <== In-Memory Direct Calls (0 ms delay) ==> O_API
+            O_API <== In-Memory Direct Calls (0 ms delay) ==> P_API
+        end
+        U_Repo --> DB_U[(User Tables)]
+        O_Repo --> DB_O[(Order Tables)]
+        P_Repo --> DB_P[(Payment Tables)]
+    end
+```
+
+### 07. COMPONENTS
+
+| Component | Role | Failure Impact |
+| :--- | :--- | :--- |
+| **Domain Module** | Encapsulates business logic for 1 domain | Contains bugs within that specific domain |
+| **Public Interface** | The contract exposed to other modules | If signature changes, compilation errors warn you immediately |
+| **Private Internals** | Hidden implementation details | Can be completely rewritten without affecting other modules |
+| **Database Schemas** | Separated tables per module | Prevents cross-module database joins |
+
+### 08. WORKING
+1. Client sends an HTTP request (`POST /orders`).
+2. The `Order Module` receives the request.
+3. Instead of querying the user database directly, it calls the `User Module`'s public interface: `userService.isUserActive(userId)`.
+4. The call runs in the **same CPU memory space** (instant execution, zero network delay).
+5. The `Order Module` saves the order in its private tables and returns `201 Created`.
+
+```mermaid
+flowchart TD
+    Req[Client Request] --> OrderMod[Order Module]
+    OrderMod --> CheckUser{Call User Interface\nin Memory}
+    CheckUser -- Active --> SaveOrder[Save to Order Tables]
+    CheckUser -- Inactive --> Reject[Return 400 Bad Request]
+    SaveOrder --> Resp[Return 201 Created]
+```
+
+### 09. DATA FLOW
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant OrderMod as Order Module
+    participant UserMod as User Module
+    participant PayMod as Payment Module
+    participant DB as Database
+
+    Client->>OrderMod: 1. Place Order (userId, items)
+    OrderMod->>UserMod: 2. In-Memory: validateUser(userId)
+    UserMod-->>OrderMod: 3. User Validated (0.001 ms)
+    OrderMod->>PayMod: 4. In-Memory: processPayment(amount)
+    PayMod-->>OrderMod: 5. Payment Succeeded (0.001 ms)
+    OrderMod->>DB: 6. INSERT INTO orders ...
+    DB-->>OrderMod: 7. Commit OK
+    OrderMod-->>Client: 8. Return HTTP 201 Order Placed
+```
+
+### 10. TYPES
+
+```
+Architecture Classifications:
+├── Monolithic
+│   ├── Classic (Spaghetti) Monolith
+│   └── Modular Monolith (Strict internal boundaries)
+├── Distributed
+│   ├── Microservices (Network-separated services)
+│   └── Service-Oriented Architecture (SOA with enterprise bus)
+└── Serverless (Function-as-a-Service: AWS Lambda)
+```
+
+### 11. COMPARISON
+
+| Feature | Classic Monolith | Modular Monolith | Microservices | Serverless |
+| :--- | :--- | :--- | :--- | :--- |
+| **Deployment Complexity** | Very Low (1 binary) | Very Low (1 binary) | High (Kubernetes, 20+ services) | Low to Medium |
+| **Call Latency** | `0 ms` (In-memory) | `0 ms` (In-memory) | `5 - 50 ms` (Network hops) | `50 - 500 ms` (Cold starts) |
+| **Data Transactions** | Easy ACID | Easy ACID | Hard (Distributed Saga) | Hard |
+| **Team Autonomy** | Low | High | Very High | High |
+| **Infrastructure Cost** | Very Cheap | Very Cheap | Expensive | Pay per execution |
+
+### 12. EXAMPLES
+* **Simple Example:** A single Node.js/Go app with separated folders (`/users`, `/orders`) where folders only export specific interfaces.
+* **Technical Example:** A Java Spring Boot multi-module Maven project where `order-module` has a compile-time dependency on `user-api`, but zero access to `user-internal`.
+* **Real-World Case Study:** **Shopify** famously runs one of the largest Ruby on Rails Modular Monoliths in the world, processing billions of dollars in Black Friday transactions without the complexity of microservices!
+
+### 13. ADVANTAGES
+* **Zero Network Latency:** No HTTP/gRPC overhead between internal components.
+* **Simple Local Development:** Developers run `docker compose up` or one CLI command to run the whole app locally.
+* **Easy Refactoring:** Changing a function signature across modules produces instant compile-time feedback.
+* **Straightforward Debugging:** Single stack trace on errors; no need for distributed tracing tools.
+
+### 14. DISADVANTAGES
+* **Shared Resource Contention:** If the `Reporting` module eats 100% of the CPU, it slows down the `Checkout` module.
+* **Single Deployment Unit:** Even a 1-line CSS fix requires building and redeploying the entire application.
+* **Language Lock-in:** All modules must be written in the same programming language ecosystem.
+
+### 15. USE CASES
+
+| Scenario | Recommended Architecture | Why? |
+| :--- | :--- | :--- |
+| **Early Stage Startup / MVP** | Modular Monolith | Maximum iteration speed, zero DevOps overhead |
+| **E-Commerce Platform (Shopify scale)** | Modular Monolith | High performance, simple ACID transactions |
+| **500+ Engineers across 30 squads** | Microservices | Autonomous team deployment pipelines |
+| **Sporadic Image Processing Jobs** | Serverless (Lambda) | Scale to zero when not in use |
+
+### 16. PERFORMANCE
+* **Memory Overhead:** Negligible; all modules share the same memory heap.
+* **Throughput:** Typically 5x to 10x higher than microservices because no CPU time is wasted serializing/deserializing JSON over network sockets.
+* **Tuning:** Use connection pooling for the shared database and run worker threads for asynchronous tasks.
+
+### 17. SECURITY
+
+| Threat | Impact | Mitigation |
+| :--- | :--- | :--- |
+| **Cross-Module Tampering** | Module A reads Module B's private data | Enforce package-private access modifiers & linting rules |
+| **Resource Exhaustion** | One bad loop crashes the whole process | Set memory limits and timeouts on long-running queries |
+| **Dependency Vulnerability** | Vulnerable library affects all modules | Scan dependencies with automated security tools (Snyk/Dependabot) |
+
+### 18. TRADE-OFFS
+
+```mermaid
+graph TD
+    Decision{Choose Architecture}
+    Decision -->|< 50 Engineers & High Performance| ModMono[Modular Monolith: Best Speed, Lowest Cost]
+    Decision -->|> 100 Engineers & Independent Releases| Micro[Microservices: Best Team Autonomy, Higher Cost]
+```
+
+### 19. BEST PRACTICES
+- [x] Never allow one module to query another module's database tables directly.
+- [x] Use in-memory domain events for asynchronous decoupling.
+- [x] Enforce module boundary rules in CI pipelines using architecture linting tools.
+- [x] Keep database schemas separated logically by prefix (e.g. `user_`, `order_`).
+
+### 20. COMMON MISTAKES
+
+| Common Mistake | Why It Fails | How to Fix It |
+| :--- | :--- | :--- |
+| **Direct Database Joins across modules** | Re-creates spaghetti coupling in the database | Fetch IDs and perform application-level composition |
+| **Splitting into microservices too early** | Spends 80% of time fixing network & K8s issues | Start with a Modular Monolith; split only when needed |
+| **Circular Dependencies** | Module A calls B, and B calls A; causes deadlocks | Introduce an Event Bus or a shared Common module |
+
+### 21. INTERVIEW QUESTIONS
+* **Beginner:** What is the difference between a Monolith and Microservices?
+  - *Answer:* A monolith packages all features into one deployed unit. Microservices split features into separate network-connected servers.
+* **Intermediate:** What is a Modular Monolith and why would a company choose it over Microservices?
+  - *Answer:* It enforces strict domain boundaries inside a single deployment unit, avoiding network latency, distributed transactions, and DevOps overhead.
+* **Advanced:** How do you handle database transactions across two domains in a Modular Monolith without tight coupling?
+  - *Answer:* Use the **Transactional Outbox Pattern** or publish an in-memory Domain Event after the primary transaction commits.
+
+### 22. SUMMARY
+
+```
+Modular Monolith Revision Cheat Sheet:
+├── What: Single deployment unit with strict internal domain boundaries.
+├── Why: Microservices separation of concerns WITHOUT microservices network pain.
+├── Speed: 0 ms internal call latency (in-memory calls).
+├── Scaling: Scale vertically or scale horizontally as identical cloned nodes.
+└── Rule of Thumb: Start here. Do not go to microservices until your team exceeds 100 engineers.
+```
+
+---
+
+# ⚖️ MODULE 2: Scalability, Latency vs Throughput & Load Balancing
+*(Covering Phase 6: Topics 75–91)*
+
+### 01. WHAT
+* **Simple Definition:** Scalability is the ability of your system to handle 10x or 1000x more users by adding more resources without slowing down.
+* **Technical Definition:** The property of a distributed system to handle increased workload by augmenting computing resources (vertically or horizontally), maintaining acceptable Latency ($W$) and Throughput ($\lambda$).
+
+### 02. WHY
+* **Prevent Outages:** Stops servers from crashing when traffic spikes (e.g. flash sales, viral news).
+* **Cost Efficiency:** Lets you add servers when busy and turn them off when idle (Auto-scaling).
+* **High Availability:** Eliminates Single Points of Failure (SPOFs).
+
+### 03. PROBLEM (What Breaks Without It?)
+Without load balancing and horizontal scaling, when traffic spikes, a single server runs out of CPU and RAM. Connections queue up, latency skyrockets, and the server crashes with `HTTP 504 Gateway Timeout`.
+
+```mermaid
+graph TD
+    subgraph WithoutLB [Without Load Balancing: Single Server Crash]
+        Users1[100,000 Users] --> ServerOne[Single Server\nMax: 2,000 RPS]
+        ServerOne --> Crash[💥 CPU 100% - Server Crashes!]
+    end
+
+    subgraph WithLB [With Load Balancing: Traffic Distributed]
+        Users2[100,000 Users] --> LB[Load Balancer]
+        LB --> N1[Server 1: 33% Load]
+        LB --> N2[Server 2: 33% Load]
+        LB --> N3[Server 3: 33% Load]
+    end
+```
+
+### 04. ANALOGY
+* **Latency = The Speed Limit:** How fast one car can drive from City A to City B. (Lower is better).
+* **Throughput = The Number of Highway Lanes:** How many total cars can pass the toll booth per minute. (Higher is better).
+* Adding more lanes (horizontal scaling) lets more cars through, but does not increase the car's top speed!
+
+### 05. CONCEPTS
+
+| Term | Definition | Formula / Unit |
+| :--- | :--- | :--- |
+| **Latency** | Time taken for a single request to finish. | Milliseconds (`ms`) |
+| **Throughput** | Number of requests completed per second. | `RPS` or `QPS` |
+| **Little's Law** | The mathematical relationship between Concurrency, Latency, and Throughput. | $L = \lambda \times W$ |
+| **L4 Load Balancing** | Fast packet-level routing based on IP and Port. | Transport Layer (TCP/UDP) |
+| **L7 Load Balancing** | Smart content-aware routing based on HTTP URLs, cookies, and headers. | Application Layer (HTTP) |
+| **Consistent Hashing** | Distributing keys across a hash ring so adding a node only moves $1/N$ keys. | Angle $0^\circ$ to $360^\circ$ |
+
+### 06. ARCHITECTURE
+
+```mermaid
+graph TD
+    Users((Global Users)) --> DNS[Anycast DNS]
+    DNS --> LB_L4[Layer 4 Load Balancer: AWS NLB / IPVS]
+    LB_L4 --> LB_L7_1[Layer 7 Nginx Ingress 1]
+    LB_L4 --> LB_L7_2[Layer 7 Nginx Ingress 2]
+
+    LB_L7_1 -- "/api/users" --> S_User1[User App 1]
+    LB_L7_1 -- "/api/users" --> S_User2[User App 2]
+    LB_L7_2 -- "/api/video" --> S_Video1[Video App 1]
+    LB_L7_2 -- "/api/video" --> S_Video2[Video App 2]
+```
+
+### 07. COMPONENTS
+
+| Component | Role | Failure Impact |
+| :--- | :--- | :--- |
+| **L4 Load Balancer** | Blazing-fast packet forwarding across L7 proxies | If dead, secondary standby node takes over via VRRP |
+| **L7 Load Balancer** | SSL termination, path routing, sticky sessions | If dead, L4 LB shifts traffic to remaining L7 proxies |
+| **Stateless App Node** | Executes business logic | If dead, LB removes it from health-check pool |
+| **Health Checker** | Pings `/health` endpoint every 5 seconds | Automatically stops sending traffic to unhealthy nodes |
+
+### 08. WORKING: How Many Requests Can 1 Server Handle?
+1. **Thread-per-Request (Spring/Tomcat):** Each request takes 1 OS thread (~1MB stack). A server with 4GB free RAM chokes at ~500 to 2,000 concurrent threads.
+2. **Event-Driven Non-Blocking (Node.js/Go):** Go goroutines take only ~2KB. One machine can hold 50,000+ idle connections.
+3. **Throughput Formula:**
+   $$\text{Throughput (RPS)} = \frac{\text{Concurrent Threads}}{\text{Average Latency (seconds)}}$$
+   * If Concurrency = 200 threads, Latency = `0.02s` (20ms) $\implies \mathbf{10,000 \text{ RPS}}$!
+   * If Latency jumps to `0.2s` (200ms) $\implies \mathbf{1,000 \text{ RPS}}$ (90% throughput loss!).
+
+```mermaid
+flowchart TD
+    Req[Incoming Request] --> ThreadCheck{Are worker threads free?}
+    ThreadCheck -- Yes --> Process[Process Request in 20ms]
+    ThreadCheck -- No --> Queue[Requests Queue Up]
+    Queue --> Timeout{Wait > 30s?}
+    Timeout -- Yes --> Err504[💥 HTTP 504 Gateway Timeout]
+    Timeout -- No --> Process
+```
+
+### 09. DATA FLOW
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant LB as Load Balancer (Nginx)
+    participant Server1 as App Server 1
+    participant Server2 as App Server 2
+
+    Client->>LB: 1. HTTP Request: GET /profile
+    Note over LB: Evaluates Least Connections algorithm
+    LB->>Server1: 2. Forwards request to Server 1
+    Server1-->>LB: 3. HTTP 200 OK + JSON
+    LB-->>Client: 4. Returns response to Client
+    Client->>LB: 5. Next Request: GET /profile
+    Note over LB: Server 1 is busy; routes to Server 2
+    LB->>Server2: 6. Forwards request to Server 2
+    Server2-->>LB: 7. HTTP 200 OK + JSON
+    LB-->>Client: 8. Returns response to Client
+```
+
+### 10. TYPES: Load Balancing Algorithms
+
+| Algorithm | How It Works | Best For |
+| :--- | :--- | :--- |
+| **Round Robin** | Routes 1 $\rightarrow$ 2 $\rightarrow$ 3 sequentially | Identical servers with equal request sizes |
+| **Least Connections** | Routes to server with fewest active connections | Long-lived WebSocket or database connections |
+| **IP Hash** | Hashes Client IP to always hit the same server | Basic session stickiness without cookies |
+| **Consistent Hashing** | Maps nodes & keys to a $360^\circ$ hash ring | Distributed caches (Redis) and partitioned databases |
+
+### 11. COMPARISON: Vertical vs Horizontal Scaling
+
+| Dimension | Vertical Scaling (Scale UP) | Horizontal Scaling (Scale OUT) |
+| :--- | :--- | :--- |
+| **How It Works** | Add more CPU cores & RAM to 1 machine | Add more commodity servers in parallel |
+| **Hardware Limit** | Strict physical ceiling (e.g. 128 cores, 4TB RAM) | Virtually unlimited (thousands of servers) |
+| **Fault Tolerance** | Single Point of Failure (Hardware crash = Downtime) | Highly fault-tolerant (1 server dies, 99 others run) |
+| **Downtime** | Requires brief downtime to upgrade | Zero downtime (Rolling deployments) |
+| **Best Used For** | Primary SQL Databases, Redis Caches, MVPs | Stateless API Web servers, Microservices, Big Data |
+
+### 12. EXAMPLES
+* **Simple Example:** Running two Node.js apps on ports 3000 and 3001 with Nginx alternating traffic between them.
+* **Technical Example:** Consistent Hashing with virtual nodes: When adding Node 4 to a 3-node ring, only $1/4$ (25%) of keys are remapped instead of 100%!
+* **Real-World Case Study:** **Netflix** uses Layer 7 Zuul edge proxies to dynamically route over 2 billion requests every single day across thousands of AWS EC2 instances.
+
+### 13. ADVANTAGES
+* **High Availability:** System keeps running even if multiple physical servers fail.
+* **Elasticity:** Automatically scale down at night to save cloud infrastructure costs.
+* **Rolling Deployments:** Upgrade code on Server 1, test it, then upgrade Server 2 with zero user interruption.
+
+### 14. DISADVANTAGES
+* **Distributed Complexity:** Requires stateless backend servers (sessions must be stored in Redis, not local server memory).
+* **Data Consistency Challenges:** Database transactions become harder when data is distributed.
+
+### 15. USE CASES
+
+| Scenario | Solution | Why? |
+| :--- | :--- | :--- |
+| **Early MVP / Low Traffic** | Scale Vertically | Quickest to build, zero distributed overhead |
+| **Stateless REST APIs** | Scale Horizontally with L7 LB | Dynamic auto-scaling based on CPU utilization |
+| **Ultra-High Speed Packet Ingestion (10M packets/sec)** | Layer 4 Load Balancer | Avoids expensive HTTP parsing overhead |
+| **Distributed Cache Sharding** | Consistent Hashing | Prevents cache avalanche when adding cache servers |
+
+### 16. PERFORMANCE
+* **Throughput Optimization:** Keep latency small! A 10ms decrease in DB latency can double your server's RPS capacity.
+* **p99 Tail Latency:** Always measure the 99th percentile, not the average. If 1% of requests take 10 seconds, millions of users suffer.
+
+### 17. SECURITY
+
+| Threat | Mitigation |
+| :--- | :--- |
+| **DDoS Attack (Traffic Flood)** | L4/L7 rate limiting, SYN cookies, Cloudflare DDoS shield |
+| **SSL Vulnerabilities** | Terminate SSL at the Load Balancer with modern TLS 1.3 ciphers |
+
+### 18. TRADE-OFFS
+
+```mermaid
+graph TD
+    Decision{Scaling Trade-off}
+    Decision -->|Database Writes & Simplicity| Vert[Scale Up: Monolithic DB with 64 Cores]
+    Decision -->|Stateless Web Requests & High Availability| Horiz[Scale Out: 20 Small Web Nodes + Load Balancer]
+```
+
+### 19. BEST PRACTICES
+- [x] Keep application servers **strictly stateless** (Store sessions in Redis, files in S3).
+- [x] Configure active health checks on Load Balancers (`/health` responding in < 200ms).
+- [x] Use connection pooling between Load Balancers and backends to avoid TCP handshake storms.
+
+### 20. COMMON MISTAKES
+
+| Mistake | Consequence | Correction |
+| :--- | :--- | :--- |
+| **Storing user session in local memory** | User gets logged out when LB routes them to Server 2 | Store session tokens in centralized Redis cache |
+| **Relying on Average Latency** | Misses tail latency bottlenecks (p99) | Set alerts based on p95 and p99 percentiles |
+| **No health-check timeouts** | LB keeps sending traffic to frozen, dead servers | Configure 2-second timeout on health checks |
+
+### 21. INTERVIEW QUESTIONS
+* **Beginner:** What is the difference between Latency and Throughput?
+  - *Answer:* Latency is how long one request takes (ms). Throughput is how many requests the system completes per second (RPS).
+* **Intermediate:** What is the difference between Layer 4 and Layer 7 Load Balancing?
+  - *Answer:* L4 routes at the transport layer using IP/Port (fast, blind to content). L7 routes at application layer using URLs, cookies, and headers (smart, content-aware).
+* **Advanced:** How does Consistent Hashing solve the cache wipe problem when scaling cache nodes?
+  - *Answer:* It maps servers and keys to a $360^\circ$ ring. Adding or removing a server only relocates $K/N$ keys to adjacent nodes, preventing full-cache eviction.
+
+### 22. SUMMARY
+
+```
+Scalability Revision Cheat Sheet:
+├── Latency vs Throughput: Little's Law -> Throughput = Concurrency / Latency.
+├── Vertical: Bigger machine. Simple, no code change, but hard ceiling.
+├── Horizontal: More machines. Infinite potential, resilient, requires stateless servers.
+├── L4 LB: Fast packet routing (IP/Port).
+└── L7 LB: Smart routing (HTTP Path, Cookies, SSL termination).
+```
+
+---
+
+# ⚡ MODULE 3: Distributed Caching (Redis, Strategies & Eviction)
+*(Covering Phase 5: Topics 64–74)*
+
+### 01. WHAT
+* **Simple Definition:** Caching is saving a copy of frequently needed data in super-fast temporary memory (RAM) so you don't have to fetch it from the slow database every time.
+* **Technical Definition:** A hardware or software component that stores data in volatile memory (RAM), offering sub-millisecond read access times ($O(1)$) to alleviate persistent disk database I/O bottlenecks.
+
+### 02. WHY
+* **Blazing Speed:** RAM reads take ~100 nanoseconds; hard disk reads take 5–15 milliseconds (100,000x slower).
+* **Database Protection:** Prevents 95% of read queries from ever touching the primary database.
+* **Cost Reduction:** Reduces the size and cost of expensive database clusters.
+
+### 03. PROBLEM (What Breaks Without It?)
+Without a cache, every page refresh sends queries directly to the relational database disk. When 100,000 users visit at once, the database disk locks, CPU hits 100%, and the site crashes.
+
+```mermaid
+graph TD
+    subgraph WithoutCache [Without Caching: Database Overloaded]
+        U1[100,000 Users] --> DB1[(Database on Hard Drive)]
+        DB1 --> Crash[💥 DB Disk Locks & Crashes!]
+    end
+
+    subgraph WithCache [With Caching: Database Shielded]
+        U2[100,000 Users] --> App[App Server]
+        App -- 95% Requests: Cache Hit (< 1ms) --> Cache[(Redis Cache in RAM)]
+        App -- 5% Cache Misses Only --> DB2[(Database Disk)]
+    end
+```
+
+### 04. ANALOGY
+* **Database = A massive public library basement:** You have to take the elevator down, search through aisles, and find a book on the shelf (takes 15 minutes).
+* **Cache = The sticky note on your computer screen:** The 3 most important phone numbers you call every day are written right in front of your eyes (takes 1 second).
+
+### 05. CONCEPTS
+
+| Term | Definition | Impact |
+| :--- | :--- | :--- |
+| **Cache Hit** | The requested data was found in RAM. | Instant response (< 1ms) |
+| **Cache Miss** | The data was not in RAM; must read from disk DB. | Slow response (15ms), then data is saved to cache |
+| **TTL (Time to Live)** | The lifespan of a cache key before it self-destructs. | Prevents stale data from lingering forever |
+| **Cache Invalidation** | Removing or updating old data in the cache. | "There are only two hard things in Computer Science: cache invalidation and naming things." |
+
+### 06. ARCHITECTURE
+
+```mermaid
+graph LR
+    Client[Client App] <--> App[Backend Application]
+    App <--> Cache[(Redis In-Memory Cluster\nRAM Speed: 0.5ms)]
+    App <--> DB[(PostgreSQL / MySQL\nDisk Speed: 15ms)]
+```
+
+### 07. COMPONENTS
+
+| Component | Role | Failure Impact |
+| :--- | :--- | :--- |
+| **In-Memory Cache (Redis)** | Stores serialized key-value pairs in RAM | If dead, app falls back to database (DB load spikes) |
+| **Cache Client Library** | Handles hashing, connection pooling, and serialization | If misconfigured, causes connection leaks |
+| **Persistent Database** | Single source of truth on disk | Permanent storage |
+
+### 08. WORKING: The 5 Caching Strategies
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor App as App Server
+    participant Cache as Redis Cache
+    participant DB as SQL Database
+
+    Note over App,DB: 1. Cache-Aside (Lazy Loading)
+    App->>Cache: Check for key
+    alt Cache Hit
+        Cache-->>App: Return cached data (< 1ms)
+    else Cache Miss
+        Cache-->>App: Key not found!
+        App->>DB: Query DB
+        DB-->>App: Return row
+        App->>Cache: Save in Cache with TTL
+    end
+```
+
+#### Detailed Breakdown of the 5 Patterns:
+1. **Cache-Aside (Lazy Loading):** App queries cache first. On miss, it fetches from DB and writes to cache. Only requested data is cached.
+2. **Read-Through:** App talks only to the cache. The cache library transparently fetches from DB on a miss.
+3. **Write-Through:** App writes to cache; the cache immediately and synchronously writes to DB before confirming success. Zero stale data, but slower writes.
+4. **Write-Back (Write-Behind):** App writes to cache immediately; cache asynchronously flushes batch writes to DB in the background. Ultra-fast writes, but risk of data loss if cache crashes.
+5. **Write-Around:** App writes directly to DB, bypassing cache. Prevents cache from being flooded with data that isn't read frequently.
+
+### 09. DATA FLOW: Write-Back Caching
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant App as App Server
+    participant Cache as Redis Cache
+    participant DB as SQL Database
+
+    Client->>App: 1. Update Profile (city = "Tokyo")
+    App->>Cache: 2. Write to RAM Cache
+    Cache-->>App: 3. Instant ACK (0.2 ms)
+    App-->>Client: 4. Success! (User does not wait)
+    Note over Cache,DB: 5. Background asynchronous batch write
+    Cache->>DB: 6. Flush updates to disk DB after 5 seconds
+```
+
+### 10. TYPES: Cache Eviction Policies
+
+| Eviction Policy | How It Works | Best For |
+| :--- | :--- | :--- |
+| **LRU (Least Recently Used)** | Evicts items that haven't been accessed for the longest time | General-purpose web apps (most popular) |
+| **LFU (Least Frequently Used)** | Tracks access counters. Evicts items accessed least often | Stable access patterns (popular videos) |
+| **FIFO (First In First Out)** | Evicts oldest items regardless of usage | Sequential data streams |
+| **TTL Expiration** | Keys automatically expire after a set time window | Temporary session tokens, OTPs |
+
+### 11. COMPARISON: Redis vs Memcached
+
+| Feature | Redis | Memcached |
+| :--- | :--- | :--- |
+| **Data Structures** | Strings, Hashes, Lists, Sets, Sorted Sets, Bitmaps | Simple Key-Value Strings only |
+| **Disk Persistence** | Yes (RDB Snapshots & AOF Write Logs) | No (Purely volatile; lost on reboot) |
+| **Architecture** | Single-threaded event loop (I/O threads in v6+) | Multi-threaded |
+| **High Availability** | Redis Sentinel & Native Clustering | Client-side sharding |
+| **Pub/Sub Messaging** | Supported out of the box | Not supported |
+
+### 12. EXAMPLES
+* **Simple Example:** `redis.set("user:42", jsonString, "EX", 3600);` (Saves user 42 for 1 hour).
+* **Technical Example:** Implementing an LRU Cache in $O(1)$ time using a **Hash Map + Doubly Linked List**.
+* **Real-World Case Study:** **Twitter (X)** stores the home timeline of every active user in Redis RAM clusters, allowing users to load tweets in under 10ms!
+
+### 13. ADVANTAGES
+* Drastically reduces database read pressure.
+* Provides sub-millisecond response latency.
+* Protects systems against viral spikes in traffic.
+
+### 14. DISADVANTAGES
+* **Stale Data:** Risk that cache contains old data if the database was updated directly.
+* **Memory Cost:** RAM is significantly more expensive per gigabyte than SSD disk storage.
+* **Complexity:** Requires handling eviction, stampedes, and cache warmups.
+
+### 15. USE CASES
+
+| Scenario | Strategy / Eviction | Why? |
+| :--- | :--- | :--- |
+| **User Authentication Sessions** | Redis with TTL (24h) | Fast validation on every HTTP request |
+| **Gaming Leaderboard** | Redis Sorted Sets (`ZADD/ZRANGE`) | Real-time score ranking in $O(\log N)$ |
+| **E-Commerce Product Details** | Cache-Aside with LRU Eviction | Products read millions of times, rarely changed |
+| **High-Volume IoT Ingestion** | Write-Back Caching | Absorbs write spikes and writes to DB in batches |
+
+### 16. PERFORMANCE: The 3 Critical Cache Gotchas
+
+```mermaid
+graph TD
+    Problems[Critical Cache Failure Scenarios]
+    Problems --> S1["1. Cache Stampede (Dog-Piling)\nA hot key expires; 10,000 requests miss and hit DB at once.\nFix: Mutex locks, background re-computation."]
+    Problems --> S2["2. Cache Avalanche\nMany keys expire at the exact same second.\nFix: Add random jitter: TTL = 3600s + rand(0, 300s)."]
+    Problems --> S3["3. Cache Penetration\nAttacker queries non-existent ID (id=-999), bypassing cache.\nFix: Cache null results, use Bloom Filters."]
+```
+
+### 17. SECURITY
+
+| Threat | Mitigation |
+| :--- | :--- |
+| **Unauthenticated Redis Access** | Enable `requirepass` password, bind only to `127.0.0.1` or private VPC |
+| **Sensitive Data Exposure** | Encrypt sensitive cache values before writing; do not cache credit cards |
+
+### 18. TRADE-OFFS
+
+```mermaid
+graph TD
+    TradeOff{Caching Trade-off}
+    TradeOff -->|Strong Consistency Required| LowCache[Write-Through: Slower writes, perfectly fresh data]
+    TradeOff -->|Maximum Speed Desired| FastCache[Cache-Aside with TTL: Fastest reads, slight risk of stale data]
+```
+
+### 19. BEST PRACTICES
+- [x] Always set a **TTL** on every cache key to prevent memory leaks.
+- [x] Add **random jitter** to expiration times to avoid Cache Avalanches.
+- [x] Use **Bloom Filters** to stop Cache Penetration from querying non-existent keys.
+
+### 20. COMMON MISTAKES
+
+| Mistake | Consequence | Correction |
+| :--- | :--- | :--- |
+| **No TTL on keys** | Redis runs out of memory (OOM crash) | Always specify expiration time |
+| **Using cache as primary database** | Data is lost on crash (unless using persistence) | Treat cache as secondary speed booster |
+| **Caching dynamic unshared data** | Wastes expensive RAM on single-use data | Only cache frequently read, shared items |
+
+### 21. INTERVIEW QUESTIONS
+* **Beginner:** What is the difference between Cache-Aside and Write-Through caching?
+  - *Answer:* Cache-Aside loads data on read miss. Write-Through writes to cache and DB simultaneously.
+* **Intermediate:** How do you prevent a Cache Stampede when a celebrity tweet expires?
+  - *Answer:* Use distributed mutex locks so only 1 request queries the DB while others wait, or re-compute the cache key asynchronously before it expires.
+* **Advanced:** Explain how a Bloom Filter prevents Cache Penetration.
+  - *Answer:* A Bloom filter is a space-efficient probabilistic data structure that quickly tells if an element definitely does *not* exist in the database, blocking malicious queries before they hit the DB.
+
+### 22. SUMMARY
+
+```
+Caching Revision Cheat Sheet:
+├── Speed: RAM is 100,000x faster than disk.
+├── Strategy: Cache-Aside is the universal default.
+├── Eviction: LRU (Least Recently Used) is the most popular eviction policy.
+├── Avalanche Defense: Add random jitter to TTL.
+└── Penetration Defense: Bloom Filters + cache null values.
+```
+
+---
+
+# 🗄️ MODULE 4: Databases, ACID vs BASE, The CAP Theorem & Sharding
+*(Covering Phase 4: Topics 47–63)*
+
+### 01. WHAT
+* **Simple Definition:** A database is a safe, permanent storage system for your data. Scaling it means spreading reads and writes across multiple servers without losing or corrupting data.
+* **Technical Definition:** A structured electronic system that manages data persistence, concurrency control, and query optimization, governed by either **ACID** (strong consistency) or **BASE** (eventual consistency) models under **CAP theorem** constraints.
+
+### 02. WHY
+* **Reliability:** Data must never disappear, even during power cuts or server crashes.
+* **Concurrency:** Allows millions of users to read and update data at the exact same millisecond.
+* **Query Performance:** Indexes allow finding 1 row out of 100 million in under 5 milliseconds.
+
+### 03. PROBLEM (What Breaks Without It?)
+A single database server has limits. When tables grow to 500 million rows, disk I/O saturates, writes lock the tables, queries take 30 seconds, and the database runs out of disk space.
+
+```mermaid
+graph TD
+    subgraph SingleDBProblem [Single Database: Bottleneck]
+        Reads[100k Reads/sec] --> MasterDB[(Single Database)]
+        Writes[20k Writes/sec] --> MasterDB
+        MasterDB --> Saturation[💥 Disk I/O 100% - Queries Timeout!]
+    end
+
+    subgraph ShardedSolution [Scaled Architecture: Replication & Sharding]
+        W[Writes] --> Master[(Primary DB)]
+        Master -- Replication --> R1[(Read Replica 1)]
+        Master -- Replication --> R2[(Read Replica 2)]
+        R[Reads] --> R1
+        R[Reads] --> R2
+        NoteShard["Massive tables split into Shards: Shard 1 (A-M), Shard 2 (N-Z)"]
+    end
+```
+
+### 04. ANALOGY
+* **Replication (Primary-Replica):** A newspaper editor (Primary) writes the daily news. Printing presses make 10,000 copies (Replicas) so thousands of people can read at the same time without bothering the editor.
+* **Sharding (Partitioning):** An encyclopedia is too heavy for 1 book. You split it into 26 volumes: Volume A, Volume B... Volume Z.
+
+### 05. CONCEPTS
+
+| Term | Definition | Context |
+| :--- | :--- | :--- |
+| **ACID** | Atomicity, Consistency, Isolation, Durability | The strict gold standard for banking and financial ledgers |
+| **BASE** | Basically Available, Soft state, Eventual consistency | The distributed standard for social feeds and big data |
+| **Shard Key** | The column used to split rows across servers | e.g. `user_id` or `country_code` |
+| **Read Replica** | A read-only copy of the primary database | Absorbs heavy `SELECT` queries |
+| **Connection Pool** | Reusable pool of database connections | Prevents opening/closing TCP sockets per query |
+
+### 06. ARCHITECTURE: Sharding + Read Replicas
+
+```mermaid
+graph TD
+    ClientApp[Application Servers] --> Router[Database Shard Router / Proxy]
+
+    subgraph Shard1_Cluster [Shard 1: User IDs 0 to 1,000,000]
+        S1_Primary[(Shard 1 Primary - Writes)]
+        S1_Replica[(Shard 1 Replica - Reads)]
+        S1_Primary -- Async Sync --> S1_Replica
+    end
+
+    subgraph Shard2_Cluster [Shard 2: User IDs 1,000,001 to 2,000,000]
+        S2_Primary[(Shard 2 Primary - Writes)]
+        S2_Replica[(Shard 2 Replica - Reads)]
+        S2_Primary -- Async Sync --> S2_Replica
+    end
+
+    Router -- "Hash(userId) % 2 == 0" --> Shard1_Cluster
+    Router -- "Hash(userId) % 2 == 1" --> Shard2_Cluster
+```
+
+### 07. COMPONENTS
+
+| Component | Role | Failure Impact |
+| :--- | :--- | :--- |
+| **Primary (Master) Node** | Handles all data modifications (`INSERT`, `UPDATE`, `DELETE`) | Automatic failover promotes a replica to primary |
+| **Read Replicas** | Serve high-volume `SELECT` queries | If one replica dies, other replicas pick up the slack |
+| **Shard Router** | Evaluates the Shard Key to direct queries to the right shard | High-availability proxy cluster required |
+
+### 08. WORKING: The CAP Theorem Explained
+
+```mermaid
+graph TD
+    C["Consistency (C)\nEvery read gets the latest write or an error"]
+    A["Availability (A)\nEvery non-failing node returns a response, but might be stale"]
+    P["Partition Tolerance (P)\nSystem continues despite dropped network cables"]
 
     C --- A
     A --- P
@@ -679,344 +809,120 @@ graph TD
 ```
 
 > [!IMPORTANT]
-> **Network cables and switches will inevitably fail.** Therefore, **Partition Tolerance (P) is mandatory** in distributed systems. Your real-world choice is between **CP** and **AP**:
-> * **CP (Consistency + Partition Tolerance):** The system blocks or rejects requests until nodes sync. (e.g., Banks, MongoDB, HBase).
-> * **AP (Availability + Partition Tolerance):** The system always answers immediately using available local replica data, even if it is slightly stale. (e.g., Cassandra, CouchDB, DynamoDB).
+> **Network cables will inevitably fail.** Therefore, **Partition Tolerance (P) is mandatory**.
+> When a network split occurs between Node 1 and Node 2, you MUST choose:
+> * **CP (Consistency + Partition Tolerance):** Block the user or return an error until nodes can synchronize. (Banks, MongoDB, HBase).
+> * **AP (Availability + Partition Tolerance):** Return the local data immediately, even if it is a few seconds stale. (Social feeds, Cassandra, DynamoDB).
 
-### The PACELC Theorem (Extending CAP):
-* **P-A / C:** If there is a **P**artition, trade off **A**vailability vs **C**onsistency.
-* **E-L / C:** **E**lse (normal operation), trade off **L**atency vs **C**onsistency.
-
----
-
-## 4.4 — Database Scaling: Replication & Sharding
-
-```mermaid
-graph TD
-    subgraph Replication [1. Master-Replica Replication - Read Scaling]
-        Master[(Primary DB\nHandles all WRITES)] -- Async Sync --> R1[(Read Replica 1)]
-        Master -- Async Sync --> R2[(Read Replica 2)]
-        Master -- Async Sync --> R3[(Read Replica 3)]
-        NoteRep["Apps read from replicas (90% traffic), write to Primary (10%)"]
-    end
-
-    subgraph Sharding [2. Database Sharding - Write & Storage Scaling]
-        Router[Shard Router / Proxy]
-        Router -- "Hash(UserID) % 3 == 0" --> Shard1[(Shard 1: Users 0 - 1M)]
-        Router -- "Hash(UserID) % 3 == 1" --> Shard2[(Shard 2: Users 1M - 2M)]
-        Router -- "Hash(UserID) % 3 == 2" --> Shard3[(Shard 3: Users 2M - 3M)]
-    end
-```
-
-### 1. Database Replication
-* Copies data across multiple servers.
-* **Master-Replica (Primary-Secondary):** Writes go to Master, reads are distributed across Replicas.
-* **Multi-Master:** Multiple servers accept writes (requires complex conflict resolution).
-
-### 2. Database Sharding (Horizontal Partitioning)
-* Splits one massive table across multiple independent physical machines.
-* **Shard Key:** The column used to determine where a row lives (e.g. `user_id` or `country_code`).
-* **Consistent Hashing:** Used to ensure that adding or removing a shard node only migrates $k/N$ keys rather than reshuffling the entire database!
-
----
-
-# 📘 PHASE 5: Caching, CDN & Storage Systems
-
-Caching stores hot data in fast volatile memory (RAM) to shield the slow persistent database from read traffic.
-
----
-
-## 5.1 — Caching Fundamentals: Redis vs Memcached
-
-```
-Speed Hierarchy:
-CPU L1 Cache:       ~0.5 ns
-CPU L2/L3 Cache:    ~5 - 10 ns
-RAM (Redis/Memcached): ~100 ns      <-- 100,000x faster than disk!
-SSD (Flash Drive):  ~150,000 ns (0.15 ms)
-HDD (Hard Disk):    ~10,000,000 ns (10 ms)
-```
-
-| Feature | Redis | Memcached |
-| :--- | :--- | :--- |
-| **Data Structures** | Strings, Lists, Sets, Hashes, Sorted Sets, Bitmaps | Simple Key-Value Strings only |
-| **Persistence** | Yes (RDB snapshots & AOF write logs) | No (Pure in-memory, lost on reboot) |
-| **Clustering** | Native Redis Cluster & Sentinel High-Availability | Client-side consistent hashing |
-| **Multi-Threading** | Single-threaded event loop (I/O threads in v6+) | Native multi-threaded |
-| **Best For** | Leaderboards, sessions, pub/sub, complex caching | Simple, massive object caching |
-
----
-
-## 5.2 — Caching Strategies
-
-Understanding how data moves between Client, App, Cache, and Database is a core HLD interview topic.
+### 09. DATA FLOW: Replication Lag
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor App as App Server
-    participant Cache as Redis Cache
-    participant DB as Main Database
+    actor Alice
+    actor Bob
+    participant Master as Primary Database
+    participant Replica as Read Replica
 
-    Note over App,DB: Strategy 1: Cache-Aside (Lazy Loading)
-    App->>Cache: 1. Check Cache for key
-    alt Cache Hit
-        Cache-->>App: Return cached data (< 1ms)
-    else Cache Miss
-        Cache-->>App: Not found!
-        App->>DB: 2. Query Database (15ms)
-        DB-->>App: Return data
-        App->>Cache: 3. Populate Cache with TTL
-    end
+    Alice->>Master: 1. Update status: "I love System Design!"
+    Master-->>Alice: 2. Commit OK (200 OK)
+    Note over Master,Replica: Network delay: Replication Lag (~100 ms)
+    Bob->>Replica: 3. Read Alice's status
+    Replica-->>Bob: 4. Returns OLD status! (Alice hasn't updated yet)
+    Master->>Replica: 5. Replication packet arrives & syncs
+    Bob->>Replica: 6. Read Alice's status again
+    Replica-->>Bob: 7. Returns "I love System Design!" (Eventually Consistent)
 ```
 
-### Complete Strategy Comparison:
+### 10. TYPES: Sharding Strategies
 
-1. **Cache-Aside (Lazy Loading):**
-   * The application is responsible for reading and writing to both cache and database.
-   * *Pros:* Cache only contains data that is actually requested. Node failure does not crash the app (it falls back to DB).
-   * *Cons:* Cache miss penalty on first read; potential stale data if DB is updated directly.
+| Strategy | How It Works | Pros | Cons |
+| :--- | :--- | :--- | :--- |
+| **Range-Based** | Shard 1: A–F, Shard 2: G–M... | Easy to query ranges of data | Uneven distribution (Hotspots on popular letters) |
+| **Hash-Based** | `Hash(key) % NumberOfShards` | Perfectly even distribution | Cross-shard range queries are very slow |
+| **Directory-Based** | Lookup service maps keys to shards | Highly flexible | Lookup service is a Single Point of Failure |
 
-2. **Read-Through:**
-   * The app treats the cache as the main data store. On miss, the **cache library itself** fetches from DB, saves, and returns.
+### 11. COMPARISON: ACID vs BASE
 
-3. **Write-Through:**
-   * The app writes to the cache; the cache immediately writes synchronously to the DB before returning success.
-   * *Pros:* Data is never stale.
-   * *Cons:* Higher write latency (waits for both cache and DB write).
-
-4. **Write-Back (Write-Behind):**
-   * The app writes to the cache immediately; the cache acknowledges instantly and queues an asynchronous background batch write to the DB.
-   * *Pros:* Blazing-fast write performance.
-   * *Cons:* Risk of data loss if cache crashes before writing to disk.
-
-5. **Write-Around:**
-   * The app writes directly to the DB, bypassing the cache entirely. The cache is only populated on subsequent reads.
-
----
-
-## 5.3 — Cache Eviction: LRU vs LFU & Invalidation
-
-When cache RAM is full, what data gets kicked out?
-
-```mermaid
-graph TD
-    Eviction[Cache Eviction Policies]
-    Eviction --> LRU["1. LRU (Least Recently Used)\nEvicts the item that hasn't been accessed for the longest time.\nImplemented with Hash Map + Doubly Linked List (O(1))"]
-    Eviction --> LFU["2. LFU (Least Frequently Used)\nCounts access frequency. Evicts items accessed least often."]
-    Eviction --> FIFO["3. FIFO (First In First Out)\nEvicts oldest item regardless of usage."]
-    Eviction --> TTL["4. TTL (Time To Live Expire)\nKeys self-destruct after set seconds (e.g. expire in 3600s)"]
-```
-
-### Critical Cache Gotchas:
-* **Cache Stampede (Dog-piling):** A hot key expires; 10,000 concurrent requests miss the cache at the exact same millisecond and bombard the DB simultaneously. *Fix: Mutex locks, pre-computation.*
-* **Cache Avalanche:** Many cache keys expire at the exact same second. *Fix: Add random jitter to TTL (`TTL = 3600s + rand(0, 300s)`).*
-* **Cache Penetration:** Attackers query keys that do not exist in DB or cache (e.g. `id = -999`), bypassing cache. *Fix: Cache empty/null results, use **Bloom Filters**.*
-
----
-
-## 5.4 — CDN & Cloud Object Storage (S3)
-* **Object Storage (Amazon S3, Google Cloud Storage):** Flat file storage designed for billions of unstructured files (photos, videos, backups). Accessed via HTTP REST APIs.
-* **CDN (Content Delivery Network):** Edge proxies caching S3 static assets in hundreds of global cities close to users.
-
----
-
-# 🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS
-
----
-
-# 📘 PHASE 6: Scalability & Performance Engineering
-
----
-
-## 6.1 — Vertical vs Horizontal Scaling
-
-```mermaid
-graph LR
-    subgraph Vertical [Vertical Scaling: Scale UP]
-        V1["Upgrade 1 Computer\n- Add more CPU cores\n- Add more RAM\n- Physical hardware ceiling\n- Single Point of Failure (SPOF)\n- Requires downtime to upgrade"]
-    end
-
-    subgraph Horizontal [Horizontal Scaling: Scale OUT]
-        H1["Add Multiple Commodity Nodes\n- Unlimited scaling potential\n- Fault tolerant: 1 server dies, 99 others run\n- Requires Load Balancer & Stateless apps\n- Zero-downtime rolling deploys"]
-    end
-```
-
-### When to Use Vertical vs Horizontal Scaling? (The Decision Framework)
-
-```mermaid
-flowchart TD
-    Start[New System or Feature] --> Q1{Is it early stage / MVP / Small team?}
-    Q1 -- Yes --> V_Scale[✅ Scale Vertically: Buy a bigger $20-$100/mo server.\nFastest to ship, zero distributed complexity.]
-    Q1 -- No --> Q2{Is it a Primary Relational Database?}
-    Q2 -- Yes --> V_DB[✅ Scale Vertically First: Upgrade DB instance.\nDistributed multi-master databases are notoriously hard.]
-    Q2 -- No --> Q3{Is it a Stateless Web or API Server?}
-    Q3 -- Yes --> H_App[✅ Scale Horizontally: Add instances behind a Load Balancer.\nEnables auto-scaling & zero downtime.]
-    Q3 -- No --> Q4{Need High Availability 99.99% & Disaster Recovery?}
-    Q4 -- Yes --> H_HA[✅ Scale Horizontally: Distribute across multiple availability zones.]
-```
-
-| Decision Factor | Use Vertical Scaling (Scale Up) | Use Horizontal Scaling (Scale Out) |
+| Property | ACID (Relational SQL) | BASE (Distributed NoSQL) |
 | :--- | :--- | :--- |
-| **Complexity** | Extremely simple (zero code changes) | Higher (requires Load Balancers, distributed state) |
-| **Downtime** | Requires brief downtime to resize hardware | Zero downtime (rolling updates across nodes) |
-| **Cost** | Cheap at low tiers; exponentially expensive at top tier | Linear cost (buy cheap commodity hardware) |
-| **Limit** | Strict physical hardware ceiling (e.g. 128 cores, 4TB RAM) | Virtually infinite (thousands of servers) |
-| **Failure Risk** | Single Point of Failure (if hardware dies, site is down) | Resilient (traffic shifts away from dead nodes) |
-| **Best Used For** | Databases (PostgreSQL/MySQL), Redis caches, MVPs | Stateless API servers, Web microservices, Big Data (Hadoop/Spark) |
+| **Consistency** | **Strong Consistency** (Immediate) | **Eventual Consistency** (Syncs over time) |
+| **Performance** | Slower (Locks and multi-phase commits) | Extremely Fast (Writes complete locally in RAM) |
+| **Availability** | Lower under network partition (CP) | High availability guaranteed (AP) |
+| **Best For** | Financial transfers, Order checkouts | YouTube view counts, Social feeds, Chat history |
 
----
+### 12. EXAMPLES
+* **Simple Example:** Configuring a MySQL replica by enabling the binary log (`binlog`) on the master.
+* **Technical Example:** Designing a Shard Key: Hashing `user_id` ensures that all data for a specific user lives on the exact same database shard, avoiding cross-shard joins!
+* **Real-World Case Study:** **Instagram** sharded their PostgreSQL databases by creating custom 64-bit IDs using a millisecond timestamp + shard ID to support hundreds of millions of users without locking.
 
-## 6.2 — Latency vs Throughput (Performance Formulas & Server Capacity)
+### 13. ADVANTAGES
+* **Scale Reads:** Adding 5 read replicas provides 5x more read throughput.
+* **Scale Writes:** Sharding splits write traffic across independent disks.
+* **Disaster Recovery:** If Datacenter A floods, Replicas in Datacenter B are promoted instantly.
 
-### The Difference in Simple English:
-* **Latency (Speed):** How long **one single user** waits for their request to finish. Measured in milliseconds (`ms`).
-  - *Example:* "It takes 50ms to load my profile."
-* **Throughput (Capacity):** How many **total requests** the system can complete every second. Measured in **RPS** (Requests Per Second) or **QPS** (Queries Per Second).
-  - *Example:* "Our server handles 5,000 requests per second."
+### 14. DISADVANTAGES
+* **Replication Lag:** Replicas may serve slightly stale data for a few hundred milliseconds.
+* **No Cross-Shard Joins:** Performing SQL `JOIN` across two physical database machines is slow and complicated.
+* **Re-sharding Overhead:** Adding new shards requires complex data migration.
 
-```
-The Highway Analogy:
-- Latency    = The Speed Limit (How fast 1 car drives from City A to City B).
-- Throughput = The Number of Lanes (How many cars pass the toll booth per minute).
-Adding more lanes (Horizontal Scaling) allows more cars through, but does NOT make 1 car drive faster!
-```
+### 15. USE CASES
 
----
-
-### 6.2.1 How Many Requests Can 1 Single Server Handle?
-
-A common interview question: *"Can 1 single server handle 10,000 requests per second?"*  
-The answer depends on whether your app is **I/O-Bound** or **CPU-Bound**, and its **Concurrency Model**:
-
-```mermaid
-graph TD
-    subgraph Bottlenecks [What Limits 1 Single Server?]
-        B1["1. CPU Limit: Complex calculations, cryptography, JSON parsing, video encoding"]
-        B2["2. Memory (RAM): Each thread consumes 1MB stack. 1,000 threads = 1GB RAM"]
-        B3["3. Network Sockets: Max 65,535 TCP ports / File Descriptors (ulimit -n)"]
-        B4["4. Database Connection Pool: Max 100-300 DB connections before DB chokes"]
-    end
-```
-
-#### Real-World Server Benchmarks:
-1. **Thread-per-Request Model (Traditional Java Spring / Tomcat / Python WSGI):**
-   * Each incoming request claims 1 OS thread.
-   * Operating systems choke around **200 to 1,000 active concurrent threads** due to CPU context switching overhead.
-   * **Typical Capacity:** ~500 to 3,000 RPS on a standard 4-Core / 8GB RAM machine.
-2. **Event-Driven / Coroutine Non-Blocking Model (Node.js, Go Goroutines, Nginx):**
-   * A Go goroutine takes only ~2 KB of memory (compared to 1 MB for an OS thread).
-   * 1 single machine can easily hold **50,000 to 100,000 concurrent idle connections** (The C10K / C50K problem solved).
-   * **Typical Capacity:** ~10,000 to 40,000+ RPS for lightweight I/O requests.
-
----
-
-### 6.2.2 Calculating Latency & Throughput (Step-by-Step Math)
-
-The golden formula connecting Concurrency, Latency, and Throughput is derived from **Little's Law**:
-
-$$\text{Throughput (RPS)} = \frac{\text{Concurrency (Number of Active Requests)}}{\text{Average Latency (in seconds)}}$$
-
-$$\text{Concurrency} = \text{Throughput} \times \text{Latency}$$
-
-#### Example 1: Fast In-Memory API
-* Your server has **200 worker threads**.
-* Each request takes **20 ms** (`0.02 seconds`) because data is cached in Redis.
-$$\text{Throughput} = \frac{200}{0.02\text{ s}} = \mathbf{10,000 \text{ Requests Per Second (RPS)}}$$
-
-#### Example 2: Slow Database Query (The Latency Disaster)
-* Your server still has **200 worker threads**.
-* A slow unindexed database query causes average response time to climb to **200 ms** (`0.2 seconds`).
-$$\text{Throughput} = \frac{200}{0.2\text{ s}} = \mathbf{1,000 \text{ Requests Per Second (RPS)}}$$
-> ⚠️ **Key Takeaway:** When latency increases by 10x, **your server throughput crashes by 90%**, and incoming requests begin queueing up and timing out with `HTTP 504 Gateway Timeout`!
-
----
-
-### 6.2.3 Why the "Average" Latency is a Lie (p50, p95, p99)
-
-In system design, never use the "average" latency. Use **percentiles**:
-
-```mermaid
-graph LR
-    P50["p50 (Median)\n50% of users experience this speed or faster"]
-    P95["p95\n95% of users experience this speed or faster"]
-    P99["p99 (Tail Latency)\n99% of users experience this speed. 1% suffer worst delay!"]
-
-    P50 --> P95 --> P99
-```
-
-* **The Problem with Averages:** Suppose 99 users get a fast response in `10 ms`, but 1 user experiences a database lock timeout that takes `10,000 ms` (10 seconds).
-  $$\text{Average Latency} = \frac{(99 \times 10) + 10,000}{100} = \mathbf{109.9 \text{ ms}}$$
-  The average makes you think the system is performing around 100ms, completely hiding the fact that 1 out of every 100 users suffered an unacceptable 10-second freeze!
-* **Why Top Tech Companies Optimize for p99:** At Amazon's scale, 1% of users equals millions of paying customers. If p99 is slow, millions of customers abandon their shopping carts!
-
----
-
-## 6.3 — Load Balancing Deep Dive: L4 vs L7 & Algorithms
-
-```mermaid
-graph TD
-    Client[Global Clients] --> LB[Load Balancer]
-
-    subgraph Layer4 [Layer 4 Load Balancer: Transport Layer]
-        L4["- Inspects only IP Address and TCP/UDP Port\n- Ultra fast packet-level forwarding\n- Cannot inspect HTTP URLs or headers\n- Examples: AWS NLB, IPVS"]
-    end
-
-    subgraph Layer7 [Layer 7 Load Balancer: Application Layer]
-        L7["- Inspects HTTP Request Line, URL Path, Cookies, Headers\n- Intelligent routing: /images -> Static Cluster, /checkout -> Pay Cluster\n- SSL Termination & Cookie-based Sticky Sessions\n- Examples: AWS ALB, Nginx, Envoy, HAProxy"]
-    end
-
-    LB --> Layer4
-    LB --> Layer7
-```
-
-### Load Balancing Routing Algorithms:
-
-1. **Round Robin:** Sequentially routes request 1 to Server A, request 2 to Server B, request 3 to Server C.
-2. **Weighted Round Robin:** Assigns higher request quotas to more powerful machines.
-3. **Least Connections:** Forwards the new request to whichever server is currently handling the fewest active connections (ideal for long-lived WebSocket or database connections).
-4. **IP Hash:** Hashes the client's IP address to ensure a user always hits the same backend server.
-5. **Consistent Hashing (The Hash Ring):**
-   * Maps both servers and request keys onto a virtual $360^\circ$ ring ($0$ to $2^{32}-1$).
-   * A key is assigned to the first server encountered moving clockwise.
-   * **Why it matters:** When a server is added or crashes, **only a fraction of keys ($1/N$) need to be moved**, preventing system-wide cache wipes!
-
-```mermaid
-graph TD
-    subgraph HashRing [Consistent Hashing Ring: 0 to 2^32 - 1]
-        Ring["(Server A: Angle 0°) ---> [Key 1] ---> [Key 2] --->\n(Server B: Angle 120°) ---> [Key 3] --->\n(Server C: Angle 240°) ---> [Key 4]"]
-    end
-```
-
----
-
-## 6.4 — Reverse Proxy (Nginx / Envoy / HAProxy)
-
-A **Reverse Proxy** sits directly in front of backend servers and shields them:
-
-```mermaid
-graph LR
-    Internet((Internet)) --> Proxy[Reverse Proxy: Nginx]
-
-    subgraph ProtectiveShield [Proxy Responsibilities]
-        Proxy --> P1[SSL / TLS Termination]
-        Proxy --> P2[Gzip / Brotli Response Compression]
-        Proxy --> P3[Static Asset Caching]
-        Proxy --> P4[DDoS Mitigation & IP Blacklisting]
-    end
-
-    Proxy --> InternalServers[Protected Private Backend Cluster]
-```
-
----
-
-# 🗺️ Upcoming Phases Overview (Phase 7 to Phase 12)
-
-| Stage | Phase | Core Topics Covered |
+| Scenario | Database Approach | Why? |
 | :--- | :--- | :--- |
-| **Stage 3** | **Phase 7: Messaging & Event-Driven** | Apache Kafka, RabbitMQ, Pub/Sub, Producer/Consumer, Idempotency |
-| **Stage 3** | **Phase 8: Reliability & Fault Tolerance** | Circuit Breaker, Retries with Exponential Backoff, Dead-Letter Queues |
-| **Stage 4** | **Phase 9: Security & Identity** | JWT, OAuth 2.0, CORS, SQL Injection, Secrets Management |
-| **Stage 4** | **Phase 10: Observability & DevOps** | Distributed Tracing, Prometheus, p99 Latency, SLA/SLO, Docker, K8s |
-| **Stage 5** | **Phase 11: Advanced Architecture Patterns** | CQRS, Event Sourcing, Saga Pattern, Outbox Pattern, Strangler Fig |
-| **Stage 6** | **Phase 12: Real-World Case Studies** | TinyURL, News Feed, Video Streaming, Payment Systems, Ticket Booking |
+| **Bank Account Transfers** | SQL with ACID transactions | Zero tolerance for lost money or partial writes |
+| **E-Commerce Product Catalog** | Master-Replica SQL | 99% reads, 1% updates; replicas scale reads effortlessly |
+| **Global Analytics Clickstream** | NoSQL with BASE (Cassandra) | Massive write throughput, eventual consistency is fine |
+| **500M User Social App** | Sharded Database by `user_id` | Splits write load across 50 separate servers |
+
+### 16. PERFORMANCE
+* **Connection Pooling:** Always use tools like HikariCP or PgBouncer. Opening a new database TCP connection takes 50ms; picking from a pool takes 0.1ms!
+* **Indexing:** Adding an index on `user_id` converts an $O(N)$ full-table scan into an $O(\log N)$ B-Tree lookup.
+
+### 17. SECURITY
+
+| Threat | Mitigation |
+| :--- | :--- |
+| **SQL Injection** | Always use **Parameterized Queries (Prepared Statements)**; never concatenate raw strings |
+| **Database Ransomware** | Keep automated daily backups in separate, read-only S3 buckets with Object Lock |
+
+### 18. TRADE-OFFS
+
+```mermaid
+graph TD
+    Decision{Database Trade-off}
+    Decision -->|Strong Consistency & Complex Queries| SQL[SQL: PostgreSQL / MySQL]
+    Decision -->|Massive Write Volume & Horizontal Scale| NoSQL[NoSQL: Cassandra / DynamoDB]
+```
+
+### 19. BEST PRACTICES
+- [x] Never perform database migrations during peak traffic hours.
+- [x] Pick a Shard Key with high cardinality (e.g. `user_id`, NOT `country` or `gender` which cause severe hotspots).
+- [x] Always read your own writes: After a user edits their profile, route their next read to the Primary DB to prevent replication lag confusion.
+
+### 20. COMMON MISTAKES
+
+| Mistake | Consequence | Correction |
+| :--- | :--- | :--- |
+| **Missing Indexes on Foreign Keys** | Queries take 20 seconds as tables grow | Index all columns used in `WHERE` and `JOIN` |
+| **Cross-Shard Joins** | Severely degrades network and CPU | Denormalize data or perform joins in application code |
+| **Writing to Read Replicas** | Crashes replication sync | Enforce read-only permissions on replica users |
+
+### 21. INTERVIEW QUESTIONS
+* **Beginner:** What does ACID stand for?
+  - *Answer:* Atomicity (all or nothing), Consistency (rules enforced), Isolation (concurrent independence), Durability (saved permanently).
+* **Intermediate:** What is replication lag and how do you handle it in a user-facing app?
+  - *Answer:* The delay for writes on the master to reach replicas. Solution: Route users to read from the master for 2 seconds after they perform a write.
+* **Advanced:** How would you design a sharding strategy for an app like Twitter?
+  - *Answer:* Shard by `user_id` so all of a user's tweets live together. For the home feed, use an asynchronous fan-out service (Message Queue + Redis) rather than querying all shards.
+
+### 22. SUMMARY
+
+```
+Databases Revision Cheat Sheet:
+├── SQL vs NoSQL: ACID relational rigor vs horizontal flexible scaling.
+├── Replication: Scales reads. Writes go to Master, reads go to Replicas.
+├── Sharding: Scales writes and storage by splitting rows across physical machines.
+├── CAP Theorem: When network partitions happen, pick Consistency (CP) or Availability (AP).
+└── Performance Rule: Index your query columns and always use connection pooling.
+```
