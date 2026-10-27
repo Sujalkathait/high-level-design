@@ -13,15 +13,15 @@ flowchart TD
         P2["📘 Phase 2: APIs & Web Communication (Topics 17–31) ✅"]
     end
 
-    subgraph Stage2 [🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA]
-        P3["📘 Phase 3: Application Architecture (Topics 32–46)"]
-        P4["📘 Phase 4: Database Fundamentals (Topics 47–63)"]
-        P5["📘 Phase 5: Caching, CDN & Storage (Topics 64–74)"]
+    subgraph Stage2 [🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE]
+        P3["📘 Phase 3: Application Architecture (Topics 32–46) ✅"]
+        P4["📘 Phase 4: Database Fundamentals & Scaling (Topics 47–63) ✅"]
+        P5["📘 Phase 5: Caching, CDN & Storage (Topics 64–74) ✅"]
     end
 
-    subgraph Stage3 [🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED]
-        P6["📘 Phase 6: Scalability & Performance (Topics 75–91)"]
-        P7["📘 Phase 7: Messaging & Event-Driven (Topics 92–102)"]
+    subgraph Stage3 [🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS]
+        P6["📘 Phase 6: Scalability & Performance Engineering (Topics 75–91) ✅"]
+        P7["📘 Phase 7: Messaging & Event-Driven Systems (Topics 92–102)"]
         P8["📘 Phase 8: Reliability & Fault Tolerance (Topics 103–116)"]
     end
 
@@ -84,7 +84,28 @@ flowchart TD
       - [29. GraphQL](#29-graphql)
       - [30. gRPC](#30-grpc)
       - [31. Synchronous vs Asynchronous Communication](#31-synchronous-vs-asynchronous-communication)
-- [🗺️ Upcoming Phases Overview (Phase 3 to Phase 12)](#️-upcoming-phases-overview-phase-3-to-phase-12)
+- [🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE](#-stage-2-intermediate--backend--data-architecture)
+  - [📘 PHASE 3: Application & Software Architecture (Topics 32–46)](#-phase-3-application--software-architecture)
+    - [3.1 — Architecture Fundamentals: 1-Tier to N-Tier](#31--architecture-fundamentals-1-tier-to-n-tier)
+    - [3.2 — Architecture Styles: Monolith vs Microservices vs Serverless](#32--architecture-styles-monolith-vs-microservices-vs-serverless)
+    - [3.3 — Design Principles: Coupling & Boundaries](#33--design-principles-coupling--boundaries)
+  - [📘 PHASE 4: Database Fundamentals & Data Architecture (Topics 47–63)](#-phase-4-database-fundamentals--data-architecture)
+    - [4.1 — SQL vs NoSQL Databases](#41--sql-vs-nosql-databases)
+    - [4.2 — Transactions & ACID vs BASE](#42--transactions--acid-vs-base)
+    - [4.3 — The CAP Theorem & PACELC](#43--the-cap-theorem--pacelc)
+    - [4.4 — Database Scaling: Replication & Sharding](#44--database-scaling-replication--sharding)
+  - [📘 PHASE 5: Caching, CDN & Storage Systems (Topics 64–74)](#-phase-5-caching-cdn--storage-systems)
+    - [5.1 — Caching Fundamentals: Redis vs Memcached](#51--caching-fundamentals-redis-vs-memcached)
+    - [5.2 — Caching Strategies (Cache-Aside, Read/Write-Through, Write-Back, Write-Around)](#52--caching-strategies)
+    - [5.3 — Cache Eviction: LRU vs LFU & Invalidation](#53--cache-eviction-lru-vs-lfu--invalidation)
+    - [5.4 — CDN & Cloud Object Storage (S3)](#54--cdn--cloud-object-storage-s3)
+- [🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS](#-stage-3-advanced--scalability--distributed-systems)
+  - [📘 PHASE 6: Scalability & Performance Engineering (Topics 75–91)](#-phase-6-scalability--performance-engineering)
+    - [6.1 — Vertical vs Horizontal Scaling](#61--vertical-vs-horizontal-scaling)
+    - [6.2 — Latency vs Throughput (Performance Formulas)](#62--latency-vs-throughput-performance-formulas)
+    - [6.3 — Load Balancing Deep Dive (L4 vs L7 & Algorithms)](#63--load-balancing-deep-dive-l4-vs-l7--algorithms)
+    - [6.4 — Reverse Proxy (Nginx / Envoy / HAProxy)](#64--reverse-proxy-nginx--envoy--haproxy)
+- [🗺️ Upcoming Phases Overview (Phase 7 to Phase 12)](#️-upcoming-phases-overview-phase-7-to-phase-12)
 
 ---
 
@@ -203,7 +224,7 @@ graph LR
 ```
 
 * **Well-Known Ports (0 – 1023):** System/root services (`80` HTTP, `443` HTTPS, `22` SSH, `53` DNS).
-* **Registered Ports (1024 – 49151):** Specific software (`3306` MySQL, `5432` Postgres, `6379` Redis, `8080` Dev).
+* **Registered Ports (1024 – 49151):** Specific software (`3306` MySQL, `5432` Postgres, `6379` Redis, `8000/8080` Dev).
 * **Ephemeral / Dynamic Ports (49152 – 65535):** Temporary outgoing ports picked automatically by client operating systems.
 
 ---
@@ -248,13 +269,6 @@ sequenceDiagram
     Resolver-->>Browser: 8. IP is 142.250.190.46
     Note over Browser: Browser connects directly to server IP!
 ```
-
-#### Important DNS Record Types:
-* **A Record:** Maps a domain name to an **IPv4** address.
-* **AAAA Record:** Maps a domain name to an **IPv6** address.
-* **CNAME (Canonical Name):** Maps an alias name to another domain name (`www.example.com` $\rightarrow$ `example.com`).
-* **MX (Mail Exchange):** Directs incoming emails to mail servers.
-* **TTL (Time to Live):** Number of seconds a DNS answer can be saved in cache before asking again.
 
 ---
 
@@ -343,17 +357,6 @@ graph TD
     end
 ```
 
-#### The TCP 3-Way Handshake:
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Client
-    actor Server
-    Client->>Server: 1. SYN (Synchronize Sequence Number)
-    Server-->>Client: 2. SYN-ACK (Acknowledge Client + Synchronize Server)
-    Client->>Server: 3. ACK (Acknowledge Server - Connection Established!)
-```
-
 ---
 
 ### 15. Socket Types
@@ -388,8 +391,6 @@ sequenceDiagram
 
 # 📘 PHASE 2: APIs & Communication Fundamentals
 
-APIs are the contracts through which software components talk to each other in modern distributed systems.
-
 ---
 
 ## 2.1 — API Basics
@@ -402,28 +403,13 @@ An **API** is a software contract. It defines the operations, inputs, outputs, a
   - Kitchen = Backend Database & Business Logic
   - Waiter = **API** (takes your order menu request to the kitchen, brings back your food response)
 
-```mermaid
-graph LR
-    UserApp[Mobile / Web App] <--> API[API Interface\nGET /users/42]
-    API <--> Logic[Backend Business Logic]
-    Logic <--> Database[(Database)]
-```
-
 ---
 
 ### 18. REST API (Representational State Transfer)
 **REST** is an architectural style designed around **Resources** identified by URLs.
-
-```mermaid
-graph TD
-    R1["1. Client-Server Separation: UI logic separated from data storage"]
-    R2["2. Stateless: Server stores NO client session state; every request contains full context"]
-    R3["3. Cacheable: Responses explicitly declare if they can be cached"]
-    R4["4. Uniform Interface: Standard URLs and standard HTTP methods"]
-    R5["5. Layered System: Client does not know if it connects to server, proxy, or cache"]
-
-    R1 --- R2 --- R3 --- R4 --- R5
-```
+* **Stateless:** The server stores no client session state; every request contains full context.
+* **Client-Server Separation:** UI logic separated from data storage.
+* **Cacheable:** Responses declare caching headers.
 
 ---
 
@@ -437,273 +423,483 @@ graph TD
 | **PATCH** | Partially update resource | `/api/users/42` | ✅ Yes | ❌ No | ❌ No |
 | **DELETE** | Remove resource | `/api/users/42` | No | ✅ Yes | ❌ No |
 
-* **Idempotent:** Calling the exact same request 1 time or 100 times results in the exact same server state.
-
 ---
 
 ### 20. HTTP Status Codes
-
-```mermaid
-graph LR
-    Codes[HTTP Status Codes] --> C1[1xx: Informational\n100 Continue, 101 Switch Protocols]
-    Codes --> C2[2xx: Success\n200 OK, 201 Created, 204 No Content]
-    Codes --> C3[3xx: Redirection\n301 Permanent, 302 Found, 304 Not Modified]
-    Codes --> C4[4xx: Client Error\n400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 429 Too Many Requests]
-    Codes --> C5[5xx: Server Error\n500 Internal Error, 502 Bad Gateway, 503 Unavailable, 504 Gateway Timeout]
-```
+* **1xx (Informational):** `100 Continue`, `101 Switching Protocols` (WebSockets).
+* **2xx (Success):** `200 OK`, `201 Created`, `204 No Content`.
+* **3xx (Redirection):** `301 Moved Permanently`, `302 Found`, `304 Not Modified` (Cache hit).
+* **4xx (Client Error):** `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `429 Too Many Requests`.
+* **5xx (Server Error):** `500 Internal Error`, `502 Bad Gateway`, `503 Unavailable`, `504 Gateway Timeout`.
 
 ---
 
-### 21. Request Headers and Body
-* **Request Headers:** Metadata describing the client and payload format.
-  - `Host: api.example.com`
-  - `Content-Type: application/json`
-  - `Authorization: Bearer <token>`
-  - `Accept: application/json`
-* **Request Body:** The actual data payload sent to the server (common in `POST`, `PUT`, `PATCH`).
-
-```http
-POST /api/v1/orders HTTP/1.1
-Host: store.example.com
-Authorization: Bearer eyJhbGciOi...
-Content-Type: application/json
-
-{
-  "item_id": 1042,
-  "quantity": 2,
-  "shipping_address": "456 Silicon Ave"
-}
-```
-
----
-
-### 22. Response Headers and Body
-* **Response Headers:** Metadata sent back by the server.
-  - `Content-Type: application/json`
-  - `Content-Length: 128`
-  - `Cache-Control: max-age=3600`
-  - `Set-Cookie: session_id=xyz; Secure; HttpOnly`
-* **Response Body:** The data payload returned to the client (JSON, HTML, XML, or binary).
-
-```http
-HTTP/1.1 201 Created
-Content-Type: application/json
-Date: Tue, 27 Oct 2026 14:00:00 GMT
-
-{
-  "order_id": "ORD-9981",
-  "status": "confirmed",
-  "estimated_delivery": "2026-10-30"
-}
-```
+### 21. Request Headers and Body & 22. Response Headers and Body
+Headers carry metadata (authorization, content format, cookies), while the Body carries the raw data (JSON/HTML).
 
 ---
 
 ### 23. JSON (JavaScript Object Notation)
-**JSON** is the lightweight, universal, human-readable text standard for exchanging structured data over web APIs.
-
+The universal, lightweight text standard for data exchange:
 ```json
 {
   "id": 101,
   "name": "Sujal",
   "is_admin": true,
-  "roles": ["developer", "architect"],
-  "profile": {
-    "city": "Dehradun",
-    "country": "India"
-  }
+  "roles": ["developer", "architect"]
 }
 ```
-* **Supported Data Types:** String, Number, Boolean (`true`/`false`), Array (`[...]`), Object (`{...}`), and `null`.
-* Replaced verbose XML due to smaller payload size, zero parsing complexity, and native JavaScript support.
 
 ---
 
 ## 2.2 — API Processing
 
----
-
-### 24. API Authentication
-**Authentication** answers: *"Who are you?"* It verifies the caller's identity.
-
-```mermaid
-graph TD
-    Auth[Authentication Methods]
-    Auth --> A1["1. Basic Auth: Base64(username:password) in headers - Insecure without HTTPS"]
-    Auth --> A2["2. API Keys: Long secret string passed in header x-api-key"]
-    Auth --> A3["3. Bearer Tokens / JWT: Signed digital token containing user identity"]
-    Auth --> A4["4. OAuth 2.0: Delegation protocol allowing third-party login (e.g. Sign in with Google)"]
-```
-
----
-
-### 25. Authorization
-**Authorization** answers: *"What are you allowed to do?"* It enforces permissions after identity is confirmed.
+### 24. API Authentication & 25. Authorization
+* **Authentication ("Who are you?"):** Verifying identity (API Keys, JWT Tokens, OAuth 2.0).
+* **Authorization ("What can you do?"):** Checking permissions (RBAC: Admin vs Viewer).
 
 ```mermaid
 graph LR
-    Request[User Request] --> AuthCheck{Authentication\nWho are you?}
-    AuthCheck -- Valid Token --> RoleCheck{Authorization\nAre you an Admin?}
-    AuthCheck -- Invalid Token --> R401[401 Unauthorized]
-    RoleCheck -- Yes --> Allow[Execute Action: Delete Database]
+    Req[Incoming Request] --> AuthCheck{Authentication\nWho are you?}
+    AuthCheck -- Valid --> RoleCheck{Authorization\nPermitted?}
+    AuthCheck -- Invalid --> R401[401 Unauthorized]
+    RoleCheck -- Yes --> OK[200 OK Execution]
     RoleCheck -- No --> R403[403 Forbidden]
 ```
 
-* **401 Unauthorized:** You did not provide valid credentials (Authentication failed).
-* **403 Forbidden:** The server knows who you are, but you do not have permission (Authorization failed).
+---
+
+### 26. Middleware & 27. API Gateway
+* **Middleware:** Processing functions executed in a chain (Logging $\rightarrow$ Rate Limiting $\rightarrow$ Auth $\rightarrow$ Handler).
+* **API Gateway:** The single front-door entry point into a microservices cluster.
 
 ---
 
-### 26. Middleware
-**Middleware** is a chain of processing functions that inspect, alter, or block incoming requests before they reach your main business logic handler.
-
-```mermaid
-flowchart LR
-    ClientReq[Client Request] --> M1[Middleware 1:\nRequest Logger]
-    M1 --> M2[Middleware 2:\nRate Limiter]
-    M2 --> M3[Middleware 3:\nAuth Token Validator]
-    M3 --> M4[Middleware 4:\nCORS Validator]
-    M4 --> Handler[Main Controller /\nBusiness Logic]
-    Handler --> FinalResponse[Client Response]
-```
-
----
-
-### 27. API Gateway
-An **API Gateway** is a single, centralized reverse proxy that sits in front of all internal microservices.
+## 2.3 — Communication Protocols: REST vs RPC vs GraphQL vs WebSockets
 
 ```mermaid
 graph TD
-    Client1[Mobile App] --> Gateway[API Gateway\nSingle Entry Point]
-    Client2[Web Browser] --> Gateway
-    Client3[Third-Party Partner] --> Gateway
-
-    subgraph CommonServices [Gateway Cross-Cutting Concerns]
-        Gateway --> G1[Authentication & Authorization]
-        Gateway --> G2[Rate Limiting & Throttling]
-        Gateway --> G3[SSL Termination]
-        Gateway --> G4[Request Routing & Load Balancing]
+    subgraph REST [REST: Resource Oriented]
+        M1[Multiple endpoints: /users, /orders\nFixed response schema\nUses HTTP/1.1]
     end
-
-    Gateway -- /users --> S1[User Service]
-    Gateway -- /orders --> S2[Order Service]
-    Gateway -- /payments --> S3[Payment Service]
-```
-
----
-
-## 2.3 — Communication Protocols
-
----
-
-### 28. WebSocket
-**WebSocket** is a computer communications protocol providing **full-duplex, bidirectional, persistent communication** over a single TCP connection.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Client
-    participant Server
-
-    Note over Client,Server: 1. Initial HTTP Upgrade Handshake
-    Client->>Server: GET /chat HTTP/1.1\nUpgrade: websocket\nConnection: Upgrade
-    Server-->>Client: HTTP/1.1 101 Switching Protocols
-    Note over Client,Server: 2. Persistent Bidirectional TCP Socket Established!
-    
-    loop Real-Time Chat / Gaming
-        Client->>Server: Message: "Hello!"
-        Server-->>Client: Message: "Welcome Sujal!"
-        Server-->>Client: Push Notification: "New alert!"
+    subgraph GQL [GraphQL: Query Oriented]
+        M2[Single endpoint: /graphql\nClient asks for exact fields needed\nPrevents over/under-fetching]
+    end
+    subgraph WS [WebSockets: Event Stream]
+        M3[Persistent TCP connection\nFull-duplex real-time messages\nChat, Gaming, Tickers]
+    end
+    subgraph RPC [gRPC: Procedure Call]
+        M4[Fast binary Protocol Buffers\nRuns on HTTP/2 multiplexing\nService-to-Service microservices]
     end
 ```
 
-| Feature | HTTP Polling | WebSocket |
-| :--- | :--- | :--- |
-| **Connection** | Opens new connection repeatedly | Keeps single connection open |
-| **Direction** | Client $\rightarrow$ Server only | Bidirectional (Both can send anytime) |
-| **Header Overhead** | ~1 KB on every request | 2 to 10 bytes per frame |
-| **Latency** | High | Ultra Low (< 5ms) |
+---
+
+# 🟡 STAGE 2: INTERMEDIATE — BACKEND & DATA ARCHITECTURE
 
 ---
 
-### 29. GraphQL
-Created by Facebook. Unlike REST (which forces you to fetch fixed data from multiple endpoints), **GraphQL** uses a single endpoint (`POST /graphql`) and lets the client specify the exact fields it needs.
+# 📘 PHASE 3: Application & Software Architecture
+
+How you organize your software components determines how easy it is to scale, deploy, and maintain your system.
+
+---
+
+## 3.1 — Architecture Fundamentals: 1-Tier to N-Tier
 
 ```mermaid
 graph TD
-    subgraph REST_Problem [REST: Over-fetching & Under-fetching]
-        R1["GET /users/1 -> Returns 50 fields when you only need name (Over-fetching)"]
-        R2["GET /users/1/posts + GET /users/1/followers -> 3 network round trips (Under-fetching)"]
+    subgraph T1 [1-Tier Architecture]
+        OneBox["Single Device: UI + Business Logic + Database all in 1 binary\n(e.g., Desktop SQLite App, MS Excel)"]
     end
 
-    subgraph GraphQL_Solution [GraphQL: Exact Data in 1 Request]
-        G1["POST /graphql\nquery { user(id: 1) { name, posts { title } } }"]
-        G2["Returns ONLY the requested fields in a single round trip!"]
+    subgraph T2 [2-Tier Architecture]
+        Client2[Client App / Desktop] <--> DB2[(Direct Database Server)]
+    end
+
+    subgraph T3 [3-Tier Architecture]
+        Client3[Web Browser] <--> AppServer[Application Server: Business Logic]
+        AppServer <--> DB3[(Database Tier)]
+    end
+
+    subgraph TN [N-Tier / Multi-Tier Architecture]
+        ClientN[Global Clients] <--> CDN_Tier[CDN & Edge Tier]
+        CDN_Tier <--> LB_Tier[Load Balancer Tier]
+        LB_Tier <--> App_Tier[Stateless Web/App Services]
+        App_Tier <--> Cache_Tier[(In-Memory Cache Tier: Redis)]
+        App_Tier <--> Queue_Tier[(Message Queue Tier: Kafka)]
+        App_Tier <--> DB_Tier[(Distributed Database Tier)]
     end
 ```
 
+### The Evolution:
+* **1-Tier:** Everything runs on the client's local computer. Fast for a single user, but impossible to share real-time data across users.
+* **2-Tier (Client-Server):** Client talks directly to the database. Security risk (database credentials embedded in client software) and business logic cannot be updated without reinstalling the app.
+* **3-Tier:** Introduced the **Application Server**. Business logic lives safely on the server. Clients never touch the database directly.
+* **N-Tier:** Breaks large systems into specialized tiers (Presentation, Gateway, Application, Caching, Messaging, Database). Each tier can scale independently on separate server clusters!
+
 ---
 
-### 30. gRPC (Google Remote Procedure Call)
-**gRPC** is an open-source, high-performance remote procedure call framework developed by Google.
-* Uses **HTTP/2** for multiplexed streaming.
-* Uses **Protocol Buffers (Protobuf)** instead of JSON for compact, binary serialization (up to 7x–10x faster than JSON).
-* Universally chosen for high-speed **service-to-service communication** inside microservice clusters.
+## 3.2 — Architecture Styles: Monolith vs Microservices vs Serverless
+
+```mermaid
+graph TD
+    subgraph Monolith [Monolithic Architecture]
+        M_All["Single Unified Codebase & Deployment Unit\n- User Module\n- Payment Module\n- Order Module\n- Notification Module\nShared Single Database"]
+    end
+
+    subgraph Microservices [Microservices Architecture]
+        GW[API Gateway] --> S_User[User Service\n+ User DB]
+        GW --> S_Pay[Payment Service\n+ Payment DB]
+        GW --> S_Order[Order Service\n+ Order DB]
+        GW --> S_Notif[Notification Service]
+        S_Order -. Event Message Bus .-> S_Pay
+    end
+```
+
+### Comparison Matrix:
+
+| Dimension | Monolithic Architecture | Microservices Architecture | Serverless (FaaS) |
+| :--- | :--- | :--- | :--- |
+| **Codebase** | Single shared repository | Multiple decoupled repositories | Small standalone functions (AWS Lambda) |
+| **Deployment** | All-or-nothing deployment | Each service deployed independently | Automatic event-triggered deployment |
+| **Scaling** | Scale the whole app together | Scale only the bottleneck service | Automatic micro-scaling per request |
+| **Tech Stack** | Single language & framework | Polyglot (Service A = Go, Service B = Python) | Cloud provider runtime |
+| **Network Overhead**| Zero (In-memory function calls) | Network latency (HTTP/gRPC calls) | Cold-start latency |
+| **Best For** | Startups, MVP, small teams, low complexity | Large teams, complex domains, massive scale | Sporadic workloads, background jobs |
+
+---
+
+## 3.3 — Design Principles: Coupling & Boundaries
 
 ```mermaid
 graph LR
-    subgraph JSON_REST [Standard REST over HTTP/1.1]
-        C1[Client] -- Heavy Plaintext JSON: 500 bytes --> S1[Server]
+    subgraph Tight [Tight Coupling - Bad]
+        A1[Service A] -->|Direct Hardcoded Dependency| B1[Service B]
+        Note1["If B crashes, A crashes immediately!"]
     end
 
-    subgraph gRPC_Protobuf [gRPC over HTTP/2]
-        C2[Microservice A] -- Compact Binary Protobuf: 60 bytes --> S2[Microservice B]
+    subgraph Loose [Loose Coupling - Good]
+        A2[Service A] -->|Publishes Event| Q[(Message Broker)]
+        Q -->|Consumes Event| B2[Service B]
+        Note2["If B is temporarily down, messages wait safely in queue!"]
     end
 ```
 
+* **Tight Coupling:** Components know too much about each other. Modifying Service B breaks Service A.
+* **Loose Coupling:** Components communicate through abstract contracts, APIs, or message brokers. Services can be replaced, updated, or rebooted without affecting others.
+
 ---
 
-### 31. Synchronous vs Asynchronous Communication
+# 📘 PHASE 4: Database Fundamentals & Data Architecture
+
+Data is the most valuable and difficult component to scale in high-level design.
+
+---
+
+## 4.1 — SQL vs NoSQL Databases
+
+```mermaid
+graph TD
+    DB[(Databases)] --> SQL[SQL / Relational DBs\nPostgreSQL, MySQL]
+    DB --> NoSQL[NoSQL / Non-Relational DBs]
+    NoSQL --> Doc[Document: MongoDB]
+    NoSQL --> KV[Key-Value: Redis, DynamoDB]
+    NoSQL --> Col[Wide-Column: Cassandra, ScyllaDB]
+    NoSQL --> Graph[Graph: Neo4j]
+```
+
+| Dimension | SQL (Relational) | NoSQL (Non-Relational) |
+| :--- | :--- | :--- |
+| **Data Schema** | Rigid, predefined schema (Tables, Rows, Columns) | Flexible, dynamic schema (JSON, Key-Value) |
+| **Relationships** | First-class support via Foreign Keys & `JOIN`s | Denormalized data; joins avoided in application code |
+| **Transactions** | Strong **ACID** guarantees | Typically **BASE** (Eventual consistency) |
+| **Scaling** | Primarily Vertical (Bigger CPU/RAM); read replicas | Naturally Horizontal (Distributed sharding across nodes) |
+| **Ideal Use Case** | Financial ledgers, ERP, E-commerce transactions | Clickstreams, IoT logs, Social feeds, Big Data |
+
+---
+
+## 4.2 — Transactions & ACID vs BASE
+
+### The ACID Properties (The Bank Standard):
+When transferring \$100 from Alice to Bob, both operations must succeed or both must fail:
+* **A — Atomicity ("All or Nothing"):** If debiting Alice succeeds but crediting Bob fails, the whole transaction rolls back.
+* **C — Consistency:** Database constraints (e.g. balance cannot be negative) are strictly enforced before and after the transaction.
+* **I — Isolation:** Concurrent transactions do not interfere with each other (simulated sequential execution).
+* **D — Durability:** Once committed, data survives power outages and hardware crashes.
+
+### The BASE Properties (The Distributed Standard):
+Used by massive distributed NoSQL systems (Amazon DynamoDB, Cassandra):
+* **BA — Basically Available:** The system guarantees availability, answering requests even during node failures.
+* **S — Soft State:** The state of data may change over time without user interaction due to background synchronization.
+* **E — Eventual Consistency:** If no new updates are made, all replicas will eventually become identical.
+
+---
+
+## 4.3 — The CAP Theorem & PACELC
+
+### The CAP Theorem:
+In any distributed data store, you can only pick **two out of three** guarantees:
+
+```mermaid
+graph TD
+    C["Consistency (C)\nEvery read gets the most recent write or an error."]
+    A["Availability (A)\nEvery non-failing node returns a response, but not guaranteed to be latest."]
+    P["Partition Tolerance (P)\nSystem operates despite dropped or delayed network cables."]
+
+    C --- A
+    A --- P
+    P --- C
+```
+
+> [!IMPORTANT]
+> **Network cables and switches will inevitably fail.** Therefore, **Partition Tolerance (P) is mandatory** in distributed systems. Your real-world choice is between **CP** and **AP**:
+> * **CP (Consistency + Partition Tolerance):** The system blocks or rejects requests until nodes sync. (e.g., Banks, MongoDB, HBase).
+> * **AP (Availability + Partition Tolerance):** The system always answers immediately using available local replica data, even if it is slightly stale. (e.g., Cassandra, CouchDB, DynamoDB).
+
+### The PACELC Theorem (Extending CAP):
+* **P-A / C:** If there is a **P**artition, trade off **A**vailability vs **C**onsistency.
+* **E-L / C:** **E**lse (normal operation), trade off **L**atency vs **C**onsistency.
+
+---
+
+## 4.4 — Database Scaling: Replication & Sharding
+
+```mermaid
+graph TD
+    subgraph Replication [1. Master-Replica Replication - Read Scaling]
+        Master[(Primary DB\nHandles all WRITES)] -- Async Sync --> R1[(Read Replica 1)]
+        Master -- Async Sync --> R2[(Read Replica 2)]
+        Master -- Async Sync --> R3[(Read Replica 3)]
+        NoteRep["Apps read from replicas (90% traffic), write to Primary (10%)"]
+    end
+
+    subgraph Sharding [2. Database Sharding - Write & Storage Scaling]
+        Router[Shard Router / Proxy]
+        Router -- "Hash(UserID) % 3 == 0" --> Shard1[(Shard 1: Users 0 - 1M)]
+        Router -- "Hash(UserID) % 3 == 1" --> Shard2[(Shard 2: Users 1M - 2M)]
+        Router -- "Hash(UserID) % 3 == 2" --> Shard3[(Shard 3: Users 2M - 3M)]
+    end
+```
+
+### 1. Database Replication
+* Copies data across multiple servers.
+* **Master-Replica (Primary-Secondary):** Writes go to Master, reads are distributed across Replicas.
+* **Multi-Master:** Multiple servers accept writes (requires complex conflict resolution).
+
+### 2. Database Sharding (Horizontal Partitioning)
+* Splits one massive table across multiple independent physical machines.
+* **Shard Key:** The column used to determine where a row lives (e.g. `user_id` or `country_code`).
+* **Consistent Hashing:** Used to ensure that adding or removing a shard node only migrates $k/N$ keys rather than reshuffling the entire database!
+
+---
+
+# 📘 PHASE 5: Caching, CDN & Storage Systems
+
+Caching stores hot data in fast volatile memory (RAM) to shield the slow persistent database from read traffic.
+
+---
+
+## 5.1 — Caching Fundamentals: Redis vs Memcached
+
+```
+Speed Hierarchy:
+CPU L1 Cache:       ~0.5 ns
+CPU L2/L3 Cache:    ~5 - 10 ns
+RAM (Redis/Memcached): ~100 ns      <-- 100,000x faster than disk!
+SSD (Flash Drive):  ~150,000 ns (0.15 ms)
+HDD (Hard Disk):    ~10,000,000 ns (10 ms)
+```
+
+| Feature | Redis | Memcached |
+| :--- | :--- | :--- |
+| **Data Structures** | Strings, Lists, Sets, Hashes, Sorted Sets, Bitmaps | Simple Key-Value Strings only |
+| **Persistence** | Yes (RDB snapshots & AOF write logs) | No (Pure in-memory, lost on reboot) |
+| **Clustering** | Native Redis Cluster & Sentinel High-Availability | Client-side consistent hashing |
+| **Multi-Threading** | Single-threaded event loop (I/O threads in v6+) | Native multi-threaded |
+| **Best For** | Leaderboards, sessions, pub/sub, complex caching | Simple, massive object caching |
+
+---
+
+## 5.2 — Caching Strategies
+
+Understanding how data moves between Client, App, Cache, and Database is a core HLD interview topic.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Client
-    participant ServiceA as Service A
-    participant Queue as Message Queue / Service B
+    actor App as App Server
+    participant Cache as Redis Cache
+    participant DB as Main Database
 
-    Note over Client,ServiceA: Synchronous (Blocking)
-    Client->>ServiceA: 1. Request: Process Payment
-    Note over ServiceA: Service A waits and blocks execution...
-    ServiceA-->>Client: 2. Response: Done! (Client blocked during wait)
-
-    Note over Client,Queue: Asynchronous (Non-Blocking)
-    Client->>ServiceA: 3. Request: Generate Video Report
-    ServiceA->>Queue: 4. Push Task to Background Queue
-    ServiceA-->>Client: 5. 202 Accepted: "We are processing it, here is job ID #88"
-    Note over Client: Client continues working immediately!
-    Queue-->>Client: 6. Webhook / Notification pushes result when finished
+    Note over App,DB: Strategy 1: Cache-Aside (Lazy Loading)
+    App->>Cache: 1. Check Cache for key
+    alt Cache Hit
+        Cache-->>App: Return cached data (< 1ms)
+    else Cache Miss
+        Cache-->>App: Not found!
+        App->>DB: 2. Query Database (15ms)
+        DB-->>App: Return data
+        App->>Cache: 3. Populate Cache with TTL
+    end
 ```
 
-| Dimension | Synchronous Communication | Asynchronous Communication |
-| :--- | :--- | :--- |
-| **Execution** | Caller blocks and waits for response | Caller continues immediately |
-| **Coupling** | Tight coupling (both services must be online) | Loose coupling (broker buffers messages) |
-| **Protocols** | HTTP/REST, gRPC | Kafka, RabbitMQ, AWS SQS |
-| **Best For** | User login, balance checks | Video processing, order confirmation emails |
+### Complete Strategy Comparison:
+
+1. **Cache-Aside (Lazy Loading):**
+   * The application is responsible for reading and writing to both cache and database.
+   * *Pros:* Cache only contains data that is actually requested. Node failure does not crash the app (it falls back to DB).
+   * *Cons:* Cache miss penalty on first read; potential stale data if DB is updated directly.
+
+2. **Read-Through:**
+   * The app treats the cache as the main data store. On miss, the **cache library itself** fetches from DB, saves, and returns.
+
+3. **Write-Through:**
+   * The app writes to the cache; the cache immediately writes synchronously to the DB before returning success.
+   * *Pros:* Data is never stale.
+   * *Cons:* Higher write latency (waits for both cache and DB write).
+
+4. **Write-Back (Write-Behind):**
+   * The app writes to the cache immediately; the cache acknowledges instantly and queues an asynchronous background batch write to the DB.
+   * *Pros:* Blazing-fast write performance.
+   * *Cons:* Risk of data loss if cache crashes before writing to disk.
+
+5. **Write-Around:**
+   * The app writes directly to the DB, bypassing the cache entirely. The cache is only populated on subsequent reads.
 
 ---
 
-# 🗺️ Upcoming Phases Overview (Phase 3 to Phase 12)
+## 5.3 — Cache Eviction: LRU vs LFU & Invalidation
+
+When cache RAM is full, what data gets kicked out?
+
+```mermaid
+graph TD
+    Eviction[Cache Eviction Policies]
+    Eviction --> LRU["1. LRU (Least Recently Used)\nEvicts the item that hasn't been accessed for the longest time.\nImplemented with Hash Map + Doubly Linked List (O(1))"]
+    Eviction --> LFU["2. LFU (Least Frequently Used)\nCounts access frequency. Evicts items accessed least often."]
+    Eviction --> FIFO["3. FIFO (First In First Out)\nEvicts oldest item regardless of usage."]
+    Eviction --> TTL["4. TTL (Time To Live Expire)\nKeys self-destruct after set seconds (e.g. expire in 3600s)"]
+```
+
+### Critical Cache Gotchas:
+* **Cache Stampede (Dog-piling):** A hot key expires; 10,000 concurrent requests miss the cache at the exact same millisecond and bombard the DB simultaneously. *Fix: Mutex locks, pre-computation.*
+* **Cache Avalanche:** Many cache keys expire at the exact same second. *Fix: Add random jitter to TTL (`TTL = 3600s + rand(0, 300s)`).*
+* **Cache Penetration:** Attackers query keys that do not exist in DB or cache (e.g. `id = -999`), bypassing cache. *Fix: Cache empty/null results, use **Bloom Filters**.*
+
+---
+
+## 5.4 — CDN & Cloud Object Storage (S3)
+* **Object Storage (Amazon S3, Google Cloud Storage):** Flat file storage designed for billions of unstructured files (photos, videos, backups). Accessed via HTTP REST APIs.
+* **CDN (Content Delivery Network):** Edge proxies caching S3 static assets in hundreds of global cities close to users.
+
+---
+
+# 🟠 STAGE 3: ADVANCED — SCALABILITY & DISTRIBUTED SYSTEMS
+
+---
+
+# 📘 PHASE 6: Scalability & Performance Engineering
+
+---
+
+## 6.1 — Vertical vs Horizontal Scaling
+
+```mermaid
+graph LR
+    subgraph Vertical [Vertical Scaling: Scale UP]
+        V1["Upgrade 1 Computer\n- Add more CPU cores\n- Add more RAM\n- Hardware limits\n- Single Point of Failure (SPOF)"]
+    end
+
+    subgraph Horizontal [Horizontal Scaling: Scale OUT]
+        H1["Add Multiple Commodity Nodes\n- Unlimited scale potential\n- Fault tolerant: if 1 server dies, 99 others run\n- Requires Load Balancer & Stateless apps"]
+    end
+```
+
+---
+
+## 6.2 — Latency vs Throughput (Performance Formulas)
+
+* **Latency:** How *fast* a single packet or request completes its journey. Measured in milliseconds (ms).
+* **Throughput:** How *much* work or how many requests the system processes per unit of time. Measured in Requests Per Second (RPS) or Queries Per Second (QPS).
+
+### The Highway Analogy:
+* **Latency = The Speed Limit.** (How long it takes 1 car to travel from City A to City B).
+* **Throughput = The Number of Highway Lanes.** (How many cars can pass through the toll booth per minute).
+* Adding more lanes (horizontal scaling) increases throughput, but does not increase the car's top speed (latency)!
+
+### Little's Law:
+$$L = \lambda \times W$$
+* $L$ = Average number of concurrent requests in the system.
+* $\lambda$ = Arrival rate (Throughput in Requests per Second).
+* $W$ = Average response time (Latency in seconds).
+
+---
+
+## 6.3 — Load Balancing Deep Dive: L4 vs L7 & Algorithms
+
+```mermaid
+graph TD
+    Client[Global Clients] --> LB[Load Balancer]
+
+    subgraph Layer4 [Layer 4 Load Balancer: Transport Layer]
+        L4["- Inspects only IP Address and TCP/UDP Port\n- Ultra fast packet-level forwarding\n- Cannot inspect HTTP URLs or headers\n- Examples: AWS NLB, IPVS"]
+    end
+
+    subgraph Layer7 [Layer 7 Load Balancer: Application Layer]
+        L7["- Inspects HTTP Request Line, URL Path, Cookies, Headers\n- Intelligent routing: /images -> Static Cluster, /checkout -> Pay Cluster\n- SSL Termination & Cookie-based Sticky Sessions\n- Examples: AWS ALB, Nginx, Envoy, HAProxy"]
+    end
+
+    LB --> Layer4
+    LB --> Layer7
+```
+
+### Load Balancing Routing Algorithms:
+
+1. **Round Robin:** Sequentially routes request 1 to Server A, request 2 to Server B, request 3 to Server C.
+2. **Weighted Round Robin:** Assigns higher request quotas to more powerful machines.
+3. **Least Connections:** Forwards the new request to whichever server is currently handling the fewest active connections (ideal for long-lived WebSocket or database connections).
+4. **IP Hash:** Hashes the client's IP address to ensure a user always hits the same backend server.
+5. **Consistent Hashing (The Hash Ring):**
+   * Maps both servers and request keys onto a virtual $360^\circ$ ring ($0$ to $2^{32}-1$).
+   * A key is assigned to the first server encountered moving clockwise.
+   * **Why it matters:** When a server is added or crashes, **only a fraction of keys ($1/N$) need to be moved**, preventing system-wide cache wipes!
+
+```mermaid
+graph TD
+    subgraph HashRing [Consistent Hashing Ring: 0 to 2^32 - 1]
+        Ring["(Server A: Angle 0°) ---> [Key 1] ---> [Key 2] --->\n(Server B: Angle 120°) ---> [Key 3] --->\n(Server C: Angle 240°) ---> [Key 4]"]
+    end
+```
+
+---
+
+## 6.4 — Reverse Proxy (Nginx / Envoy / HAProxy)
+
+A **Reverse Proxy** sits directly in front of backend servers and shields them:
+
+```mermaid
+graph LR
+    Internet((Internet)) --> Proxy[Reverse Proxy: Nginx]
+
+    subgraph ProtectiveShield [Proxy Responsibilities]
+        Proxy --> P1[SSL / TLS Termination]
+        Proxy --> P2[Gzip / Brotli Response Compression]
+        Proxy --> P3[Static Asset Caching]
+        Proxy --> P4[DDoS Mitigation & IP Blacklisting]
+    end
+
+    Proxy --> InternalServers[Protected Private Backend Cluster]
+```
+
+---
+
+# 🗺️ Upcoming Phases Overview (Phase 7 to Phase 12)
 
 | Stage | Phase | Core Topics Covered |
 | :--- | :--- | :--- |
-| **Stage 2** | **Phase 3: Application Architecture** | Monoliths, Microservices, N-Tier, SOA, Serverless, Coupling |
-| **Stage 2** | **Phase 4: Database Architecture** | SQL vs NoSQL, Indexing, Transactions, ACID, Sharding, Replication |
-| **Stage 2** | **Phase 5: Caching & Storage** | Redis, Cache Invalidation, CDNs, Object Storage, S3 |
-| **Stage 3** | **Phase 6: Scalability & Performance** | Vertical/Horizontal, L4/L7 Load Balancers, Latency, RPS, Bottlenecks |
-| **Stage 3** | **Phase 7: Messaging & Event-Driven** | Kafka, RabbitMQ, Pub/Sub, Idempotency, Eventual Consistency |
-| **Stage 3** | **Phase 8: Reliability & Fault Tolerance** | Circuit Breakers, Retries, Exponential Backoff, Dead-Letter Queues |
+| **Stage 3** | **Phase 7: Messaging & Event-Driven** | Apache Kafka, RabbitMQ, Pub/Sub, Producer/Consumer, Idempotency |
+| **Stage 3** | **Phase 8: Reliability & Fault Tolerance** | Circuit Breaker, Retries with Exponential Backoff, Dead-Letter Queues |
 | **Stage 4** | **Phase 9: Security & Identity** | JWT, OAuth 2.0, CORS, SQL Injection, Secrets Management |
 | **Stage 4** | **Phase 10: Observability & DevOps** | Distributed Tracing, Prometheus, p99 Latency, SLA/SLO, Docker, K8s |
 | **Stage 5** | **Phase 11: Advanced Architecture Patterns** | CQRS, Event Sourcing, Saga Pattern, Outbox Pattern, Strangler Fig |
