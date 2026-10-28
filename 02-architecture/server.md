@@ -1,6 +1,6 @@
 # The Complete Engineering Guide to Servers: Architecture, Capacity, Performance and Scaling
 
-[Back to System Design Hub](./README.md)
+[System Design Hub](../README.md) > [02. Architecture](./README.md) > **Server Engineering Guide**
 
 ---
 
@@ -299,7 +299,7 @@ flowchart LR
 
 ### Stage 1: 1,000 Daily Active Users (DAU)
 * **Traffic:** $\approx 10\text{ requests per minute}$. Peak $\approx 2 - 5\text{ RPS}$.
-* **Setup:** Single virtual server ($2\,\text{vCPU}, 2\,\text{GB RAM}$, costing $\$5 - \$10/\text{month}$).
+* **Setup:** Single virtual server (2 vCPU, 2 GB RAM, costing $5 - $10 / month).
 * **Components:** App server, web proxy (Nginx), and PostgreSQL all live on the same machine.
 * **Backups:** Automated nightly database dump pushed to cloud storage (S3).
 
@@ -468,14 +468,14 @@ Using standard $2\,\text{vCPU}$ cloud instances:
 
 | Infrastructure Component | Hardware Spec | Quantity | Estimated Cost |
 |---|---|:---:|:---:|
-| **App Servers** | 2 vCPU, 4 GB RAM (Hetzner / AWS) | 4 | $\$96 / \text{mo}$ |
-| **Primary Database** | 4 vCPU, 16 GB RAM, NVMe SSD | 1 | $\$110 / \text{mo}$ |
-| **Read Replica Database** | 4 vCPU, 16 GB RAM, NVMe SSD | 1 | $\$110 / \text{mo}$ |
-| **Redis Cache** | 4 GB Managed In-Memory Cluster | 1 | $\$35 / \text{mo}$ |
-| **Load Balancer** | Cloud Managed ALB / HAProxy | 1 | $\$22 / \text{mo}$ |
-| **Cloudflare CDN** | Edge Caching & DDoS Protection | 1 Domain | $\$25 / \text{mo}$ |
-| **Storage & Backups** | Amazon S3 (500 GB) | 1 | $\$12 / \text{mo}$ |
-| **Total Production Cost** | *High-availability, zero-downtime architecture* | - | **$\approx \$410 / \text{month}$** |
+| **App Servers** | 2 vCPU, 4 GB RAM (Hetzner / AWS) | 4 | $96 / month |
+| **Primary Database** | 4 vCPU, 16 GB RAM, NVMe SSD | 1 | $110 / month |
+| **Read Replica Database** | 4 vCPU, 16 GB RAM, NVMe SSD | 1 | $110 / month |
+| **Redis Cache** | 4 GB Managed In-Memory Cluster | 1 | $35 / month |
+| **Load Balancer** | Cloud Managed ALB / HAProxy | 1 | $22 / month |
+| **Cloudflare CDN** | Edge Caching & DDoS Protection | 1 Domain | $25 / month |
+| **Storage & Backups** | Amazon S3 (500 GB) | 1 | $12 / month |
+| **Total Production Cost** | *High-availability, zero-downtime architecture* | - | **~$410 / month** |
 
 ---
 

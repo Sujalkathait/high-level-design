@@ -35,6 +35,7 @@ flowchart LR
 | **02** | **N-Tier Architecture** | Presentation, application, and data layers; separation of concerns | [Read Guide ➡️](./n-tier.md) |
 | **03** | **Microservices Architecture** | Autonomous services, database per service, organizational scaling, Uber case study | [Read Guide ➡️](./microservices.md) |
 | **04** | **Modular Monolith** | Bounded contexts, in-memory domain events, logical schemas, Shopify case study | [Read Guide ➡️](./modular-monolith.md) |
+| **05** | **Server Engineering Guide** | Capacity math, Little's Law, Free vs Paid cloud limits, k6 load testing, scaling | [Read Master Guide ➡️](./server.md) |
 
 ---
 
@@ -73,6 +74,12 @@ flowchart LR
   * **In-Memory Speed**: Modules communicate in nanoseconds via in-memory calls or in-process domain event buses without distributed network hops.
   * **Evolutionary Architecture**: Serves as the optimal starting architecture and seamless stepping stone to microservices if specific domains ever require independent scaling.
   * **Industry Validation**: Proven at global scale by Shopify (Packwerk) and Basecamp.
+
+* 📌 **[05. Server Engineering & Capacity Guide](./server.md)**
+  * **Comprehensive Deep-Dive**: How servers work from hardware/kernel to user space, concurrency models, and CPU/RAM sizing equations.
+  * **Free vs. Paid Cloud Analysis**: Cold start sleep delays, database connection starvation, and burstable CPU throttling.
+  * **Little's Law & Verification**: Real capacity calculation ($L = \lambda W$) and k6 stress testing playbooks.
+
 
 ---
 
