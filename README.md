@@ -28,30 +28,37 @@ Here is how all the pieces of a modern system connect when a user taps a button 
 
 ```mermaid
 flowchart TD
-    User(["📱 User (Mobile / Web)"]) -->|1. Lookup Domain| DNS["🌐 DNS Server<br/>(Internet Phonebook)"]
-    User -->|2. Static Files: Images/CSS| CDN["⚡ CDN (Edge Cache)<br/>(Nearby Warehouse)"]
-    User -->|3. API Request: HTTPS| LB["⚖️ Load Balancer<br/>(Traffic Cop)"]
-    
-    subgraph AppTier ["Application Tier (Stateless Brains)"]
-        LB -->|Route| App1["App Server 1"]
-        LB -->|Route| App2["App Server 2"]
-        LB -->|Route| App3["App Server 3"]
+    User["📱 User (Mobile / Web)"]
+    DNS["🌐 DNS Server<br/>(Internet Phonebook)"]
+    CDN["⚡ CDN Edge Cache<br/>(Nearby Warehouse)"]
+    LB["⚖️ Load Balancer<br/>(Traffic Cop)"]
+
+    subgraph AppPool ["Application Tier"]
+        App["🖥️ Stateless App Servers<br/>(Node.js / Go / Python)"]
     end
-    
-    AppTier <-->|4. Fast Check (RAM: 1ms)| Cache[("⚡ Redis Cache<br/>(Short-Term Memory)")]
-    
-    subgraph DataTier ["Data Tier (Durable Long-Term Storage)"]
-        AppTier -->|5. Write Data| PrimaryDB[("Primary Database (Master)<br/>Handles INSERT / UPDATE")]
-        PrimaryDB -.->|Async Replication| Replica1[("Read Replica 1")]
-        PrimaryDB -.->|Async Replication| Replica2[("Read Replica 2")]
-        AppTier -->|Read Data| Replica1 & Replica2
+
+    subgraph StorageTier ["Data Tier"]
+        Cache[("⚡ Redis Cache<br/>(Short-Term Memory)")]
+        PrimaryDB[("💾 Primary DB (Master)<br/>(Handles Writes)")]
+        ReplicaDB[("💾 Read Replicas<br/>(Handles Reads)")]
+        PrimaryDB -.->|Async Replication| ReplicaDB
     end
-    
-    subgraph AsyncTier ["Async Processing (Background Helpers)"]
-        AppTier -->|6. Heavy Tasks| Queue["📬 Message Queue (Kafka / RabbitMQ)"]
-        Queue --> Worker1["Background Worker 1 (Send Email)"]
-        Queue --> Worker2["Background Worker 2 (Process Video)"]
+
+    subgraph AsyncTier ["Async Processing"]
+        Queue["📬 Message Queue<br/>(Kafka / RabbitMQ)"]
+        Workers["⚙️ Background Workers<br/>(Emails, Video, Jobs)"]
+        Queue --> Workers
     end
+
+    User -->|1. Lookup Domain| DNS
+    User -->|2. Static Files| CDN
+    User -->|3. API Request| LB
+    LB -->|Distribute Traffic| App
+
+    App <-->|4. Fast RAM Read (1ms)| Cache
+    App -->|5. Writes| PrimaryDB
+    App -->|Read Queries| ReplicaDB
+    App -->|6. Heavy Tasks| Queue
 ```
 
 ---
