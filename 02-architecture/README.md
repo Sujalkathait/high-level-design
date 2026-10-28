@@ -12,13 +12,14 @@ System Architecture defines how software components are organized, bounded, and 
 flowchart LR
     A[01. Monolithic Architecture] --> B[02. N-Tier Layering]
     B --> C[03. Microservices Decomposition]
+    A --> D[04. Modular Monolith]
 ```
 
 ---
 
 ## 🎯 Key Learning Objectives
 
-* **Architectural Trade-offs**: Understand the core spectrum between single-binary monoliths, layered N-tier structures, and distributed microservices.
+* **Architectural Trade-offs**: Understand the core spectrum between single-binary monoliths, layered N-tier structures, microservices, and modern modular monoliths.
 * **Organizational Alignment**: Discover how Conway's Law shapes system design and when team boundaries necessitate service decoupling.
 * **Database Isolation**: Compare shared monolithic database patterns against the strict database-per-service pattern in microservices.
 * **Failure Blast Radiuses**: Evaluate how runtime failures propagate across architectural models and how circuit breakers isolate faults.
@@ -30,9 +31,10 @@ flowchart LR
 
 | # | Topic | Key Focus | Link |
 |---|---|---|---|
-| **01** | **Monolithic Architecture** | Single deployable unit, module composition, when to use, modular monolith (Shopify) | [Read Guide ➡️](./monolithic.md) |
-| **02** | **N-Tier Architecture** | Presentation, application, and data layers; separation of concerns; monolith vs. N-tier | [Read Guide ➡️](./n-tier.md) |
+| **01** | **Monolithic Architecture** | Single deployable unit, module composition, when to use | [Read Guide ➡️](./monolithic.md) |
+| **02** | **N-Tier Architecture** | Presentation, application, and data layers; separation of concerns | [Read Guide ➡️](./n-tier.md) |
 | **03** | **Microservices Architecture** | Autonomous services, database per service, organizational scaling, Uber case study | [Read Guide ➡️](./microservices.md) |
+| **04** | **Modular Monolith** | Bounded contexts, in-memory domain events, logical schemas, Shopify case study | [Read Guide ➡️](./modular-monolith.md) |
 
 ---
 
@@ -65,6 +67,12 @@ flowchart LR
     * Eventual consistency requirements (Saga pattern replaces distributed 2-Phase Commit).
     * Operational complexity: distributed tracing (Jaeger/Zipkin), service discovery, API Gateways, and centralized logging.
   * **Real-World Case Study**: Uber's evolution from a single Python/PostgreSQL monolith to thousands of microservices and subsequent domain-oriented microservices (DOMA).
+
+* 📌 **[04. Modular Monolith Architecture](./modular-monolith.md)**
+  * **Core Structure**: Single unified deployable process structured into strictly encapsulated, domain-driven modules with explicit public APIs and isolated schemas.
+  * **In-Memory Speed**: Modules communicate in nanoseconds via in-memory calls or in-process domain event buses without distributed network hops.
+  * **Evolutionary Architecture**: Serves as the optimal starting architecture and seamless stepping stone to microservices if specific domains ever require independent scaling.
+  * **Industry Validation**: Proven at global scale by Shopify (Packwerk) and Basecamp.
 
 ---
 

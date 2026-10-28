@@ -29,8 +29,8 @@ flowchart TD
         Pool -->|"Worker B: Computation"| CPU[CPU Cores]
     end
 
-    AppRuntime --> Execution
-    Execution -->|Serialize JSON Response| WebServer
+    AppRuntime --> Handler
+    Pool -->|Serialize JSON Response| WebServer
     WebServer -->|HTTP Response 200 OK| Client
 ```
 

@@ -20,23 +20,30 @@ These modules run within the same operating system process, sharing CPU cycles, 
 ```mermaid
 flowchart TD
     Client["Client Devices: Web / Mobile"] --> LB[Load Balancer]
+    LB --> Router["Web / API Router"]
     
     subgraph MonolithServer ["Monolithic Application Server"]
         direction TB
-        AuthModule[Authentication Module]
-        ProductModule[Product Catalog Module]
-        CartModule[Shopping Cart Module]
-        OrderModule[Order Management Module]
-        PaymentModule[Payment Integration Module]
+        Router --> AuthModule[Authentication Module]
+        Router --> ProductModule[Product Catalog Module]
+        Router --> CartModule[Shopping Cart Module]
+        Router --> OrderModule[Order Management Module]
+        Router --> PaymentModule[Payment Integration Module]
         
         AuthModule <--> ProductModule
         ProductModule <--> CartModule
         CartModule <--> OrderModule
         OrderModule <--> PaymentModule
+
+        DataLayer["Shared Data Access Layer"]
+        AuthModule --> DataLayer
+        ProductModule --> DataLayer
+        CartModule --> DataLayer
+        OrderModule --> DataLayer
+        PaymentModule --> DataLayer
     end
 
-    LB --> MonolithServer
-    MonolithServer --> DB[("Unified Relational Database")]
+    DataLayer --> DB[("Unified Relational Database")]
 ```
 
 ---
@@ -67,7 +74,7 @@ A monolith is the optimal choice for:
 * **Uniform Scaling Requirements:** Workloads where all domains experience similar traffic patterns.
 
 > [!IMPORTANT]
-> **The Modular Monolith Alternative:** A monolith is not inherently "bad design." A **Modular Monolith** enforces strict encapsulation, clean internal domain boundaries, and private interfaces within a single deployable repository. This architecture powers multi-billion dollar companies like **Shopify** and **Basecamp** with immense reliability.
+> **The Modular Monolith Alternative:** A monolith is not inherently "bad design." A **[Modular Monolith](./modular-monolith.md)** enforces strict encapsulation, clean internal domain boundaries, and private interfaces within a single deployable repository. This architecture powers multi-billion dollar companies like **Shopify** and **Basecamp** with immense reliability. See the full guide: [Modular Monolithic Architecture ➡️](./modular-monolith.md).
 
 ---
 

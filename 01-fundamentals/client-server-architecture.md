@@ -53,8 +53,9 @@ flowchart LR
         App1 & App2 <--> Cache
         App1 & App2 --> DB
     end
-    Clients -->|HTTPS JSON Request| API --> LB
-    ServerSide -->>|JSON / Binary Response| Clients
+    Web & Mobile -->|HTTPS JSON Request| API
+    API --> LB
+    App1 & App2 -->>|JSON / Binary Response| Web & Mobile
 ```
 
 ---

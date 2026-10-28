@@ -23,10 +23,10 @@ flowchart LR
         OrderDB[("Order Service")]
     end
 
-    ClientQuery -->|POST /graphql| GraphQLServer
-    GraphQLServer -->|Resolve User| UserDB
-    GraphQLServer -->|Resolve Orders| OrderDB
-    GraphQLServer -->>|Tailored JSON Response| ClientQuery
+    ClientApp -->|POST /graphql| Schema
+    Schema -->|Resolve User| UserDB
+    Schema -->|Resolve Orders| OrderDB
+    Schema -->>|Tailored JSON Response| ClientApp
 ```
 
 ---

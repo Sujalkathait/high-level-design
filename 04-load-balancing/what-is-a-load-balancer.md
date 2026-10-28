@@ -88,8 +88,8 @@ flowchart TD
 
     DNS --> LB1
     DNS -.->|Automatic Failover if Active Dies| LB2
-    LB1 --> AppTier
-    LB2 -.-> AppTier
+    LB1 --> S1 & S2 & S3
+    LB2 -.-> S1 & S2 & S3
 ```
 
 1. **Active-Passive Pair (VRRP / Keepalived):** Two load balancers share a virtual floating IP. The passive node continuously monitors the active node. If the primary drops heartbeat packets for 1 second, the backup claims the IP address.

@@ -71,7 +71,7 @@ flowchart TD
 ## 6. Related Topics & Next Steps
 
 * [Monolithic Architecture](./monolithic.md) — When to prefer a unified codebase over microservices.
-* [N-Tier Architecture](./n-tier.md) — Layered separation of presentation, business logic, and storage.
+* [Modular Monolithic Architecture](./modular-monolith.md) — Structuring a unified codebase with clean domain boundaries.
 * [RPC and gRPC](../03-networking/rpc-and-grpc.md) — High-performance binary communication between microservices.
 * [Communication Style Comparison](../03-networking/communication-style-comparison.md) — Choosing the right protocol for service-to-service communication.
 
@@ -79,4 +79,4 @@ flowchart TD
 
 | ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
 |:--- |:---:| ---:|
-| [N-Tier Architecture](./n-tier.md) | [02. Architecture Index](./README.md) | [REST API Communication ➡️](../03-networking/rest.md) |
+| [N-Tier Architecture](./n-tier.md) | [02. Architecture Index](./README.md) | [Modular Monolithic Architecture ➡️](./modular-monolith.md) |

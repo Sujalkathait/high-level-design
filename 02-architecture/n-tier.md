@@ -32,10 +32,10 @@ flowchart TD
         DB[("Persistent Database: PostgreSQL")]
     end
 
-    ClientDevices -->|HTTPS Requests| PresentationTier
-    PresentationTier -->|Internal API / Function Calls| AppTier
-    AppTier <-->|Fast Lookups| Cache
-    AppTier -->|Queries & Transactions| DB
+    Browser -->|HTTPS Requests| WebUI
+    WebUI -->|Internal API / Function Calls| BizLogic
+    BizLogic <-->|Fast Lookups| Cache
+    BizLogic -->|Queries & Transactions| DB
 ```
 
 ---
