@@ -1,6 +1,6 @@
-# Scalability: Vertical vs. Horizontal
+# 06. Scalability: Vertical vs. Horizontal
 
-> High-Level System Design | Core Fundamentals
+[🏠 Home](../README.md) > [01. Fundamentals](./README.md) > **Scalability: Vertical vs. Horizontal**
 
 ---
 
@@ -107,3 +107,18 @@ graph TD
 * **The Challenge:** WhatsApp needed to support hundreds of millions of users with a tiny team of only 30 engineers.
 * **The Solution:** Instead of spinning up 10,000 servers, they scaled a single FreeBSD server running **Erlang** to maintain over **2 million simultaneous, active TCP WebSocket connections**.
 * **Key Takeaway:** Concurrency architecture and efficient OS socket tuning beat raw hardware brute force.
+
+---
+
+## Related Topics & Next Steps
+
+* [How One Server Handles Requests](./how-one-server-handles-requests.md) — Single-server resource exhaustion.
+* [Monolithic Architecture](../02-architecture/monolithic.md) — How monoliths scale vertically and modularly.
+* [What is a Load Balancer?](../04-load-balancing/what-is-a-load-balancer.md) — Distributing load across instances.
+* [System Design Example: Scaling an Application](../07-system-design-examples/scaling-an-application.md) — Real-world roadmap from 1 to 10M users.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Latency vs. Throughput](./latency-throughput.md) | [01. Fundamentals Index](./README.md) | [Monolithic Architecture ➡️](../02-architecture/monolithic.md) |

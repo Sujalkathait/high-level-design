@@ -1,105 +1,136 @@
-# Database Sharding
+# 02. Database Sharding & Partitioning
 
-> High-Level System Design | Databases & Storage
+[🏠 Home](../README.md) > [06. Databases](./README.md) > **Sharding**
 
 ---
 
-### 1. What is it?
+## 1. What is Database Sharding?
 
-Sharding is horizontally partitioning a large database table into smaller chunks (called **shards**) and distributing them across **multiple independent physical database servers**.
-* **Replication vs. Sharding:**
-  * **Replication:** Copies the *entire* database to multiple machines (scales **reads**).
-  * **Sharding:** Splits the database so each machine holds only a *fraction* of the rows (scales **writes and storage**).
+**Sharding** is the architectural technique of dividing a large dataset into smaller subsets (called **shards**) and distributing them across **multiple independent physical database nodes**.
+
+Each shard stores a distinct subset of the overall data, functioning as an independent database with its own CPU, memory, and disk storage.
+
 ```mermaid
 flowchart TD
-    App[Application Servers] --> Router{ Shard Router / Proxy\nhash(user_id) % 3}
-    Router -->|user_id hash: 0| Shard1[(Shard 1: Users 0 - 3M\nIndependent Disk & CPU)]
-    Router -->|user_id hash: 1| Shard2[(Shard 2: Users 3M - 6M\nIndependent Disk & CPU)]
-    Router -->|user_id hash: 2| Shard3[(Shard 3: Users 6M - 9M\nIndependent Disk & CPU)]
+    App[Application / API Tier] --> Router{Shard Router / Proxy}
+    Router -->|user_id hash: Shard A| ShardA[(Shard A: 30M Users\nIndependent Hardware)]
+    Router -->|user_id hash: Shard B| ShardB[(Shard B: 30M Users\nIndependent Hardware)]
+    Router -->|user_id hash: Shard C| ShardC[(Shard C: 30M Users\nIndependent Hardware)]
 ```
+
+### Illustrative Example:
+Suppose an application stores **90 million user records**:
+* Instead of placing all 90M records on a single database node (which risks memory saturation and slow index traversals), the system distributes them across 3 shards:
+  * **Shard A:** Stores 30 million users.
+  * **Shard B:** Stores 30 million users.
+  * **Shard C:** Stores 30 million users.
 
 ---
 
-### 2. Sharding Strategies Compared
+## 2. Common Sharding Strategies
 
 ```mermaid
 flowchart LR
-    subgraph RangeBased [1. Range-Based Sharding]
+    subgraph Range [1. Range-Based Sharding]
         direction TB
-        R1[A - H: Shard 1]
-        R2[I - P: Shard 2]
-        R3[Q - Z: Shard 3]
-        NoteR["Simple, but causes severe hotspots! (Letters like S get 10x traffic)"]
+        R1["Shard 1: IDs 1 - 1,000,000"]
+        R2["Shard 2: IDs 1,000,001 - 2,000,000"]
+        R3["Shard 3: IDs 2,000,001 - 3,000,000"]
     end
-    subgraph HashBased [2. Hash-Based Sharding (Standard)]
+
+    subgraph Hash [2. Hash-Based Sharding]
         direction TB
-        H1["hash(user_id) % N"]
+        H1["shard_id = hash(user_id) % num_shards"]
         H2["Even distribution across all nodes"]
-        NoteH["Uniform spread, but resharding when adding nodes is painful"]
     end
-    subgraph ConsistentHash [3. Consistent Hashing]
+
+    subgraph Consistent [3. Consistent Hashing]
         direction TB
-        C1["Virtual Ring (0 to 2^32-1)"]
-        C2["Adding Shard 4 only moves 1/4 of keys!"]
+        C1["Virtual Hash Ring (0 to 2^32 - 1)"]
+        C2["Minimal key movement during re-sharding"]
     end
 ```
-| Strategy | How it Works | Pros | Cons |
-|---|---|---|---|
-| **Range-Based** | Shard by ID ranges (e.g. 1–1M $\to$ Shard 1; 1M–2M $\to$ Shard 2) or timestamps | Easy range queries (`WHERE created_at BETWEEN...`) | **Severe hotspots** (All current writes slam the latest date shard) |
-| **Hash-Based** | `hash(key) % Number_Of_Shards` | Perfectly even distribution across all servers | Adding new shard servers requires migrating almost all data |
-| **Directory-Based** | Lookup service maintains a map of which entity lives on which shard | Highly flexible; can move individual users easily | The lookup table becomes a single point of failure and bottleneck |
+
+### 1. Range-Based Sharding
+Records are assigned to shards according to contiguous ranges of a key value (e.g., user IDs, letters of the alphabet, or timestamps).
+* **Example:**
+  * Shard A: `user_id` $1 \text{ – } 1,000,000$
+  * Shard B: `user_id` $1,000,001 \text{ – } 2,000,000$
+  * Shard C: `user_id` $2,000,001 \text{ – } 3,000,000$
+* **Advantages:**
+  * Highly efficient for range queries (`WHERE user_id BETWEEN 500 AND 1500`) that align cleanly with shard boundaries.
+  * Straightforward and intuitive to understand.
+* **Disadvantages:**
+  * **Uneven traffic distribution:** If newer users are significantly more active than older users, Shard C will be slammed while Shards A and B sit idle.
+  * Sequential auto-incrementing identifiers concentrate 100% of new write traffic onto the highest shard.
+
+### 2. Hash-Based Sharding
+A deterministic mathematical hash function is applied to the shard key to calculate which shard stores the record:
+$$\text{shard\_id} = \text{hash}(\text{user\_id}) \pmod{\text{number\_of\_shards}}$$
+
+* **Advantages:**
+  * Can distribute records and write traffic relatively evenly across all available database nodes.
+  * Eliminates traffic concentration caused by sequential or auto-incrementing IDs.
+* **Disadvantages:**
+  * Range queries become **Scatter-Gather** operations (the application must query all shards and aggregate results).
+  * Changing the shard count (e.g., from 3 to 4 nodes) requires migrating a large percentage of data across all shards unless consistent hashing is used.
+
+### 3. Consistent-Hash-Based Partitioning
+Consistent hashing places nodes and keys on a virtual circular hash ring ($0 \text{ to } 2^{32}-1$). When a new shard is added or removed, only $K/N$ keys need to be reassigned (where $K$ is total keys and $N$ is total nodes).
+* While conceptually clean, real-world database systems often use partition maps, token ranges (like Apache Cassandra), or database-managed routing layers to manage partition movements.
 
 ---
 
-### 3. Detailed Pros & Cons of Sharding
+## 3. Replication vs. Sharding Comparison
 
-#### Advantages (The Pros)
-
-* [+] **Unlimited Horizontal Write Scaling:** If 1 database maxes out at 10,000 writes/sec, 10 shards can handle **100,000 writes/sec**.
-* [+] **Unlimited Disk Storage:** You can store Petabytes of data by simply adding more commodity servers.
-* [+] **Smaller B-Tree Indexes:** A table with 1 billion rows has a massive index that spills out of RAM into slow disk. Ten shards of 100M rows each easily fit their indexes in high-speed RAM.
-* [+] **Blast Radius Isolation:** If Shard 2 experiences a hardware failure, **only 33% of your users** are impacted. Users on Shards 1 and 3 experience zero downtime.
-
-#### Disadvantages (The Cons)
-
-* [-] **Cross-Shard Joins are Impossible / Slow:** You can no longer run `SELECT * FROM orders JOIN users ON...` if the user is on Shard 1 and the order is on Shard 3. You must execute joins manually in application code.
-* [-] **Distributed Transactions are Painful:** If a transaction modifies data on two shards, you must use **Two-Phase Commit (2PC)** or a Saga pattern, introducing high network latency and locking risks.
-* [-] **Re-sharding Complexity:** When your traffic outgrows 4 shards and you need 8 shards, redistributing existing data across machines without downtime is one of the hardest operations in software engineering.
-* [-] **The Hotspot (Celebrity) Problem:** If a celebrity (e.g. Elon Musk or Cristiano Ronaldo) is assigned to Shard 2, millions of likes and replies will overwhelm Shard 2 while other shards sit idle.
+| Feature | Replication | Sharding |
+|---|---|---|
+| **Main Purpose** | Maintain identical copies of data across nodes | Divide a dataset into discrete partitions across nodes |
+| **Data Placement** | Multiple copies of the **same data** | **Different subsets** of data on each shard |
+| **Read Scaling** | Often drastically improves read capacity | Can distribute reads across partitions |
+| **Write Scaling** | Limited (all writes funnel through primary leader) | Can distribute writes when keys and workloads are partitioned effectively |
+| **Operational Complexity** | Consistency, failover, and replication lag | Partition routing, rebalancing, resharding, and cross-shard queries |
 
 ---
 
-### 4. How to Choose a Great Shard Key
+## 4. Combining Replication and Sharding
 
-The **Shard Key** is the single most important decision in your database architecture.
+Replication and sharding are not mutually exclusive—they are frequently combined in large-scale enterprise production architectures.
+
 ```mermaid
-graph TD
-    Rule{Is the Candidate Shard Key Good?}
-    Rule -->|High Cardinality e.g. user_id, order_id| Good[[+] Great Key: Evenly distributes millions of distinct values]
-    Rule -->|Low Cardinality e.g. country, gender| Bad[[-] Terrible Key: Only 2 or 100 values; creates massive unbalanced shards]
-    Rule -->|Monotonically Increasing e.g. auto_increment id, timestamp| Hotspot[[-] Terrible Key: All new writes hit the highest shard]
+flowchart TD
+    App[Application Router]
+    
+    subgraph ShardA_Cluster [Shard A (Users 1 - 30M)]
+        PA[(Primary A)] --> RA1[(Replica A1)] & RA2[(Replica A2)]
+    end
+
+    subgraph ShardB_Cluster [Shard B (Users 30M - 60M)]
+        PB[(Primary B)] --> RB1[(Replica B1)] & RB2[(Replica B2)]
+    end
+
+    subgraph ShardC_Cluster [Shard C (Users 60M - 90M)]
+        PC[(Primary C)] --> RC1[(Replica C1)] & RC2[(Replica C2)]
+    end
+
+    App --> PA & PB & PC
 ```
-* **High Cardinality:** Millions of unique possible values (`user_id`, `UUID`).
-* **Query Alignment:** The shard key should be present in the `WHERE` clause of 90%+ of your queries so the router sends the request to **exactly one shard** (Single-Shard Query) rather than querying all shards (Scatter-Gather Query).
+
+* In this hybrid architecture:
+  * **Sharding** scales write throughput and total disk storage capacity across Shards A, B, and C.
+  * **Replication** provides high availability, fault tolerance, and massive read scaling within each individual shard.
 
 ---
 
-### 5. Real-World Case Study: Instagram
+## 5. Related Topics & Next Steps
 
-* **The Problem:** Instagram needed to shard their PostgreSQL databases across dozens of servers, but needed 64-bit unique IDs that were chronologically sortable without coordination.
-* **The Solution:** Custom 64-bit ID generation:
-  * 41 bits = Timestamp in milliseconds (gives 69 years of IDs).
-  * 13 bits = **Logical Shard ID** (supports up to 8,192 shards).
-  * 10 bits = Auto-incrementing sequence number (1,024 IDs per shard per millisecond).
-* **Result:** Every ID inherently tells the router which shard to query without looking up a central index!
+* [Database Replication](./replication.md) — Single-leader, multi-leader, and leaderless topologies.
+* [The CAP Theorem](./cap-theorem.md) — CP vs. AP trade-offs during network partitions.
+* [ACID vs. BASE](./acid-vs-base.md) — Relational transactions vs. distributed eventual consistency.
+* [Consistent Hashing](../04-load-balancing/consistent-hashing.md) — Algorithmic hash ring mechanics.
 
 ---
 
-### 6. The Production Golden Rule
-
-> Note: **Do NOT shard until you have exhausted:**
-> 1. Hardware vertical scaling (large NVMe SSDs, 512GB RAM).
-> 2. Database read replicas (to offload 90% read traffic).
-> 3. Caching hot queries in Redis.
->
-> Sharding adds 10x operational complexity. Treat it as your **last resort** when write volume or storage limits demand it.
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Database Replication](./replication.md) | [06. Databases Index](./README.md) | [The CAP Theorem ➡️](./cap-theorem.md) |

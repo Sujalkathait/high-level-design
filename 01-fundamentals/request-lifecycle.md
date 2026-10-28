@@ -1,6 +1,6 @@
-# The Request-Response Lifecycle
+# 03. The Request-Response Lifecycle
 
-> High-Level System Design | Core Fundamentals
+[🏠 Home](../README.md) > [01. Fundamentals](./README.md) > **The Request-Response Lifecycle**
 
 ---
 
@@ -111,3 +111,18 @@ sequenceDiagram
 1. **Reuse connections:** A new HTTPS connection over intercontinental fiber costs 200ms before a single byte of data is sent. Always enable HTTP Keep-Alive.
 2. **Terminate TLS at the Load Balancer:** Offload encryption work at the edge so your internal microservices communicate over fast private networks.
 3. **Never query without an index:** An unindexed query does a full table scan ($O(N)$ Disk I/O); an indexed query does a B-Tree lookup ($O(\log N)$ RAM/SSD read).
+
+---
+
+## Related Topics & Next Steps
+
+* [Client-Server Architecture](./client-server-architecture.md) — The roles of frontend and backend.
+* [How One Server Handles Requests](./how-one-server-handles-requests.md) — OS scheduling, worker threads, and capacity.
+* [Latency vs. Throughput](./latency-throughput.md) — Tail latencies (p99) and Little's Law.
+* [Layer 4 vs. Layer 7 Load Balancing](../04-load-balancing/layer-4-vs-layer-7.md) — How reverse proxies route requests.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Client-Server Architecture](./client-server-architecture.md) | [01. Fundamentals Index](./README.md) | [How One Server Handles Requests ➡️](./how-one-server-handles-requests.md) |

@@ -1,6 +1,6 @@
-# Round Robin Load Balancing
+# 03. Round Robin Load Balancing
 
-> High-Level System Design | Load Balancing & Proxies
+[🏠 Home](../README.md) > [04. Load Balancing](./README.md) > **Round Robin**
 
 ---
 
@@ -64,3 +64,17 @@ flowchart TD
 | **Long-Running Database Reports** | [-] **No** | Use **Least Connections** to avoid overloading one node |
 | **WebSockets / Live Chat** | [-] **No** | Persistent connections will unbalance server memory |
 | **Heterogeneous Cloud VM Fleets** | Note: **Use Weighted Only** | Prevents smaller VMs from being crushed by equal load |
+
+---
+
+## Related Topics & Next Steps
+
+* [Layer 4 vs. Layer 7 Load Balancing](./layer-4-vs-layer-7.md) — Application vs. transport routing.
+* [Least Connections](./least-connections.md) — Handling requests with varying execution durations.
+* [Consistent Hashing](./consistent-hashing.md) — Minimizing cache reassignments during cluster changes.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Layer 4 vs. Layer 7](./layer-4-vs-layer-7.md) | [04. Load Balancing Index](./README.md) | [Least Connections ➡️](./least-connections.md) |

@@ -1,6 +1,6 @@
-# Consistent Hashing
+# 05. Consistent Hashing
 
-> High-Level System Design | Load Balancing & Distributed Caching
+[🏠 Home](../README.md) > [04. Load Balancing](./README.md) > **Consistent Hashing**
 
 ---
 
@@ -80,3 +80,21 @@ flowchart LR
 * **Amazon DynamoDB & Apache Cassandra:** Use consistent hashing with virtual nodes to partition rows across hundreds of storage nodes without central coordinators.
 * **Discord Voice Guilds:** Discord routes millions of concurrent voice calls to voice servers using consistent hashing to guarantee that all members of a server land on the exact same voice node.
 * **Akamai & Cloudflare CDN:** Route URL caching to edge servers using consistent hashing to maximize cache hit rates worldwide.
+
+> [!WARNING]
+> **Important Limitation (Hot Key Hotspots):** Consistent hashing balances keys evenly across nodes, but it does **not** balance computational workload if a single key experiences disproportionate traffic (e.g., a celebrity with 100M followers). A hot key will still overload the specific node it hashes to. Mitigation requires multi-level local caching, hot key replication, or salting keys (e.g., `key_1`, `key_2`).
+
+---
+
+## Related Topics & Next Steps
+
+* [Least Connections](./least-connections.md) — Dynamic connection-aware load balancing.
+* [Caching Fundamentals](../05-caching/cache-fundamentals.md) — The caching hierarchy and hit ratios.
+* [Caching Strategies](../05-caching/caching-strategies.md) — Cache-Aside, Write-Through, Write-Back patterns.
+* [Database Sharding](../06-databases/sharding.md) — Consistent hashing for distributed database partitions.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Least Connections](./least-connections.md) | [04. Load Balancing Index](./README.md) | [Caching Fundamentals ➡️](../05-caching/cache-fundamentals.md) |

@@ -1,6 +1,6 @@
-# Database Replication
+# 01. Database Replication
 
-> High-Level System Design | Databases & Storage
+[🏠 Home](../README.md) > [06. Databases](./README.md) > **Replication**
 
 ---
 
@@ -11,6 +11,7 @@ Replication means keeping identical copies of the same database on multiple phys
   1. **Scale Reads:** Offload read traffic from the primary database to read replicas.
   2. **High Availability:** If the primary machine catches fire, promote a replica to primary in seconds.
   3. **Geographic Proximity:** Place replicas in Tokyo, Frankfurt, and Virginia so users read data with single-digit millisecond latency.
+
 ```mermaid
 flowchart TD
     AppW[App: Write Traffic] -->|INSERT / UPDATE / DELETE| Primary[(Primary / Leader DB)]
@@ -27,9 +28,9 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Client as  App Server
-    participant P as  Primary DB
-    participant R as  Replica DB
+    actor Client as App Server
+    participant P as Primary DB
+    participant R as Replica DB
     Note over P,R: Case A: Synchronous Replication (Zero Data Loss)
     Client->>P: 1. Write user balance = $100
     P->>R: 2. Forward write over network
@@ -90,10 +91,10 @@ flowchart LR
 
 ```mermaid
 sequenceDiagram
-    actor User as  User
-    participant App as  App Server
-    participant Primary as  Primary DB
-    participant Replica as  Read Replica (500ms behind!)
+    actor User as User
+    participant App as App Server
+    participant Primary as Primary DB
+    participant Replica as Read Replica (500ms behind!)
     User->>App: 1. Update Profile: Name = 'Sujal'
     App->>Primary: 2. Write to Primary
     Primary-->>App: 3. Write OK
@@ -115,3 +116,18 @@ sequenceDiagram
 ### 6. Key Takeaway
 
 Replication is for **scaling reads** and **high availability**. It does **NOT** solve write bottlenecks. If your primary database is running out of disk or CPU from too many writes, you need **Sharding**, not more replicas!
+
+---
+
+## 7. Related Topics & Next Steps
+
+* [Database Sharding](./sharding.md) — Scaling write throughput by partitioning across servers.
+* [The CAP Theorem](./cap-theorem.md) — Navigating partitions, availability, and consistency.
+* [ACID vs. BASE](./acid-vs-base.md) — Relational guarantees vs. distributed eventual consistency.
+* [Cache Fundamentals](../05-caching/cache-fundamentals.md) — Shielding replicas with in-memory caching.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Common Caching Problems](../05-caching/common-caching-problems.md) | [06. Databases Index](./README.md) | [Database Sharding ➡️](./sharding.md) |

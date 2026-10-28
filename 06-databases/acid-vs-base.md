@@ -1,95 +1,90 @@
-# ACID vs. BASE in Distributed Databases
+# 04. ACID vs. BASE in Distributed Databases
 
-> High-Level System Design | Databases & Storage
+[🏠 Home](../README.md) > [06. Databases](./README.md) > **ACID vs. BASE**
 
 ---
 
-### 1. What is it?
+## 1. What are ACID and BASE?
 
-* **ACID (Pessimistic & Strict):** The traditional relational database model (PostgreSQL, MySQL, Oracle) designed for **absolute data accuracy**. Every transaction is guaranteed to either succeed completely or fail completely, with zero half-written data.
-* **BASE (Optimistic & Flexible):** The distributed NoSQL model (Cassandra, DynamoDB, Couchbase) designed for **massive scale and high availability**. It accepts that data might be temporarily inconsistent across nodes in exchange for never rejecting a write.
+In database systems, **ACID** and **BASE** represent two fundamentally different philosophies for managing state, concurrency, and reliability:
+
+* **ACID:** Emphasizes absolute transaction correctness, strict isolation, and mathematical consistency. Standard in traditional relational databases (PostgreSQL, MySQL, Oracle).
+* **BASE:** Emphasizes continuous availability, partition tolerance, and horizontal scalability by accepting temporary data inconsistency. Common in distributed NoSQL systems (Cassandra, DynamoDB).
+
 ```mermaid
 flowchart LR
-    subgraph ACID_Model [ACID: Strong Consistency]
+    subgraph ACID_Philosophy [ACID: Pessimistic & Exact]
         direction TB
-        Tx1[Transaction] --> Lock[Acquire Row Locks]
-        Lock --> Write[Write to WAL & Disk]
-        Write --> Commit[Commit Transaction]
-        Commit --> Unlock[Release Locks]
-        Note1["Guarantees exact balance, but limits scale!"]
+        A1[Atomicity] --- A2[Consistency]
+        A2 --- A3[Isolation]
+        A3 --- A4[Durability]
+        NoteA["Pessimistic locking guarantees 100% exact correctness."]
     end
-    subgraph BASE_Model [BASE: Eventual Consistency]
+
+    subgraph BASE_Philosophy [BASE: Optimistic & Scalable]
         direction TB
-        W1[Write Request] --> NodeA[Node A: Saves locally]
-        NodeA -->> Client[Instant 200 OK Response]
-        NodeA -.->|Async Gossip / Background Sync| NodeB[Node B]
-        NodeA -.->|Async Gossip / Background Sync| NodeC[Node C]
-        Note2["Never rejects writes, but data syncs over time!"]
+        B1[Basically Available] --- B2[Soft State]
+        B2 --- B3[Eventual Consistency]
+        NoteB["Optimistic concurrency maximizes availability & write speed."]
     end
 ```
 
 ---
 
-### 2. Deep Dive: ACID Explained
+## 2. ACID Properties Explained
 
-| Principle | Meaning | Real-World Scenario |
+| Property | Meaning | Concrete Example |
 |---|---|---|
-| **A — Atomicity** | "All or Nothing." If any step fails, the entire transaction rolls back. | Transferring $100 from Alice to Bob: Debit Alice succeeds, credit Bob fails $\to$ Entire transaction aborts; Alice keeps her $100. |
-| **C — Consistency** | Enforces all schema constraints, foreign keys, and unique checks. | An account balance column with a `CHECK (balance >= 0)` constraint will immediately abort any transaction that causes overdraft. |
-| **I — Isolation** | Concurrent transactions execute without interfering with each other. | If Alice and Bob both attempt to purchase the last concert ticket simultaneously, one transaction wins and the other sees a sold-out error. |
-| **D — Durability** | Once committed, data survives crashes, power loss, and reboots. | Written immediately to non-volatile disk via the **Write-Ahead Log (WAL)** before returning success to the client. |
+| **Atomicity** | "All-or-Nothing." A transaction either succeeds completely or has no committed partial effect. | **Bank Transfer:** Moving \$100 from Account A to Account B requires debiting A and crediting B. The system must not commit the debit without the corresponding credit. If power cuts mid-way, both changes roll back. |
+| **Consistency** | A transaction preserves all database-defined integrity constraints and invariants. | Account balance rules (e.g., `CHECK (balance >= 0)`) abort any transaction that would result in an overdraft. |
+| **Isolation** | Concurrent transactions execute without interfering with one another, according to configured isolation levels. | If Alice and Bob attempt to buy the final available concert seat at the exact same millisecond, one transaction wins and the other is informed the seat is taken. |
+| **Durability** | Committed changes survive system crashes, power loss, and hardware reboots. | Transactions are recorded to non-volatile disk via the **Write-Ahead Log (WAL)** before returning success to the caller. |
 
 ---
 
-### 3. Deep Dive: BASE Explained
+## 3. BASE Philosophy Explained
 
-| Principle | Meaning | Real-World Scenario |
+**BASE** is a design philosophy commonly associated with highly available distributed systems that prioritize scale and resilience over immediate consistency.
+
+| Property | Meaning | Concrete Example |
 |---|---|---|
-| **BA — Basically Available** | The system guarantees availability for every request, even during node failures. | Even if 2 out of 5 database nodes are down, the remaining nodes accept user requests without error. |
-| **S — Soft State** | Data can change over time without user interaction due to background sync. | Replicas asynchronously catch up via gossip protocols; a node's state is "soft" until fully synchronized. |
-| **E — Eventual Consistency** | Given enough time with no new updates, all nodes will converge to the exact same value. | After posting an Instagram comment, you see it instantly; your friend across the ocean sees it 500ms later. |
+| **Basically Available** | The system aims to continue responding to requests despite partial node failures. | Even if 2 out of 5 database nodes are partitioned or offline, remaining nodes continue serving user requests without failing. |
+| **Soft State** | State may change over time without explicit user interaction as asynchronous updates propagate across replicas. | Replicas asynchronously synchronize via gossip protocols; a node's local state is "soft" until background sync finishes. |
+| **Eventual Consistency** | Replicas may temporarily disagree, but will converge to the exact same value if updates stop and propagation succeeds. | When you upload a profile picture on Instagram, you see it immediately; your follower in Australia sees it 500 ms later once replication completes. |
+
+> [!NOTE]
+> **BASE is not a replacement for every ACID guarantee.** It describes deliberate trade-offs often used in distributed data systems to maximize uptime and horizontal write throughput.
 
 ---
 
-### 4. Comprehensive Pros & Cons
+## 4. Master Comparison: ACID vs. BASE
 
-#### ACID Pros & Cons
-
-* **Pros:**
-  * [+] **Zero Lost Money / Transactions:** Guarantees absolute correctness. Critical for billing, inventory, and banking.
-  * [+] **Simple Developer Mental Model:** You don't have to write complex application code to resolve data conflicts.
-  * [+] **Rich Query Capabilities:** Supports complex multi-table SQL `JOIN`s, aggregations, and subqueries out of the box.
-* **Cons:**
-  * [-] **Poor Horizontal Write Scalability:** Scale-up limits write throughput. You cannot easily spread ACID writes across 50 servers.
-  * [-] **High Latency Under Contention:** Row locks and table locks cause worker threads to queue up and wait.
-  * [-] **Single Point of Failure (Write Master):** A single primary node must serialize all writes; if it fails, failover takes time.
-
-#### BASE Pros & Cons
-
-* **Pros:**
-  * [+] **Massive Write Throughput:** Can ingest millions of writes per second across hundreds of commodity servers.
-  * [+] **High Availability (99.999%):** Multi-leader or leaderless clusters never go read-only when a node dies.
-  * [+] **Multi-Region Active-Active:** Users in Tokyo write to Tokyo nodes; users in London write to London nodes with local latency.
-* **Cons:**
-  * [-] **Stale / Dirty Reads:** A user might refresh their profile and see old data for a few hundred milliseconds.
-  * [-] **Application Conflict Resolution:** You must handle concurrent writes (e.g., using Last-Write-Wins or CRDTs).
-  * [-] **No Foreign Keys or Joins:** Data must be denormalized; data consistency must be enforced in application code.
-
----
-
-### 5. Head-to-Head Decision Matrix
-
-| Dimension | ACID (e.g., PostgreSQL, MySQL) | BASE (e.g., Cassandra, DynamoDB) |
+| Feature | ACID-Oriented Transactions | BASE-Oriented Design |
 |---|---|---|
-| **Data Consistency** | **Strong Consistency** (Immediate) | **Eventual Consistency** (Lagged) |
-| **Scalability** | Vertical (Scale Up) + Read Replicas | **Horizontal (Scale Out)** across hundreds of nodes |
-| **Transaction Scope** | Multi-row, multi-table transactions | Single-row / single-key atomic operations |
-| **Performance** | Slower for high concurrent writes | **Blazing fast writes** (appends to memory/commit log) |
-| **Ideal Workloads** | E-commerce checkout, Ledger, Orders, User Auth | Social media feeds, IoT telemetry, Chat history, Clickstream |
+| **Primary Focus** | Transactional correctness & data integrity | Continuous availability & distributed scale |
+| **Consistency** | Transaction guarantees defined by database (Strong/Immediate) | Temporary inconsistencies may be accepted (Eventual) |
+| **Transactions** | Often central to the data model (multi-row, multi-table) | May rely more on asynchronous workflows & single-key atomic writes |
+| **Typical Use Cases** | Financial ledgers, inventory counts, billing systems, order processing | Distributed social feeds, replicated views, telemetry, high-scale workloads |
 
 ---
 
-### 6. Real-World Case Studies
+## 5. Combining ACID and BASE in Modern Systems
 
-* **Amazon Shopping Cart (BASE):** Amazon engineered DynamoDB so that `Add to Cart` never fails. If a network partition occurs, the system accepts both items and reconciles/merges them later rather than rejecting an eager buyer.
-* **Stripe Payment Engine (ACID):** Stripe uses ACID transactions with strict Serializable isolation in PostgreSQL to ensure money is never credited or debited twice under high network concurrency.
+The choice between ACID and BASE is **not all-or-nothing**. Real-world systems often combine both patterns:
+* **The Core Transactional Tier (ACID):** The checkout and payment engine utilizes an ACID relational database (e.g., PostgreSQL) to ensure zero double-spending and accurate accounting.
+* **The Derived Analytics & Feed Tier (BASE):** Post-checkout events are streamed asynchronously via message brokers to an eventually consistent distributed store (e.g., Cassandra / ElasticSearch) to power search, recommendations, and dashboards.
+
+---
+
+## 6. Related Topics & Next Steps
+
+* [Database Replication](./replication.md) — Scaling reads with primary-replica clusters.
+* [Database Sharding](./sharding.md) — Partitioning datasets across multiple database nodes.
+* [The CAP Theorem](./cap-theorem.md) — Trade-offs between consistency and availability.
+* [Cache Fundamentals](../05-caching/cache-fundamentals.md) — In-memory acceleration layers.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Module ➡️ |
+|:--- |:---:| ---:|
+| [The CAP Theorem](./cap-theorem.md) | [06. Databases Index](./README.md) | [07. Real-World System Design ➡️](../07-system-design-examples/README.md) |

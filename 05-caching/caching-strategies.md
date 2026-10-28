@@ -1,57 +1,223 @@
-# Caching Strategies
+# 02. Caching Strategies
 
-> High-Level System Design | Caching & Data Acceleration
-
----
-
-### 1. What is it?
-A Caching Strategy is the design pattern that dictates **how and when data moves between the application, the fast in-memory cache (Redis / Memcached), and the durable database**. Choosing the right strategy determines data freshness, latency, and resilience during database outages.
+[🏠 Home](../README.md) > [05. Caching](./README.md) > **Caching Strategies**
 
 ---
 
-### 2. Core Caching Patterns Compared
+## 1. What is a Caching Strategy?
+
+A **Caching Strategy** is the architectural pattern that dictates **how and when data moves between the application, the in-memory cache layer, and the persistent database**. 
+
+Choosing the right caching pattern defines your system's data freshness, read/write latencies, complexity, and tolerance to failures.
 
 ```mermaid
 flowchart TD
-    subgraph CacheAside [1. Cache-Aside / Lazy Loading (Standard)]
-        direction TB
-        App1[Application] -->|1. Check Cache| C1[(Cache)]
-        App1 -->|2. On Miss: Read DB| DB1[(Database)]
-        App1 -->|3. Populate Cache| C1
-    end
-
-    subgraph WriteThrough [2. Write-Through (Consistent)]
-        direction TB
-        App2[Application] -->|1. Write Data| C2[(Cache)]
-        C2 -->|2. Synchronously Writes| DB2[(Database)]
-    end
-
-    subgraph WriteBack [3. Write-Back / Write-Behind (High Write Volume)]
-        direction TB
-        App3[Application] -->|1. Fast Write| C3[(Cache)]
-        C3 -.->|2. Async Batched Flush| DB3[(Database)]
+    subgraph Patterns [The 5 Foundational Caching Patterns]
+        P1["1. Cache-Aside (Lazy Loading)"]
+        P2["2. Read-Through"]
+        P3["3. Write-Through"]
+        P4["4. Write-Back (Write-Behind)"]
+        P5["5. Write-Around"]
     end
 ```
 
 ---
 
-### 3. Detailed Pattern Breakdown
+## 2. Cache-Aside (Lazy Loading)
 
-| Strategy | Read Path | Write Path | Pros | Cons |
-|---|---|---|---|---|
-| **Cache-Aside (Lazy)** | Check cache $\to$ If miss, query DB and backfill cache | Write directly to DB $\to$ Evict/invalidate cache key | [+] Only caches data actually requested; cache failure does not stop writes | [-] Cache misses cost 3 network hops; risk of stale reads |
-| **Read-Through** | App requests from cache; cache automatically queries DB on miss | (Same as write strategy) | [+] Clean application code; simplifies caching logic | [-] Cache library must support custom DB loaders |
-| **Write-Through** | Read from cache | App writes to cache $\to$ Cache synchronously writes to DB | [+] Cache is always 100% in sync with DB | [-] Higher write latency (writes to two systems synchronously) |
-| **Write-Back (Write-Behind)** | Read from cache | App writes to cache $\to$ Cache asynchronously batches writes to DB | [+] **Blazing fast writes**; absorbs massive write spikes | [-] **Risk of data loss** if cache node crashes before flush |
-| **Write-Around** | Read from cache | App writes directly to DB, bypassing cache | [+] Prevents one-off batch writes from polluting cache | [-] Immediate reads after writes result in cache misses |
+In a **Cache-Aside** design, the application is responsible for coordinating reads and writes between the cache and the backing database. The application checks the cache first and explicitly fetches from the database when a cache miss occurs.
+
+### Read Flow
+
+```mermaid
+flowchart TD
+    App[Application] --> Cache[(Cache)]
+    Cache -->|Cache Hit| ReturnData[Return Data to Application]
+    Cache -->|Cache Miss| DB[(Database)]
+    DB --> PopulateCache[Populate Cache with TTL]
+    PopulateCache --> ReturnData
+```
+
+### Python Code Example
+
+```python
+def get_user(user_id):
+    key = f"user:{user_id}"
+
+    # 1. Check cache first
+    user = cache.get(key)
+    if user is not None:
+        return user
+
+    # 2. On cache miss, query primary database
+    user = database.get_user(user_id)
+
+    # 3. If found, populate cache with a Time-To-Live (TTL)
+    if user is not None:
+        cache.set(key, user, ttl=300)
+
+    return user
+```
+*(This example assumes standard cache and database client libraries).*
+
+### Advantages
+* **Memory Efficient:** Only requested data needs to be cached. Cold, unrequested records never waste expensive cache RAM.
+* **Direct Control:** The application has full granular control over caching logic, custom TTLs, and serialization.
+* **Resilient to Cache Outage:** The database remains the ultimate source of truth. If the cache crashes, the application can still function by querying the database directly (though database load increases).
+
+### Disadvantages
+* **Three Network Hops on Miss:** The initial request for an uncached item is noticeably slower because it incurs a cache check, database read, and cache backfill.
+* **Potential Stale Data:** Data can become stale if another service updates the database directly without invalidating or evicting the cached key.
+* **Manual Invalidation Complexity:** The application code must deliberately handle cache invalidation on every update/delete operation.
+
+### Best Use Cases
+* Read-heavy web applications.
+* E-commerce product catalogs.
+* User account profiles.
+* Frequently requested system configuration data.
 
 ---
 
-### 4. Cache Invalidation: The 3 Classic Production Gotchas
+## 3. Read-Through
 
-1. **Cache Stampede (Thundering Herd):** A popular key expires. 10,000 concurrent requests miss simultaneously and slam the primary database.
-   * *Fix:* Use distributed locks (e.g. Redlock) so only 1 worker queries DB, or implement probabilistic early expiration (XFetch).
-2. **Cache Penetration:** Malicious requests query non-existent keys (e.g. `user_id = -999`), bypassing cache and hitting DB every time.
-   * *Fix:* Cache null values (`user:-999 = null`, TTL 60s) or put a **Bloom Filter** in front of the cache.
-3. **Cache Breakdown:** An ultra-hot key expires.
-   * *Fix:* Set background cron jobs to refresh the key asynchronously before its TTL expires.
+In a **Read-Through** architecture, the application treats the cache as the central data store. When a cache miss occurs, the cache layer itself transparently loads the missing data from the backing database and returns it to the application.
+
+```mermaid
+flowchart LR
+    App[Application] --> Cache[(Cache Layer)]
+    Cache -->|On Miss: Auto-Fetch| DB[(Database)]
+```
+
+The application does not implement database-fetching logic for each cache miss; that responsibility belongs to the cache integration or provider plugin.
+
+### Advantages
+* **Cleaner Application Code:** Simplifies application-level read logic and avoids duplicate boilerplate queries.
+* **Centralized Handling:** Centralizes cache-miss handling, serialization, and error recovery in one place.
+* **Standardized Behavior:** Guarantees uniform caching behavior across multiple microservices calling the same data tier.
+
+### Disadvantages
+* Requires a cache integration or framework plugin that natively supports custom database loaders.
+* Cache population and error handling still need to be carefully designed.
+* Cache consistency is not automatic if external processes modify the database directly.
+
+### Cache-Aside vs. Read-Through
+
+| Dimension | Cache-Aside (Lazy Loading) | Read-Through |
+|---|---|---|
+| **Where Miss Logic Lives** | **Inside the Application** code | **Inside the Cache Layer** provider |
+| **Direct DB Access** | Application connects to both Cache and DB | Application connects primarily to Cache |
+| **Consistency** | Both patterns return stale data unless freshness and invalidation are managed |
+
+---
+
+## 4. Write-Through
+
+In a **Write-Through** design, data is written to the backing store as part of the write operation, and the cache is updated synchronously at the same time.
+
+```mermaid
+flowchart LR
+    App[Application] --> Cache[(Cache Layer)]
+    Cache -->|Synchronous Write| DB[(Database)]
+```
+
+The application writes to the cache layer, which synchronously persists the change to the database before confirming success to the caller.
+
+### Advantages
+* **Fresh Reads:** Cache entries are kept fresh immediately whenever writes succeed. Subsequent reads are far less likely to encounter stale values.
+* **Simplified Writing Interface:** The application can interact with a consistent cache-writing interface without managing separate database write paths.
+
+### Disadvantages
+* **Higher Write Latency:** Every write operation is penalized because it must wait for two network round-trips (Cache write + Database write).
+* **Failure Complexity:** Updating two separate systems introduces failure handling complexity.
+
+> [!IMPORTANT]
+> **Important Consideration:** Write-through does **not** inherently guarantee distributed ACID transactions across independently failing systems. The application must explicitly define what happens when a database write succeeds but a cache update fails, or vice versa (e.g., using retry queues or two-phase commits).
+
+---
+
+## 5. Write-Back (Write-Behind)
+
+In a **Write-Back** design (also called **Write-Behind**), the cache accepts the write immediately and acknowledges it to the application in sub-millisecond time. The cache updates the persistent backing store **asynchronously in the background**, frequently batching multiple writes together.
+
+```mermaid
+flowchart LR
+    App[Application] -->|1. Fast Write (<1ms)| Cache[(Cache)]
+    Cache -.->|2. Async Batched Persistence| DB[(Database)]
+```
+
+### Advantages
+* **Ultra-Low Write Latency:** The application does not wait for slow disk I/O.
+* **Batched Database Writes:** The cache can aggregate multiple updates to the same row (e.g., video view counts incremented 1,000 times) and execute a single batched database write, drastically reducing write amplification.
+
+### Disadvantages
+* **Risk of Permanent Data Loss:** If an acknowledged write exists only in volatile cache RAM and the cache server loses power or crashes, **that data is permanently lost**.
+* **Database Lags Cache:** The database temporarily lags behind the cache, causing inconsistent states if other systems read directly from disk.
+* **Operational Complexity:** Recovery, retries, write ordering, and idempotent de-duplication must be handled by the cache pipeline.
+
+### Best Use Cases
+* Aggregated counters (e.g., YouTube video view counts, Twitter tweet impression counts).
+* High-volume IoT telemetry and analytics ingestion workloads where delayed persistence is acceptable.
+* **Caution:** **Never use a volatile cache as the only durable record for critical financial transactions, payment ledgers, or medical records!**
+
+---
+
+## 6. Write-Around
+
+In a **Write-Around** design, writes go directly to the persistent database without updating the cache. The cache is only populated later when an item is requested on a subsequent read.
+
+```mermaid
+flowchart TD
+    subgraph Write_Flow [Write Flow: Direct to DB]
+        AppW[Application] -->|Direct Write| DB[(Database)]
+    end
+
+    subgraph Read_Flow [Read Flow: Lazy Load on Demand]
+        AppR[Application] --> Cache[(Cache)]
+        Cache -->|Miss| DB
+        DB --> Pop[Populate Cache]
+        Pop --> Return[Return Data]
+    end
+```
+
+### Advantages
+* **Prevents Cache Churn / Pollution:** Avoids flooding the cache with one-time write data that may never be read again (e.g., large bulk uploads, transaction archives).
+* **Conserves Expensive Cache RAM:** Ensures only hot, repeatedly requested data occupies memory.
+
+### Disadvantages
+* **Guaranteed Miss on Immediate Read:** A read immediately after a write will miss the cache, incurring the latency penalty of a full database lookup.
+* **Cache Invalidation Still Required:** If an existing cached entry was present before the write, it must be explicitly invalidated or updated to avoid serving stale data.
+
+### Best Use Cases
+* Bulk data imports.
+* Write-heavy workloads with infrequent or delayed reads.
+* Archival data that is unlikely to be accessed soon after creation.
+
+---
+
+## 7. Master Caching Pattern Comparison
+
+| Pattern | Read Behavior | Write Behavior | Main Advantage | Main Trade-Off |
+|---|---|---|---|---|
+| **Cache-Aside** | Application checks cache and fetches from DB on a miss | Usually database write plus cache invalidation or update | Simple, flexible, resilient to cache failure | Application code handles consistency |
+| **Read-Through** | Cache layer automatically loads missing data from DB | Depends on write strategy configured | Centralized, clean read logic | Requires suitable cache provider integration |
+| **Write-Through** | Cache serves reads with fresh values | Cache and backing store are updated as part of the write flow | Helps maintain fresh cache entries | Higher write latency and coordination complexity |
+| **Write-Back** | Cache serves reads | Cache is updated first; backing store is updated asynchronously | Fast writes and batching | Delayed persistence and risk of data loss |
+| **Write-Around** | Cache is checked; misses read from database | Database is written directly, bypassing cache | Avoids caching every one-time write | First read immediately after write may miss |
+
+> [!NOTE]
+> **Patterns are Not Mutually Exclusive:** Real-world production architectures frequently combine patterns. For example, a system may use **Cache-Aside** for read queries combined with **Write-Around** for bulk batch imports, or **Write-Through** for critical user profiles.
+
+---
+
+## 8. Related Topics & Next Steps
+
+* [Cache Fundamentals](./cache-fundamentals.md) — Hits, misses, locations, and hit ratio math.
+* [Cache Eviction Policies](./eviction-policies.md) — LRU vs. LFU step-by-step algorithms.
+* [Redis vs. Memcached](./redis-vs-memcached.md) — Evaluating memory engine architectures.
+* [Common Caching Problems](./common-caching-problems.md) — Stampedes, penetration, and avalanches.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Cache Fundamentals](./cache-fundamentals.md) | [05. Caching Index](./README.md) | [Eviction Policies ➡️](./eviction-policies.md) |

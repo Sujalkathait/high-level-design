@@ -1,6 +1,6 @@
-# Client-Server Architecture
+# 02. Client-Server Architecture
 
-> High-Level System Design | Core Fundamentals
+[🏠 Home](../README.md) > [01. Fundamentals](./README.md) > **Client-Server Architecture**
 
 ---
 
@@ -109,3 +109,18 @@ flowchart TD
 1. **Never trust client input:** Always re-validate permissions, prices, and IDs on the server.
 2. **Stateless is mandatory:** If a server dies mid-request, another server must be able to pick up the next request seamlessly.
 3. **Use HTTPS / TLS everywhere:** Encrypt communication between client and server to prevent Man-in-the-Middle (MITM) snooping.
+
+---
+
+## Related Topics & Next Steps
+
+* [Introduction to High-Level Design](./introduction-to-hld.md) — The 30,000-ft overview of distributed architecture.
+* [The Request-Response Lifecycle](./request-lifecycle.md) — The end-to-end journey of an HTTP packet.
+* [How One Server Handles Requests](./how-one-server-handles-requests.md) — Understanding single-server limits.
+* [Monolithic Architecture](../02-architecture/monolithic.md) — Packaging and deploying backend logic.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Introduction to HLD](./introduction-to-hld.md) | [01. Fundamentals Index](./README.md) | [The Request-Response Lifecycle ➡️](./request-lifecycle.md) |

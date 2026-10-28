@@ -1,6 +1,6 @@
-# Layer 4 vs. Layer 7 Load Balancing
+# 02. Layer 4 vs. Layer 7 Load Balancing
 
-> High-Level System Design | Load Balancing & Proxies
+[🏠 Home](../README.md) > [04. Load Balancing](./README.md) > **Layer 4 vs. Layer 7**
 
 ---
 
@@ -82,3 +82,18 @@ flowchart TD
 ```
 * **Tier 1 (L4 NLB):** Accepts all public internet traffic, absorbs DDoS packet floods, and distributes TCP streams across multiple L7 nodes.
 * **Tier 2 (L7 Nginx/ALB):** Terminates TLS, enforces rate limiting, parses headers, and dispatches to specific microservices.
+
+---
+
+## Related Topics & Next Steps
+
+* [What Is a Load Balancer?](./what-is-a-load-balancer.md) — The fundamental role of load balancers.
+* [Round Robin Scheduling](./round-robin.md) — Rotating requests sequentially.
+* [Least Connections](./least-connections.md) — Routing by active connection count.
+* [Consistent Hashing](./consistent-hashing.md) — Key-based sticky hashing for distributed caches.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [What Is a Load Balancer?](./what-is-a-load-balancer.md) | [04. Load Balancing Index](./README.md) | [Round Robin ➡️](./round-robin.md) |

@@ -1,6 +1,6 @@
-# Latency vs. Throughput
+# 05. Latency vs. Throughput
 
-> High-Level System Design | Core Fundamentals
+[🏠 Home](../README.md) > [01. Fundamentals](./README.md) > **Latency vs. Throughput**
 
 ---
 
@@ -98,3 +98,18 @@ When a server hits 100% CPU utilization, **queuing delay** explodes exponentiall
 * **Amazon:** Found that every **100 ms of added latency cost them 1% in sales**.
 * **Google:** Increasing search result display time by **500 ms caused traffic to plummet by 20%**.
 * **High-Frequency Trading (HFT):** Spends millions of dollars laying straight fiber-optic cables through mountains to shave **3 milliseconds** off Chicago-to-New York trades.
+
+---
+
+## Related Topics & Next Steps
+
+* [How One Server Handles Requests](./how-one-server-handles-requests.md) — Understanding single-server limits.
+* [Scalability: Vertical vs. Horizontal](./scaling.md) — Scaling capacity up and out.
+* [Caching Fundamentals](../05-caching/cache-fundamentals.md) — Slashing database read latencies.
+* [Quick Engineering Cheat Sheet](../08-cheat-sheet/quick-revision-cheat-sheet.md) — Latency numbers every engineer must know.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [How One Server Handles Requests](./how-one-server-handles-requests.md) | [01. Fundamentals Index](./README.md) | [Scalability: Vertical vs. Horizontal ➡️](./scaling.md) |

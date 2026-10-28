@@ -1,6 +1,6 @@
-# Least Connections Load Balancing
+# 04. Least Connections Load Balancing
 
-> High-Level System Design | Load Balancing & Proxies
+[🏠 Home](../README.md) > [04. Load Balancing](./README.md) > **Least Connections**
 
 ---
 
@@ -58,3 +58,20 @@ When servers have different hardware specs, simple connection counts are not eno
 | **Best For** | Short, uniform REST APIs (< 20ms) | **WebSockets, DB queries, file uploads** |
 | **Reaction to Slow Nodes** | Blindly keeps sending traffic | **Automatically routes traffic away** |
 | **CPU Overhead on LB** | Negligible | Low to moderate |
+
+> [!NOTE]
+> **Least Connections vs. Least Requests:** In HTTP/2 environments where multiple requests multiplex across a single persistent TCP connection, connection counts can be misleading. Advanced load balancers (such as Envoy and Nginx Plus) support **Least Requests**, which makes routing decisions based on active in-flight HTTP requests rather than underlying TCP connections.
+
+---
+
+## Related Topics & Next Steps
+
+* [Round Robin](./round-robin.md) — The baseline rotational scheduling algorithm.
+* [Layer 4 vs. Layer 7 Load Balancing](./layer-4-vs-layer-7.md) — Transport vs. Application inspection.
+* [Consistent Hashing](./consistent-hashing.md) — Key-based sticky hashing for distributed caches.
+
+---
+
+| ⬅️ Previous Topic | 🏠 Index | Next Topic ➡️ |
+|:--- |:---:| ---:|
+| [Round Robin](./round-robin.md) | [04. Load Balancing Index](./README.md) | [Consistent Hashing ➡️](./consistent-hashing.md) |

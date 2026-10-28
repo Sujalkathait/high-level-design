@@ -9,10 +9,24 @@ A clean, visual, and practical guide to **High-Level System Design (HLD)**. No b
 
 ---
 
-### Quick Navigation
+### 📚 Complete Modular Curriculum
+
+| Module | Title | Core Focus | Link |
+|:---:|---|---|:---:|
+| **01** | **Fundamentals** | Client-Server, Request Lifecycle, Latency vs. Throughput, Single Server Capacity | [Explore ➡️](./01-fundamentals/README.md) |
+| **02** | **System Architecture** | Monolith, Modular Monolith, N-Tier Layers, Microservices Decoupling | [Explore ➡️](./02-architecture/README.md) |
+| **03** | **Networking & APIs** | REST, RPC vs. gRPC (HTTP/2 + Protobuf), GraphQL, WebSockets | [Explore ➡️](./03-networking/README.md) |
+| **04** | **Load Balancing** | L4 vs. L7 Routing, Round Robin, Least Connections, Consistent Hashing Rings | [Explore ➡️](./04-load-balancing/README.md) |
+| **05** | **Caching & Acceleration** | Cache-Aside, Write-Through/Back/Around, LRU/LFU, Redis vs. Memcached, Stampede Fixes | [Explore ➡️](./05-caching/README.md) |
+| **06** | **Databases & Storage** | Primary-Replica, Sync vs. Async Lag, Sharding Strategies, CAP Theorem, ACID vs. BASE | [Explore ➡️](./06-databases/README.md) |
+| **07** | **Real-World Case Studies** | TinyURL, Social Media Feed (Twitter/Insta), Real-Time Chat (WhatsApp), 1-to-10M Scaling | [Explore ➡️](./07-system-design-examples/README.md) |
+| **08** | **Revision Cheat Sheet** | Quick revision cheat sheet, formula reference, and top 20 interview Q&A | [Explore ➡️](./08-cheat-sheet/README.md) |
+
+---
+
+### Quick Navigation (Single-Page Overview)
 
 | # | Topic | Core Focus |
-
 |---|---|---|
 | **01** | [What is High-Level Design?](#01-what-is-high-level-design) | The 30,000-ft view & core principles |
 | **02** | [Life of a Web Request](#02-life-of-a-web-request) | End-to-end journey from click to database |
