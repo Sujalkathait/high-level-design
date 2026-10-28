@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/badge/Focus-Zero%20Fluff%20%7C%20Visual%20Architecture-2ea44f?style=for-the-badge" alt="Visual Guide">
   <img src="https://img.shields.io/badge/Level-Junior%20to%20Staff%20Engineer-orange?style=for-the-badge" alt="Target Level">
 </p>
+
 A clean, visual, and practical guide to **High-Level System Design (HLD)**. No boring walls of academic theory—just high-signal mental models, interactive diagrams, real-world FAANG architectures, and production trade-offs.
 
 ---
@@ -13,71 +14,76 @@ A clean, visual, and practical guide to **High-Level System Design (HLD)**. No b
 
 | Module | Title | Core Focus | Link |
 |:---:|---|---|:---:|
-| **01** | **Fundamentals** | Client-Server, Request Lifecycle, Latency vs. Throughput, Single Server Capacity | [Explore ➡️](./01-fundamentals/README.md) |
-| **02** | **System Architecture** | Monolith, Modular Monolith, N-Tier Layers, Microservices Decoupling | [Explore ➡️](./02-architecture/README.md) |
-| **03** | **Networking & APIs** | REST, RPC vs. gRPC (HTTP/2 + Protobuf), GraphQL, WebSockets | [Explore ➡️](./03-networking/README.md) |
-| **04** | **Load Balancing** | L4 vs. L7 Routing, Round Robin, Least Connections, Consistent Hashing Rings | [Explore ➡️](./04-load-balancing/README.md) |
-| **05** | **Caching & Acceleration** | Cache-Aside, Write-Through/Back/Around, LRU/LFU, Redis vs. Memcached, Stampede Fixes | [Explore ➡️](./05-caching/README.md) |
-| **06** | **Databases & Storage** | Primary-Replica, Sync vs. Async Lag, Sharding Strategies, CAP Theorem, ACID vs. BASE | [Explore ➡️](./06-databases/README.md) |
-| **07** | **Real-World Case Studies** | TinyURL, Social Media Feed (Twitter/Insta), Real-Time Chat (WhatsApp), 1-to-10M Scaling | [Explore ➡️](./07-system-design-examples/README.md) |
-| **08** | **Revision Cheat Sheet** | Quick revision cheat sheet, formula reference, and top 20 interview Q&A | [Explore ➡️](./08-cheat-sheet/README.md) |
+| **01** | **Fundamentals** | Client-Server, Request Lifecycle, Latency vs. Throughput, Single Server Capacity | [Explore Module ➡️](./01-fundamentals/README.md) |
+| **02** | **System Architecture** | Monolith, Modular Monolith, N-Tier Layers, Microservices Decoupling | [Explore Module ➡️](./02-architecture/README.md) |
+| **03** | **Networking & APIs** | REST, RPC vs. gRPC (HTTP/2 + Protobuf), GraphQL, WebSockets | [Explore Module ➡️](./03-networking/README.md) |
+| **04** | **Load Balancing** | L4 vs. L7 Routing, Round Robin, Least Connections, Consistent Hashing Rings | [Explore Module ➡️](./04-load-balancing/README.md) |
+| **05** | **Caching & Acceleration** | Cache-Aside, Write-Through/Back/Around, LRU/LFU, Redis vs. Memcached, Stampede Fixes | [Explore Module ➡️](./05-caching/README.md) |
+| **06** | **Databases & Storage** | Primary-Replica, Sync vs. Async Lag, Sharding Strategies, CAP Theorem, ACID vs. BASE | [Explore Module ➡️](./06-databases/README.md) |
+| **07** | **Real-World Case Studies** | TinyURL, Social Media Feed (Twitter/Insta), Real-Time Chat (WhatsApp), 1-to-10M Scaling | [Explore Module ➡️](./07-system-design-examples/README.md) |
+| **08** | **Revision Cheat Sheet** | Quick revision cheat sheet, formula reference, and top 20 interview Q&A | [Explore Module ➡️](./08-cheat-sheet/README.md) |
 
 ---
 
 ### Quick Navigation (Single-Page Overview)
 
-| # | Topic | Core Focus |
-|---|---|---|
-| **01** | [What is High-Level Design?](#01-what-is-high-level-design) | The 30,000-ft view & core principles |
-| **02** | [Life of a Web Request](#02-life-of-a-web-request) | End-to-end journey from click to database |
-| **03** | [System Evolution (1 to 10M Users)](#03-system-evolution-1-to-10-million-users) | Step-by-step scaling roadmap with diagrams |
-| **04** | [Scalability: Vertical vs. Horizontal](#04-scalability-vertical-vs-horizontal) | Scaling limits, statelessness, and concurrency |
-| **05** | [Communication Protocols](#05-communication-protocols) | REST vs. gRPC vs. WebSockets vs. GraphQL |
-| **06** | [Load Balancing & Proxies](#06-load-balancing-and-proxies) | Layer 4 vs. Layer 7, Consistent Hashing |
-| **07** | [Caching & Edge Acceleration](#07-caching-and-edge-acceleration) | Cache-aside, Eviction (LRU), Stampede fixes, CDNs |
-| **08** | [Databases: SQL vs. NoSQL & Scaling](#08-databases-sql-vs-nosql-and-scaling) | Indexes, Replication Lag, Partitioning & Sharding |
-| **09** | [Distributed Guarantees: CAP Simplified](#09-distributed-guarantees-cap-simplified) | CP vs. AP in plain English (No academic jargon) |
-| **10** | [Asynchronous Messaging & Streaming](#10-asynchronous-messaging-and-streaming) | RabbitMQ vs. Apache Kafka & Event-driven patterns |
-| **11** | [Reliability & Rate Limiting](#11-reliability-and-rate-limiting) | Circuit Breakers, Token Bucket, Retries with Jitter |
-| **12** | [The 10 Deadly Design Anti-Patterns](#12-the-10-deadly-system-design-anti-patterns) | What NOT to do in interviews and production |
-| **13** | [Engineering Cheat Sheets](#13-quick-engineering-cheat-sheets) | Latency numbers & Back-of-the-envelope math |
+| # | Topic | Core Focus | Detailed Topic Guide |
+|---|---|---|---|
+| **01** | [What is High-Level Design?](#01-what-is-high-level-design) | The 30,000-ft view & core principles | [Read Guide](./01-fundamentals/introduction-to-hld.md) |
+| **02** | [Life of a Web Request](#02-life-of-a-web-request) | End-to-end journey from click to database | [Read Guide](./01-fundamentals/request-lifecycle.md) |
+| **03** | [System Evolution (1 to 10M Users)](#03-system-evolution-1-to-10-million-users) | Step-by-step scaling roadmap with diagrams | [Read Guide](./07-system-design-examples/scaling-an-application.md) |
+| **04** | [Scalability: Vertical vs. Horizontal](#04-scalability-vertical-vs-horizontal) | Scaling limits, statelessness, and concurrency | [Read Guide](./01-fundamentals/scaling.md) |
+| **05** | [Communication Protocols](#05-communication-protocols) | REST vs. gRPC vs. WebSockets vs. GraphQL | [Read Guide](./03-networking/communication-style-comparison.md) |
+| **06** | [Load Balancing & Proxies](#06-load-balancing-and-proxies) | Layer 4 vs. Layer 7, Consistent Hashing | [Read Guide](./04-load-balancing/README.md) |
+| **07** | [Caching & Edge Acceleration](#07-caching-and-edge-acceleration) | Cache-aside, Eviction (LRU), Stampede fixes, CDNs | [Read Guide](./05-caching/README.md) |
+| **08** | [Databases: SQL vs. NoSQL & Scaling](#08-databases-sql-vs-nosql-and-scaling) | Indexes, Replication Lag, Partitioning & Sharding | [Read Guide](./06-databases/README.md) |
+| **09** | [Distributed Guarantees: CAP Simplified](#09-distributed-guarantees-cap-simplified) | CP vs. AP in plain English (No academic jargon) | [Read Guide](./06-databases/cap-theorem.md) |
+| **10** | [Asynchronous Messaging & Streaming](#10-asynchronous-messaging-and-streaming) | RabbitMQ vs. Apache Kafka & Event-driven patterns | [Read Guide](./07-system-design-examples/scaling-an-application.md#stage-6-introduce-asynchronous-processing--queues) |
+| **11** | [Reliability & Rate Limiting](#11-reliability-and-rate-limiting) | Circuit Breakers, Token Bucket, Retries with Jitter | [Read Guide](./08-cheat-sheet/quick-revision-cheat-sheet.md) |
+| **12** | [The 10 Deadly Design Anti-Patterns](#12-the-10-deadly-system-design-anti-patterns) | What NOT to do in interviews and production | [Read Guide](./08-cheat-sheet/quick-revision-cheat-sheet.md#3-engineering-conclusion) |
+| **13** | [Engineering Cheat Sheets](#13-quick-engineering-cheat-sheets) | Latency numbers & Back-of-the-envelope math | [Read Guide](./08-cheat-sheet/quick-revision-cheat-sheet.md) |
 
 ---
 
 # 01. What is High-Level Design?
 
 **High-Level Design (HLD)** defines the overall architecture of a system: its services, data boundaries, communication protocols, and how it survives server failures and traffic surges.
+
 ```mermaid
 flowchart LR
-    Client(["Client App"]) -->|1. HTTPS| LB[Load Balancer]
-    LB -->|2. Route| App1[App Server 1]
-    LB -->|Route| App2[App Server 2]
+    Client(["Client App"]) -->|1. HTTPS| LB["Load Balancer"]
+    LB -->|2. Route| App1["App Server 1"]
+    LB -->|Route| App2["App Server 2"]
     App1 <-->|3. Fast Cache Hit| Cache[("Redis Cache")]
     App1 -->|4. Miss / Writes| DB[("Primary DB")]
 ```
 
-### Rule: The 4 Rules of Good System Design
+### The 4 Rules of Good System Design
 
 1. **YAGNI (You Aren't Gonna Need It):** Never add Kafka, sharding, or Kubernetes on Day 1 if a single PostgreSQL instance handles your load.
 2. **Stateless App Servers:** Store no sessions in server memory. Delegate state to Redis or the Database.
 3. **Eliminate Single Points of Failure (SPOF):** Every critical component must have a fallback or replica.
 4. **Design for Failure:** Disks will fill up, networks will drop packets, and servers will reboot. Your system must degrade gracefully.
 
+> 📖 **Deep Dive:** [Introduction to High-Level Design](./01-fundamentals/introduction-to-hld.md) | [Client-Server Architecture](./01-fundamentals/client-server-architecture.md)
+
 ---
 
 # 02. Life of a Web Request
 
 When a user visits `https://api.app.com/v1/feed`, here is the exact path the request takes:
+
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as  User Device
-    participant DNS as  DNS Server
-    participant CDN as  Cloudflare / CDN
-    participant LB as  Load Balancer (Nginx)
-    participant App as  Backend App
-    participant Cache as  Redis Cache
-    participant DB as  Database
+    actor User as User Device
+    participant DNS as DNS Server
+    participant CDN as Cloudflare / CDN
+    participant LB as Load Balancer (Nginx)
+    participant App as Backend App
+    participant Cache as Redis Cache
+    participant DB as Database
+    
     User->>DNS: Resolve api.app.com
     DNS-->>User: Returns Edge IP (192.0.2.1)
     User->>CDN: GET /v1/feed
@@ -100,6 +106,8 @@ sequenceDiagram
     end
 ```
 
+> 📖 **Deep Dive:** [The Request-Response Lifecycle](./01-fundamentals/request-lifecycle.md) | [How One Server Handles Requests](./01-fundamentals/how-one-server-handles-requests.md)
+
 ---
 
 # 03. System Evolution (1 to 10 Million Users)
@@ -107,53 +115,53 @@ sequenceDiagram
 Systems are not designed for 10 million users overnight. They evolve in stages as traffic grows:
 
 ### Stage 1: The Monolith (1 – 1,000 Users)
-
 Everything (Web Server, Business Logic, Database) lives on a single machine.
 * **Good:** Fastest time to market, zero network latency between app and DB, trivial deployments.
 * **Bottleneck:** If the server runs out of RAM or crashes, the entire business goes offline.
+
 ```mermaid
 flowchart TD
-    User(["Users"]) -->|Single DNS Entry| Box[" Single Server ($10/mo VM)<br/> Nginx<br/> App Code (Node / Go / Java)<br/> SQLite / Postgres Local"]
+    User(["Users"]) -->|Single DNS Entry| Box["Single Server ($10/mo VM)<br/>Nginx<br/>App Code (Node / Go / Java)<br/>SQLite / Postgres Local"]
 ```
 
 ---
 
 ### Stage 2: Decouple the Database (1,000 – 50,000 Users)
-
 Separate the App Server from the Database onto two distinct machines.
-* **Why:** The app server is CPU-heavy; the database is RAM- and Disk-heavy. Giving each dedicated resources doubles your headroom immediately.
+* **Why:** The app server is CPU-heavy; the database is RAM- and Disk-heavy. Giving each dedicated hardware resources doubles your headroom immediately.
+
 ```mermaid
 flowchart LR
-    User(["Users"]) --> App[" App Server (Compute)<br/>Focus: CPU & Network"]
-    App --> DB[(" Dedicated Database<br/>Focus: RAM & Fast NVMe SSD")]
+    User(["Users"]) --> App["App Server (Compute)<br/>Focus: CPU & Network"]
+    App --> DB[("Dedicated Database<br/>Focus: RAM & Fast NVMe SSD")]
 ```
 
 ---
 
 ### Stage 3: Load Balancing & Horizontal Scaling (50k – 500k Users)
-
 Make the App Server **stateless** and place a **Load Balancer** in front of multiple server instances.
-* **Why:** If App Server A crashes, the Load Balancer routes traffic to Server B with zero downtime.
+* **Why:** If App Server 1 crashes, the Load Balancer routes traffic to Server 2 with zero downtime.
+
 ```mermaid
 flowchart TD
     User(["Users"]) --> LB["Load Balancer (HAProxy / ALB)"]
-    LB --> App1[App Server 1]
-    LB --> App2[App Server 2]
-    LB --> App3[App Server 3]
+    LB --> App1["App Server 1"]
+    LB --> App2["App Server 2"]
+    LB --> App3["App Server 3"]
     App1 & App2 & App3 --> DB[("Primary Database")]
 ```
 
 ---
 
 ### Stage 4: Caching & Read Replicas (500k – 2 Million Users)
-
 Most apps have **90% Reads and 10% Writes**. Scaling the primary database directly is wasteful:
 * **Redis Cache:** Put popular data in RAM (response time drops from 20ms to 1ms).
 * **Read Replicas:** Primary DB handles `INSERT/UPDATE/DELETE`; Replicas handle `SELECT` queries.
+
 ```mermaid
 flowchart TD
-    User(["Users"]) --> LB[Load Balancer]
-    LB --> App[Stateless App Servers]
+    User(["Users"]) --> LB["Load Balancer"]
+    LB --> App["Stateless App Servers"]
     App <-->|1. Read/Write Hot Keys| Cache[("Redis Cache Cluster")]
     App -->|2. Writes Only| Primary[("Primary DB - Write Master")]
     Primary -.->|Async Replication| Replica1[("Read Replica 1")]
@@ -164,23 +172,25 @@ flowchart TD
 ---
 
 ### Stage 5: Global Scale & Asynchronous Queues (2M – 10M+ Users)
-
 * **CDN (Cloudflare/CloudFront):** Serves static files, images, and edge cache worldwide.
-* **Message Queues (Kafka/RabbitMQ):** Offload heavy tasks (emails, notifications, analytics, video processing) to background workers.
+* **Message Queues (Kafka/RabbitMQ):** Offload heavy tasks (emails, notifications, video processing) to background workers.
 * **Database Sharding:** Split rows across multiple database servers when a single disk cannot fit all data.
+
 ```mermaid
 flowchart TD
     Client(["Global Clients"]) --> CDN["Global CDN / Edge"]
-    CDN -->|Dynamic Calls| LB[Load Balancer]
+    CDN -->|Dynamic Calls| LB["Load Balancer"]
     LB --> App["Microservices / App Pool"]
     App <--> Cache[("Redis Cluster")]
     App -->|Async Tasks| Queue["Kafka / RabbitMQ Queue"]
-    Queue --> Worker1[Background Worker 1]
-    Queue --> Worker2[Background Worker 2]
-    App -->|Shard by user_id| Router{DB Shard Router}
+    Queue --> Worker1["Background Worker 1"]
+    Queue --> Worker2["Background Worker 2"]
+    App -->|Shard by user_id| Router{"DB Shard Router"}
     Router --> ShardA[("DB Shard A: Users 0 - 5M")]
     Router --> ShardB[("DB Shard B: Users 5M - 10M")]
 ```
+
+> 📖 **Deep Dive:** [Scaling an Application Case Study](./07-system-design-examples/scaling-an-application.md)
 
 ---
 
@@ -191,22 +201,26 @@ flowchart TD
 | **What it means** | Buy a bigger machine (e.g. 128 vCPUs, 512GB RAM) | Add more small machines (e.g. 20x 4-vCPU VMs) |
 | **Downtime** | Requires restart/downtime to resize instance | **Zero downtime**; dynamically add/remove nodes |
 | **Cost Curve** | Becomes exponentially expensive at the high end | Linear and cost-effective (Commodity cloud hardware) |
-| **Hard Limit** | Physical hardware ceiling (cannot exceed top AWS instance) | **Virtually unlimited** |
+| **Hard Limit** | Physical hardware ceiling (cannot exceed top cloud instance) | **Virtually unlimited** |
 | **Architecture** | Simple (no code changes needed) | Requires stateless design + load balancers |
 | **Single Point of Failure** | **Yes** (if the big machine dies, all dies) | **No** (redundancy built-in) |
-> Rule: **Practical Rule:** Start with vertical scaling for your database until it costs too much or hits limits; scale your app servers horizontally from Day 1.
+
+> 💡 **Practical Rule:** Start with vertical scaling for your database until it costs too much or hits limits; scale your app servers horizontally from Day 1.
+
+> 📖 **Deep Dive:** [Vertical vs. Horizontal Scaling Guide](./01-fundamentals/scaling.md)
 
 ---
 
 # 05. Communication Protocols
 
-Choosing how services talk to each other directly impacts latency and simplicity:
+Choosing how services communicate directly impacts latency, bandwidth, and complexity:
+
 ```mermaid
 flowchart LR
-    Browser(["Browser / Mobile"]) -->|REST or GraphQL| Gateway[API Gateway]
-    Gateway -->|High-Performance gRPC| ServiceA[Billing Service]
-    Gateway -->|High-Performance gRPC| ServiceB[Inventory Service]
-    Browser <-->|Persistent WebSocket| ChatService[Live Chat Service]
+    Browser(["Browser / Mobile"]) -->|REST or GraphQL| Gateway["API Gateway"]
+    Gateway -->|High-Performance gRPC| ServiceA["Billing Service"]
+    Gateway -->|High-Performance gRPC| ServiceB["Inventory Service"]
+    Browser <-->|Persistent WebSocket| ChatService["Live Chat Service"]
 ```
 
 ### Quick Protocol Decision Matrix
@@ -217,6 +231,8 @@ flowchart LR
 | **gRPC** | HTTP/2 + Protobuf | **Internal microservices** | 7-10x faster than REST, binary serialization, strict types | Hard to inspect in browser, binary payload |
 | **WebSockets** | TCP (Full-duplex) | **Real-time apps** (Chat, Gaming, Stock tickers) | Bi-directional, single connection, zero polling overhead | Difficult to load-balance, stateful connections |
 | **GraphQL** | HTTP (POST) | Complex mobile apps, multi-client UIs | Client requests exact fields needed, single endpoint | Complex server caching, N+1 query risks |
+
+> 📖 **Deep Dive:** [REST](./03-networking/rest.md) | [RPC & gRPC](./03-networking/rpc-and-grpc.md) | [GraphQL](./03-networking/graphql.md) | [WebSockets](./03-networking/websockets.md) | [Comparison Matrix](./03-networking/communication-style-comparison.md)
 
 ---
 
@@ -231,13 +247,13 @@ flowchart TD
     subgraph L4 ["Layer 4: Transport Level - Ultra Fast"]
         direction LR
         ClientL4[Client] -->|"IP:Port Routing Only"| LB4["L4 LB: HAProxy / AWS NLB"]
-        LB4 -->|Raw TCP Stream| BackendL4[Backend Pool]
+        LB4 -->|Raw TCP Stream| BackendL4["Backend Pool"]
     end
     subgraph L7 ["Layer 7: Application Level - Smart Routing"]
         direction LR
-        ClientL7[Client] -->|Inspects HTTP Path & Headers| LB7["L7 LB: Nginx / Envoy / AWS ALB"]
-        LB7 -->|/api/v1/auth| AuthSvc[Auth Service]
-        LB7 -->|/api/v1/video| VideoSvc[Video Service]
+        ClientL7[Client] -->|"Inspects HTTP Path & Headers"| LB7["L7 LB: Nginx / Envoy / AWS ALB"]
+        LB7 -->|/api/v1/auth| AuthSvc["Auth Service"]
+        LB7 -->|/api/v1/video| VideoSvc["Video Service"]
     end
 ```
 * **Layer 4 (Transport):** Operates on IP and TCP Port. Does not read HTTP headers or cookies. Super fast (millions of packets/sec).
@@ -249,21 +265,24 @@ Standard `hash(key) % N` breaks completely when a cache server is added or remov
 * **Consistent Hashing Solution:** Arrange both servers and keys on a virtual ring ($0$ to $2^{32}-1$).
 * When a node fails, **only $1/N$ of keys are remapped** to the next clockwise node!
 * **Virtual Nodes:** Add 100–250 virtual positions per server to evenly balance data and prevent hotspots.
+
 ```mermaid
 flowchart LR
     subgraph Ring ["Consistent Hashing Ring: 0 to 2^32 - 1"]
         direction LR
-        S1["Server 1"] -->|Keys A & B| S2["Server 2"]
-        S2 -->|Keys C & D| S3["Server 3"]
-        S3 -.->|Wrap Around| S1
+        S1["Server 1"] -->|"Keys A & B"| S2["Server 2"]
+        S2 -->|"Keys C & D"| S3["Server 3"]
+        S3 -.->|"Wrap Around"| S1
     end
 ```
+
+> 📖 **Deep Dive:** [What is a Load Balancer?](./04-load-balancing/what-is-a-load-balancer.md) | [L4 vs. L7](./04-load-balancing/layer-4-vs-layer-7.md) | [Round Robin](./04-load-balancing/round-robin.md) | [Least Connections](./04-load-balancing/least-connections.md) | [Consistent Hashing](./04-load-balancing/consistent-hashing.md)
 
 ---
 
 # 07. Caching and Edge Acceleration
 
-Caching stores the results of expensive calculations or database queries in fast RAM.
+Caching stores the results of expensive calculations or database queries in fast in-memory RAM.
 
 ### Core Caching Strategies
 
@@ -281,20 +300,28 @@ flowchart LR
         C2 -->|2. Synchronously Writes| DB2[("Database")]
     end
 ```
+
 | Strategy | Read Path | Write Path | Best Used For |
 |---|---|---|---|
 | **Cache-Aside (Lazy)** | Check cache $\to$ If miss, read DB $\to$ Populate cache | Write directly to DB $\to$ Invalidate/evict cache key | General web apps (90% read workloads) |
 | **Write-Through** | Read directly from cache | App writes to cache $\to$ Cache writes to DB synchronously | Systems where data loss is intolerable |
 | **Write-Back (Write-Behind)** | Read from cache | App writes to cache $\to$ Asynchronously batched to DB | High write-volume apps (e.g., IoT, Game leaderboards) |
+| **Write-Around** | Read from cache / miss queries DB | App writes directly to DB, bypassing cache | Bulk batch data imports, infrequently read writes |
 
-### Note: The 3 Classic Cache Gotchas & Fixes
+### The 5 Classic Cache Failures & Mitigations
 
 1. **Cache Stampede (Thundering Herd):** A popular key expires. 10,000 requests hit the database simultaneously to recompute it.
-   * *Fix:* Use a mutex/distributed lock (only 1 thread queries DB; others wait), or probabilistic early expiration (XFetch).
+   * *Fix:* Use distributed locks (Redlock / SETNX), request coalescing, or probabilistic early expiration (XFetch).
 2. **Cache Penetration:** Attackers query keys that do not exist (e.g., `user_id = -9999`), bypassing cache and hitting DB every time.
    * *Fix:* Cache null values (`user:-9999 = null`, TTL 60s) or put a **Bloom Filter** in front of the cache.
-3. **Cache Breakdown:** An ultra-hot key expires.
-   * *Fix:* Set background cron jobs to refresh the key before its TTL expires.
+3. **Cache Avalanche:** Thousands of keys expire simultaneously.
+   * *Fix:* Add random jitter to TTLs ($\text{TTL} = \text{Base} \pm \text{Random}$).
+4. **Stale Cache Data:** Database updated without cache invalidation.
+   * *Fix:* Invalidate on write, use suitable TTLs, or use Change Data Capture (CDC).
+5. **Hot Keys (Celebrity Problem):** Single key receives millions of requests, saturating a single Redis node.
+   * *Fix:* Use an in-process local application cache (Caffeine/FreeCache) or key salting across multiple shards.
+
+> 📖 **Deep Dive:** [Cache Fundamentals](./05-caching/cache-fundamentals.md) | [Caching Strategies](./05-caching/caching-strategies.md) | [Eviction Policies (LRU/LFU)](./05-caching/eviction-policies.md) | [Redis vs. Memcached](./05-caching/redis-vs-memcached.md) | [Common Caching Problems](./05-caching/common-caching-problems.md)
 
 ---
 
@@ -302,13 +329,13 @@ flowchart LR
 
 ```mermaid
 graph TD
-    Start{What is your primary access pattern?}
-    Start -->|Complex Queries, Joins, Financial Transactions| SQL["Use SQL: PostgreSQL / MySQL"]
-    Start -->|High Velocity Key Lookups, Flexible Schema| NoSQL{Choose NoSQL Type}
-    NoSQL -->|Key-Value Store / Caching| KV["Redis / DynamoDB"]
-    NoSQL -->|Documents / Nested JSON| Doc["MongoDB / Couchbase"]
-    NoSQL -->|Time-Series / Write-Heavy Logs| Wide["Cassandra / ScyllaDB"]
-    NoSQL -->|Full-Text Search & Analytics| Search["Elasticsearch / OpenSearch"]
+    Start{"What is your primary access pattern?"}
+    Start -->|"Complex Queries, Joins, Financial Transactions"| SQL["Use SQL: PostgreSQL / MySQL"]
+    Start -->|"High Velocity Key Lookups, Flexible Schema"| NoSQL{"Choose NoSQL Type"}
+    NoSQL -->|"Key-Value Store / Caching"| KV["Redis / DynamoDB"]
+    NoSQL -->|"Documents / Nested JSON"| Doc["MongoDB / Couchbase"]
+    NoSQL -->|"Time-Series / Write-Heavy Logs"| Wide["Cassandra / ScyllaDB"]
+    NoSQL -->|"Full-Text Search & Analytics"| Search["Elasticsearch / OpenSearch"]
 ```
 
 ### Scaling the Database: Replication vs. Sharding
@@ -317,50 +344,57 @@ graph TD
 flowchart TD
     subgraph Replication ["Replication: Scales READS (1 Primary + Many Read Replicas)"]
         direction LR
-        WApp[Write Traffic] --> PDB[("Primary DB")]
+        WApp["Write Traffic"] --> PDB[("Primary DB")]
         PDB -.->|Binlog Stream| RDB1[("Replica 1")]
         PDB -.->|Binlog Stream| RDB2[("Replica 2")]
-        RApp[Read Traffic] --> RDB1 & RDB2
+        RApp["Read Traffic"] --> RDB1 & RDB2
     end
     subgraph Sharding ["Sharding: Scales WRITES & STORAGE (Horizontal Data Partitioning)"]
         direction LR
-        SApp[App Router] -->|"user_id: 1 to 1M"| Shard1[("Shard 1")]
+        SApp["App Router"] -->|"user_id: 1 to 1M"| Shard1[("Shard 1")]
         SApp -->|"user_id: 1M to 2M"| Shard2[("Shard 2")]
         SApp -->|"user_id: 2M to 3M"| Shard3[("Shard 3")]
     end
 ```
 * **Replication:** Solves read bottlenecks. Write to Primary, read from Replicas.
-  * *Watch out for:* **Replication Lag** (user updates profile, refreshes page, reads from stale replica, sees old data). Fix: Read user's own updates from Primary for 3 seconds.
+  * *Watch out for:* **Replication Lag** (user updates profile, refreshes page, reads from stale replica, sees old data). Fix: Read user's own updates from Primary for 3–5 seconds.
 * **Sharding:** Solves write and storage bottlenecks. Splits rows across physical machines using a **Shard Key**.
   * *Watch out for:* **Cross-shard joins** (avoid them by picking high-cardinality shard keys like `user_id`).
+
+> 📖 **Deep Dive:** [Database Replication](./06-databases/replication.md) | [Database Sharding](./06-databases/sharding.md) | [ACID vs. BASE](./06-databases/acid-vs-base.md)
 
 ---
 
 # 09. Distributed Guarantees: CAP Simplified
 
-In a distributed network, **Network Partitions ($P$) are inevitable** (cables get cut, switches fail). When a partition occurs, you must choose:
+In a distributed network, **Network Partitions ($P$) are an inevitable physical reality** (undersea cables get cut, switches reboot). When a partition occurs, you must choose:
+
 ```mermaid
 flowchart TD
     Partition["Note: Network Partition Occurs: Node A cannot talk to Node B"]
     Partition -->|"Choice 1: CP - Consistency"| CP["Cancel Request / Return Error<br/>'We guarantee no wrong data is returned.'<br/>Best for: Banking, Stock Trading, Payments"]
     Partition -->|"Choice 2: AP - Availability"| AP["Accept Write Locally on Node A<br/>'System stays online, but data will be temporarily out-of-sync.'<br/>Best for: Social Feeds, YouTube views, Likes"]
 ```
-> Key Decision: **Key Rule:** You do NOT choose between C, A, and P. You **always have P**. Your architectural decision is **CP vs. AP**.
+
+> 💡 **Key Rule:** You do NOT choose between C, A, and P. You **always have P**. Your architectural decision is **CP vs. AP**.
+
+> 📖 **Deep Dive:** [The CAP Theorem & PACELC](./06-databases/cap-theorem.md)
 
 ---
 
 # 10. Asynchronous Messaging and Streaming
 
 When an operation takes more than 100ms (sending emails, video encoding, push notifications), **never make the user wait on the HTTP request**. Offload it to a message broker.
+
 ```mermaid
 flowchart LR
-    User(["User"]) -->|POST /order/checkout| API[App Server]
+    User(["User"]) -->|POST /order/checkout| API["App Server"]
     API -->|1. Save Order| DB[("DB")]
-    API -->|2. Publish 'OrderPlaced' Event| Queue[Event Broker]
+    API -->|2. Publish 'OrderPlaced' Event| Queue["Event Broker"]
     API -->>|3. Instant 200 OK Response| User
-    Queue -->|Consume| EmailWorker[Email Service]
-    Queue -->|Consume| InventoryWorker[Inventory Service]
-    Queue -->|Consume| FraudWorker[Fraud Detector]
+    Queue -->|Consume| EmailWorker["Email Service"]
+    Queue -->|Consume| InventoryWorker["Inventory Service"]
+    Queue -->|Consume| FraudWorker["Fraud Detector"]
 ```
 
 ### RabbitMQ vs. Apache Kafka
@@ -368,7 +402,7 @@ flowchart LR
 | Feature | RabbitMQ (Message Queue) | Apache Kafka (Event Streaming Log) |
 |---|---|---|
 | **Model** | Smart broker, dumb consumer (Queue disappears on ACK) | Dumb broker, smart consumer (**Append-only commit log**) |
-| **Message Replay** | No (messages deleted after consumption) | **Yes** (consumers can replay events from 7 days ago) |
+| **Message Replay** | No (messages deleted after consumption) | **Yes** (consumers can replay events from days ago) |
 | **Throughput** | High (~50k - 100k msgs/sec) | **Extreme** (1M+ events/sec via batching and zero-copy) |
 | **Ordering** | Per-queue | **Strictly ordered within a Partition** |
 | **Best For** | Task queues, complex routing, background jobs | Event sourcing, clickstreams, distributed log pipeline |
@@ -378,8 +412,8 @@ flowchart LR
 # 11. Reliability and Rate Limiting
 
 ### The Circuit Breaker Pattern
-
 Prevents a failing downstream service from cascading and taking down your entire backend.
+
 ```mermaid
 stateDiagram-v2
     [*] --> Closed: System Healthy
@@ -405,7 +439,6 @@ stateDiagram-v2
 # 12. The 10 Deadly System Design Anti-Patterns
 
 | # | Anti-Pattern | Why It Breaks in Production | Correct Pattern |
-
 |---|---|---|---|
 | **1** | **Scaling Without Measuring** | Adding microservices & Kafka for 50 requests/sec adds massive debugging pain | Measure with Prometheus/APM; optimize queries first |
 | **2** | **Cache as Source of Truth** | Caches can evict or restart at any moment | Always persist canonical data to durable disk storage |
@@ -422,7 +455,7 @@ stateDiagram-v2
 
 # 13. Quick Engineering Cheat Sheets
 
-### Latency Numbers to Memorize
+### Latency Numbers Every Engineer Must Know
 
 ```
 Operation                                 Latency         Scale
@@ -450,12 +483,12 @@ Intercontinental RTT (US to Europe)       150 ms           Dominates latency!
 
 ## Summary Checklist for Any System Design Interview
 
-- [] **Step 1 (5 mins):** Clarify requirements, define Scope, and establish scale (DAU, Read:Write ratio).
-- [] **Step 2 (5 mins):** Calculate back-of-the-envelope math (QPS, storage, bandwidth).
-- [] **Step 3 (15 mins):** Draw the High-Level Architecture (Client $\to$ DNS $\to$ LB $\to$ Stateless App $\to$ Cache $\to$ DB).
-- [] **Step 4 (15 mins):** Deep dive into bottlenecks (Caching strategy, Partitioning/Sharding, Concurrency, Failover).
-- [] **Step 5 (5 mins):** Identify Single Points of Failure and discuss observability (Metrics, Alerting, Retries).
+- [ ] **Step 1 (5 mins):** Clarify requirements, define Scope, and establish scale (DAU, Read:Write ratio).
+- [ ] **Step 2 (5 mins):** Calculate back-of-the-envelope math (QPS, storage, bandwidth).
+- [ ] **Step 3 (15 mins):** Draw the High-Level Architecture (Client $\to$ DNS $\to$ LB $\to$ Stateless App $\to$ Cache $\to$ DB).
+- [ ] **Step 4 (15 mins):** Deep dive into bottlenecks (Caching strategy, Partitioning/Sharding, Concurrency, Failover).
+- [ ] **Step 5 (5 mins):** Identify Single Points of Failure and discuss observability (Metrics, Alerting, Retries).
 
 ---
 
-**Star  this repository** if you find it helpful for your system design interview prep and backend engineering work!
+> 🎯 **Full Revision & Interview Q&A:** [Quick Revision Cheat Sheet & Top 20 Interview Questions](./08-cheat-sheet/quick-revision-cheat-sheet.md)
