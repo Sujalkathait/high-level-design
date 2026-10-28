@@ -28,25 +28,25 @@ Here is how all the pieces of a modern system connect when a user taps a button 
 
 ```mermaid
 flowchart TD
-    User["📱 User (Mobile / Web)"]
-    DNS["🌐 DNS Server<br/>(Internet Phonebook)"]
-    CDN["⚡ CDN Edge Cache<br/>(Nearby Warehouse)"]
-    LB["⚖️ Load Balancer<br/>(Traffic Cop)"]
+    User["📱 User - Mobile or Web"]
+    DNS["🌐 DNS Server<br/>Internet Phonebook"]
+    CDN["⚡ CDN Edge Cache<br/>Nearby Warehouse"]
+    LB["⚖️ Load Balancer<br/>Traffic Cop"]
 
     subgraph AppPool ["Application Tier"]
-        App["🖥️ Stateless App Servers<br/>(Node.js / Go / Python)"]
+        App["🖥️ Stateless App Servers<br/>Node.js / Go / Python"]
     end
 
     subgraph StorageTier ["Data Tier"]
-        Cache[("⚡ Redis Cache<br/>(Short-Term Memory)")]
-        PrimaryDB[("💾 Primary DB (Master)<br/>(Handles Writes)")]
-        ReplicaDB[("💾 Read Replicas<br/>(Handles Reads)")]
+        Cache[("⚡ Redis Cache<br/>Short-Term Memory")]
+        PrimaryDB[("💾 Primary DB - Master<br/>Handles Writes")]
+        ReplicaDB[("💾 Read Replicas<br/>Handles Reads")]
         PrimaryDB -.->|Async Replication| ReplicaDB
     end
 
     subgraph AsyncTier ["Async Processing"]
-        Queue["📬 Message Queue<br/>(Kafka / RabbitMQ)"]
-        Workers["⚙️ Background Workers<br/>(Emails, Video, Jobs)"]
+        Queue["📬 Message Queue<br/>Kafka / RabbitMQ"]
+        Workers["⚙️ Background Workers<br/>Emails, Video, Jobs"]
         Queue --> Workers
     end
 
@@ -55,7 +55,7 @@ flowchart TD
     User -->|3. API Request| LB
     LB -->|Distribute Traffic| App
 
-    App <-->|4. Fast RAM Read (1ms)| Cache
+    App -->|4. Fast Cache Access| Cache
     App -->|5. Writes| PrimaryDB
     App -->|Read Queries| ReplicaDB
     App -->|6. Heavy Tasks| Queue
