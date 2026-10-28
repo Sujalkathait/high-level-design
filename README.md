@@ -133,7 +133,7 @@ flowchart LR
 | **06** | **[Databases & Storage](./06-databases/README.md)** | Primary-replica replication, database sharding, the CAP theorem made simple, and ACID vs. BASE. | [Explore Module ➡️](./06-databases/README.md) |
 | **07** | **[Real-World Case Studies](./07-system-design-examples/README.md)** | End-to-end designs for TinyURL, a Social Media Feed (Twitter/Insta), Real-Time Chat (WhatsApp), and scaling from 1 to 10M users. | [Explore Module ➡️](./07-system-design-examples/README.md) |
 | **08** | **[Revision Cheat Sheet](./08-cheat-sheet/README.md)** | Rapid revision tables, essential latency numbers, capacity formulas, and top 20 interview Q&A. | [Explore Module ➡️](./08-cheat-sheet/README.md) |
-| **⭐** | **[Complete Server Engineering Guide](./server.md)** | In-depth breakdown of server capacity, formulas, concurrency (epoll), k6 load testing, scaling to 10M DAU, and troubleshooting. | [Read Master Guide ➡️](./server.md) |
+| **⭐** | **[Complete Server Engineering Guide](./02-architecture/server.md)** | In-depth breakdown of server capacity, formulas, concurrency (epoll), k6 load testing, scaling to 10M DAU, and troubleshooting. | [Read Master Guide ➡️](./02-architecture/server.md) |
 
 ---
 
