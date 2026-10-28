@@ -26,8 +26,8 @@ Because RAM is finite and expensive, an in-memory cache cannot expand indefinite
 
 ```mermaid
 flowchart LR
-    Head[Head: Most Recently Accessed] <--> A[Item A] <--> C[Item C] <--> D[Item D] <--> Tail[Tail: Least Recently Accessed]
-    Tail -.->|Memory Full: Purged First!| Evicted[Eviction Candidate]
+    Head["Head: Most Recently Accessed"] <--> A[Item A] <--> C[Item C] <--> D[Item D] <--> Tail["Tail: Least Recently Accessed"]
+    Tail -.->|"Memory Full: Purged First!"| Evicted[Eviction Candidate]
 ```
 
 ### Step-by-Step LRU Walkthrough Example
@@ -62,12 +62,12 @@ Assume a cache with existing access counts:
 
 ```mermaid
 flowchart LR
-    subgraph FrequencyCounters [LFU Access Frequency Table]
+    subgraph FrequencyCounters ["LFU Access Frequency Table"]
         A["Item A: 10 Hits"]
         C["Item C: 5 Hits"]
         B["Item B: 2 Hits (Lowest Frequency!)"]
     end
-    B -.->|New Item Arrives: Capacity Full| Evict[B is Evicted]
+    B -.->|"New Item Arrives: Capacity Full"| Evict[B is Evicted]
 ```
 
 When a **New Item** arrives and the cache is full:

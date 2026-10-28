@@ -14,7 +14,7 @@ flowchart LR
     B --> C[03. Request Lifecycle]
     C --> D[04. Single Server Limits]
     D --> E[05. Latency vs Throughput]
-    E --> F[06. Scaling Up & Out]
+    E --> F["06. Scaling Up & Out"]
 ```
 
 ---

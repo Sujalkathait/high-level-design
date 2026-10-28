@@ -14,11 +14,11 @@ The **CAP Theorem** (formulated by Eric Brewer) addresses distributed data syste
 
 ```mermaid
 flowchart TD
-    subgraph Trilemma [The Classic CAP Triangle]
+    subgraph Trilemma ["The Classic CAP Triangle"]
         direction TB
-        C["Consistency\n(All nodes see the exact same write)"]
-        A["Availability\n(Every non-failing node returns a response)"]
-        P["Partition Tolerance\n(System functions despite network breaks)"]
+        C["Consistency<br/>(All nodes see the exact same write)"]
+        A["Availability<br/>(Every non-failing node returns a response)"]
+        P["Partition Tolerance<br/>(System functions despite network breaks)"]
         C --- A
         A --- P
         P --- C

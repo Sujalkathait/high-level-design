@@ -12,18 +12,18 @@
 flowchart LR
     App[Application Server]
     
-    subgraph CachingTier [High-Speed In-Memory Tier: RAM]
-        Cache[(Redis / Memcached)]
+    subgraph CachingTier ["High-Speed In-Memory Tier: RAM"]
+        Cache[("Redis / Memcached")]
     end
 
-    subgraph DurableTier [Durable Persistent Storage: SSD / Disk]
-        DB[(PostgreSQL / MySQL)]
+    subgraph DurableTier ["Durable Persistent Storage: SSD / Disk"]
+        DB[("PostgreSQL / MySQL")]
     end
 
-    App -->|1. Check Cache (Sub-millisecond)| Cache
-    Cache -->>|Hit: Return cached data| App
-    Cache -.->|Miss: Key absent| DB
-    DB -->>|2. Read from disk (10-50ms)| App
+    App -->|"1. Check Cache (Sub-millisecond)"| Cache
+    Cache -->>|"Hit: Return cached data"| App
+    Cache -.->|"Miss: Key absent"| DB
+    DB -->>|"2. Read from disk (10-50ms)"| App
     App -.->|3. Backfill Cache with TTL| Cache
 ```
 

@@ -10,12 +10,12 @@ While in-memory caches (like Redis and Memcached) dramatically improve read perf
 
 ```mermaid
 flowchart TD
-    subgraph Failures [The 5 Critical Caching Failure Modes]
-        F1["1. Cache Stampede (Thundering Herd)\nPopular entry expires; thousands query DB simultaneously"]
-        F2["2. Cache Penetration\nRepeated requests for nonexistent keys bypass cache to DB"]
-        F3["3. Cache Avalanche\nMany keys expire at approximately the same time"]
-        F4["4. Stale Cache Data\nCache entry no longer matches current database value"]
-        F5["5. Hot Keys\nA small number of keys receive disproportionate traffic"]
+    subgraph Failures ["The 5 Critical Caching Failure Modes"]
+        F1["1. Cache Stampede (Thundering Herd)<br/>Popular entry expires; thousands query DB simultaneously"]
+        F2["2. Cache Penetration<br/>Repeated requests for nonexistent keys bypass cache to DB"]
+        F3["3. Cache Avalanche<br/>Many keys expire at approximately the same time"]
+        F4["4. Stale Cache Data<br/>Cache entry no longer matches current database value"]
+        F5["5. Hot Keys<br/>A small number of keys receive disproportionate traffic"]
     end
 ```
 

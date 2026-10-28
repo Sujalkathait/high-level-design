@@ -12,13 +12,13 @@ HLD focuses on the **30,000-foot view** rather than the low-level implementation
 
 ```mermaid
 flowchart TD
-    Client([Client Device: Web / Mobile]) -->|1. DNS Lookup| DNS[DNS Resolver]
+    Client(["Client Device: Web / Mobile"]) -->|1. DNS Lookup| DNS[DNS Resolver]
     Client -->|2. HTTPS Traffic| LB[Load Balancer]
     LB -->|3. Route Request| App1[App Server 1]
     LB -->|Route Request| App2[App Server 2]
-    App1 <-->|4. Fast Cache Hit| Cache[(In-Memory Cache: Redis)]
-    App1 -->|5. Miss / Writes| DB[(Primary Database)]
-    App1 -.->|6. Async Events| MQ[Message Queue: Kafka]
+    App1 <-->|4. Fast Cache Hit| Cache[("In-Memory Cache: Redis")]
+    App1 -->|5. Miss / Writes| DB[("Primary Database")]
+    App1 -.->|6. Async Events| MQ["Message Queue: Kafka"]
     MQ --> Workers[Background Workers]
 ```
 

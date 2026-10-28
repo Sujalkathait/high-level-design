@@ -13,14 +13,14 @@
 | **Bandwidth** | **Volume** of raw data that can flow through a pipe | The **number of physical lanes** on the highway | Megabits per second (`Mbps`) |
 ```mermaid
 flowchart LR
-    subgraph LatencyModel [Latency: Processing Time per Request]
+    subgraph LatencyModel ["Latency: Processing Time per Request"]
         direction LR
-        Req1[Single Request] -->|Duration: 20ms| Srv1[Server Node]
+        Req1[Single Request] -->|"Duration: 20ms"| Srv1[Server Node]
     end
 
-    subgraph ThroughputModel [Throughput: Volume Completed per Second]
+    subgraph ThroughputModel ["Throughput: Volume Completed per Second"]
         direction LR
-        BatchReq[10,000 Requests/sec] -->|Distributed Across 16 Cores| Pool[Worker Pool]
+        BatchReq["10,000 Requests/sec"] -->|Distributed Across 16 Cores| Pool[Worker Pool]
     end
 ```
 * **Low Latency, Low Throughput:** An empty country road with a sports car traveling at 150 km/h (1 car finishes in 5 minutes, but only 2 cars pass per hour).
@@ -33,7 +33,7 @@ flowchart LR
 Never measure your system using **Average (Mean) Latency**. Averages hide catastrophic outliers:
 ```mermaid
 flowchart TD
-    Data["100 API Requests:\n• 99 requests take 10 ms\n• 1 request hangs for 10,000 ms (10 seconds!)\n\nAverage = 109 ms (Looks completely normal!)\nReality: Your VIP customer just stared at a frozen screen!"]
+    Data["100 API Requests:<br/>• 99 requests take 10 ms<br/>• 1 request hangs for 10,000 ms (10 seconds!)<br/><br/>Average = 109 ms (Looks completely normal!)<br/>Reality: Your VIP customer just stared at a frozen screen!"]
 ```
 
 #### The Percentile Metrics (p50, p95, p99)
@@ -73,8 +73,8 @@ Where:
 
 ```mermaid
 flowchart TD
-    Phase1["Stage 1: Healthy Zone: Light Load\nThroughput increases linearly with traffic.\nLatency stays flat (< 20ms)."] --> Phase2["Stage 2: The Knee of the Curve (Capacity Limit)\nCPU reaches 75-80%.\nWorker threads become fully occupied."]
-    Phase2 --> Phase3["Stage 3: Saturation & Meltdown\nRequests pile up in OS socket queues.\nThroughput plateaus or drops.\nLatency shoots straight to infinity!"]
+    Phase1["Stage 1: Healthy Zone: Light Load<br/>Throughput increases linearly with traffic.<br/>Latency stays flat (< 20ms)."] --> Phase2["Stage 2: The Knee of the Curve (Capacity Limit)<br/>CPU reaches 75-80%.<br/>Worker threads become fully occupied."]
+    Phase2 --> Phase3["Stage 3: Saturation & Meltdown<br/>Requests pile up in OS socket queues.<br/>Throughput plateaus or drops.<br/>Latency shoots straight to infinity!"]
 ```
 When a server hits 100% CPU utilization, **queuing delay** explodes exponentially. Adding just 5% more traffic can cause latency to jump from 50ms to 10 seconds.
 

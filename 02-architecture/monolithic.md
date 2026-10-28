@@ -19,9 +19,9 @@ These modules run within the same operating system process, sharing CPU cycles, 
 
 ```mermaid
 flowchart TD
-    Client[Client Devices: Web / Mobile] --> LB[Load Balancer]
+    Client["Client Devices: Web / Mobile"] --> LB[Load Balancer]
     
-    subgraph MonolithServer [Monolithic Application Server]
+    subgraph MonolithServer ["Monolithic Application Server"]
         direction TB
         AuthModule[Authentication Module]
         ProductModule[Product Catalog Module]
@@ -36,7 +36,7 @@ flowchart TD
     end
 
     LB --> MonolithServer
-    MonolithServer --> DB[(Unified Relational Database)]
+    MonolithServer --> DB[("Unified Relational Database")]
 ```
 
 ---

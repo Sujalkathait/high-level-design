@@ -12,10 +12,10 @@ Each shard stores a distinct subset of the overall data, functioning as an indep
 
 ```mermaid
 flowchart TD
-    App[Application / API Tier] --> Router{Shard Router / Proxy}
-    Router -->|user_id hash: Shard A| ShardA[(Shard A: 30M Users\nIndependent Hardware)]
-    Router -->|user_id hash: Shard B| ShardB[(Shard B: 30M Users\nIndependent Hardware)]
-    Router -->|user_id hash: Shard C| ShardC[(Shard C: 30M Users\nIndependent Hardware)]
+    App["Application / API Tier"] --> Router{Shard Router / Proxy}
+    Router -->|"user_id hash: Shard A"| ShardA[("Shard A: 30M Users<br/>Independent Hardware")]
+    Router -->|"user_id hash: Shard B"| ShardB[("Shard B: 30M Users<br/>Independent Hardware")]
+    Router -->|"user_id hash: Shard C"| ShardC[("Shard C: 30M Users<br/>Independent Hardware")]
 ```
 
 ### Illustrative Example:
@@ -31,20 +31,20 @@ Suppose an application stores **90 million user records**:
 
 ```mermaid
 flowchart LR
-    subgraph Range [1. Range-Based Sharding]
+    subgraph Range ["1. Range-Based Sharding"]
         direction TB
         R1["Shard 1: IDs 1 - 1,000,000"]
         R2["Shard 2: IDs 1,000,001 - 2,000,000"]
         R3["Shard 3: IDs 2,000,001 - 3,000,000"]
     end
 
-    subgraph Hash [2. Hash-Based Sharding]
+    subgraph Hash ["2. Hash-Based Sharding"]
         direction TB
         H1["shard_id = hash(user_id) % num_shards"]
         H2["Even distribution across all nodes"]
     end
 
-    subgraph Consistent [3. Consistent Hashing]
+    subgraph Consistent ["3. Consistent Hashing"]
         direction TB
         C1["Virtual Hash Ring (0 to 2^32 - 1)"]
         C2["Minimal key movement during re-sharding"]
@@ -101,16 +101,16 @@ Replication and sharding are not mutually exclusive—they are frequently combin
 flowchart TD
     App[Application Router]
     
-    subgraph ShardA_Cluster [Shard A (Users 1 - 30M)]
-        PA[(Primary A)] --> RA1[(Replica A1)] & RA2[(Replica A2)]
+    subgraph ShardA_Cluster ["Shard A (Users 1 - 30M)"]
+        PA[("Primary A")] --> RA1[("Replica A1")] & RA2[("Replica A2")]
     end
 
-    subgraph ShardB_Cluster [Shard B (Users 30M - 60M)]
-        PB[(Primary B)] --> RB1[(Replica B1)] & RB2[(Replica B2)]
+    subgraph ShardB_Cluster ["Shard B (Users 30M - 60M)"]
+        PB[("Primary B")] --> RB1[("Replica B1")] & RB2[("Replica B2")]
     end
 
-    subgraph ShardC_Cluster [Shard C (Users 60M - 90M)]
-        PC[(Primary C)] --> RC1[(Replica C1)] & RC2[(Replica C2)]
+    subgraph ShardC_Cluster ["Shard C (Users 60M - 90M)"]
+        PC[("Primary C")] --> RC1[("Replica C1")] & RC2[("Replica C2")]
     end
 
     App --> PA & PB & PC

@@ -15,21 +15,21 @@ The classic and most ubiquitous variation is the **3-Tier Architecture**:
 
 ```mermaid
 flowchart TD
-    subgraph ClientDevices [Clients & Edge]
-        Browser[Web Browser / Mobile App]
+    subgraph ClientDevices ["Clients & Edge"]
+        Browser["Web Browser / Mobile App"]
     end
 
-    subgraph PresentationTier [Presentation Layer - Tier 1]
-        WebUI[Web Server / Reverse Proxy / API Gateway]
+    subgraph PresentationTier ["Presentation Layer - Tier 1"]
+        WebUI["Web Server / Reverse Proxy / API Gateway"]
     end
 
-    subgraph AppTier [Application Layer - Tier 2]
-        BizLogic[Business Logic Engines / Domain Services]
+    subgraph AppTier ["Application Layer - Tier 2"]
+        BizLogic["Business Logic Engines / Domain Services"]
     end
 
-    subgraph DataTier [Data Layer - Tier 3]
-        Cache[(In-Memory Cache: Redis)]
-        DB[(Persistent Database: PostgreSQL)]
+    subgraph DataTier ["Data Layer - Tier 3"]
+        Cache[("In-Memory Cache: Redis")]
+        DB[("Persistent Database: PostgreSQL")]
     end
 
     ClientDevices -->|HTTPS Requests| PresentationTier

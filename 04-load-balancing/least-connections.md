@@ -11,10 +11,10 @@ The **Least Connections** algorithm routes each new incoming request to the serv
 ```mermaid
 flowchart TD
     Client[Incoming Request] --> LB[Least Connections Load Balancer]
-    subgraph ServerPool [Backend Server Pool]
-        S1[" Server 1: 45 Active Connections\n(Busy processing slow exports)"]
-        S2[" Server 2: 12 Active Connections\n(Moderate load)"]
-        S3[" Server 3: 2 Active Connections\n(Light load)"]
+    subgraph ServerPool ["Backend Server Pool"]
+        S1[" Server 1: 45 Active Connections<br/>(Busy processing slow exports)"]
+        S2[" Server 2: 12 Active Connections<br/>(Moderate load)"]
+        S3[" Server 3: 2 Active Connections<br/>(Light load)"]
     end
     LB -->|Routes to server with lowest connection count| S3
 ```

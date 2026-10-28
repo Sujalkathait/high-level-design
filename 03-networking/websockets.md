@@ -94,8 +94,8 @@ flowchart TD
     UserA[User A] -->|Connected| Srv1[WebSocket Server 1]
     UserB[User B] -->|Connected| Srv2[WebSocket Server 2]
     
-    subgraph PubSub [Backplane: Redis Pub/Sub / Kafka]
-        Channel[Channel: Room 101]
+    subgraph PubSub ["Backplane: Redis Pub/Sub / Kafka"]
+        Channel["Channel: Room 101"]
     end
 
     Srv1 -->|Publish Message| Channel

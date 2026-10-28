@@ -10,16 +10,16 @@
 * **Layer 7 (Application Layer - Ultra Smart):** Operates at the HTTP/HTTPS/WebSocket layer. It decrypts TLS, parses HTTP headers, reads cookies, and routes requests based on the URL path (e.g. `/api/v1/auth` vs. `/api/v1/video`).
 ```mermaid
 flowchart TD
-    subgraph L4_Routing [Layer 4: Transport Routing (Raw TCP)]
-        ClientL4[Client] -->|TCP Packet: 198.51.100.1:443| LB_L4[Layer 4 LB: AWS NLB / HAProxy]
+    subgraph L4_Routing ["Layer 4: Transport Routing (Raw TCP)"]
+        ClientL4[Client] -->|"TCP Packet: 198.51.100.1:443"| LB_L4["Layer 4 LB: AWS NLB / HAProxy"]
         LB_L4 -->|Forwards raw TCP stream without inspection| SrvL4[Backend Server]
     end
-    subgraph L7_Routing [Layer 7: Application Routing (Smart HTTP)]
-        ClientL7[Client] -->|HTTPS GET /images/avatar.png| LB_L7[Layer 7 LB: AWS ALB / Nginx / Envoy]
+    subgraph L7_Routing ["Layer 7: Application Routing (Smart HTTP)"]
+        ClientL7[Client] -->|HTTPS GET /images/avatar.png| LB_L7["Layer 7 LB: AWS ALB / Nginx / Envoy"]
         LB_L7 -->|Terminates TLS & Inspects Path| PathRouter{URL Path Router}
         PathRouter -->|/api/auth| AuthPool[Auth Service Pool]
-        PathRouter -->|/images/*| S3Proxy[Media Cache / S3]
-        PathRouter -->|Cookie: tier=vip| VIPPool[Dedicated VIP Server]
+        PathRouter -->|/images/*| S3Proxy["Media Cache / S3"]
+        PathRouter -->|"Cookie: tier=vip"| VIPPool[Dedicated VIP Server]
     end
 ```
 
@@ -74,9 +74,9 @@ flowchart TD
 In real-world FAANG architectures, you don't choose one over the other—**you use both in tandem**:
 ```mermaid
 flowchart TD
-    Client([Public Internet]) --> L4[Tier 1: Layer 4 AWS NLB\nHandles raw traffic spikes & anycast routing]
-    L4 --> L7_A[Tier 2: Layer 7 Nginx / Envoy Cluster A]
-    L4 --> L7_B[Tier 2: Layer 7 Nginx / Envoy Cluster B]
+    Client(["Public Internet"]) --> L4["Tier 1: Layer 4 AWS NLB<br/>Handles raw traffic spikes & anycast routing"]
+    L4 --> L7_A["Tier 2: Layer 7 Nginx / Envoy Cluster A"]
+    L4 --> L7_B["Tier 2: Layer 7 Nginx / Envoy Cluster B"]
     L7_A & L7_B -->|Route /users| UserSvc[User Microservice]
     L7_A & L7_B -->|Route /checkout| PaySvc[Payment Microservice]
 ```

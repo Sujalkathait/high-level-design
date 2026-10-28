@@ -12,11 +12,11 @@ It prevents any single server from becoming a performance bottleneck, ensures hi
 
 ```mermaid
 flowchart TD
-    subgraph Before [Before Scaling: Single Point of Failure]
-        Client1[Clients] --> ServerSingle["Single Server A\n(Overloaded & High Risk)"]
+    subgraph Before ["Before Scaling: Single Point of Failure"]
+        Client1[Clients] --> ServerSingle["Single Server A<br/>(Overloaded & High Risk)"]
     end
 
-    subgraph After [After Scaling: Load Balanced Cluster]
+    subgraph After ["After Scaling: Load Balanced Cluster"]
         Client2[Clients] --> LB[Load Balancer]
         LB -->|Traffic Distributed| SrvA[Server A]
         LB -->|Traffic Distributed| SrvB[Server B]
@@ -71,16 +71,16 @@ If an application sits behind a single load balancer, **the load balancer itself
 
 ```mermaid
 flowchart TD
-    DNS[DNS Anycast / Geo-DNS]
+    DNS["DNS Anycast / Geo-DNS"]
     
-    subgraph LB_Tier [Redundant Load Balancer Tier]
-        LB1[Primary Load Balancer (Active)]
-        LB2[Standby Load Balancer (Passive)]
+    subgraph LB_Tier ["Redundant Load Balancer Tier"]
+        LB1["Primary Load Balancer (Active)"]
+        LB2["Standby Load Balancer (Passive)"]
         Heartbeat{VRRP / Keepalived Heartbeat}
         LB1 <--> Heartbeat <--> LB2
     end
 
-    subgraph AppTier [Backend Server Pool]
+    subgraph AppTier ["Backend Server Pool"]
         S1[Server 1]
         S2[Server 2]
         S3[Server 3]

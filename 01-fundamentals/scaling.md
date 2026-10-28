@@ -25,10 +25,10 @@ Scalability is the ability of a system to handle increasing amounts of traffic, 
 | **Complexity** | Extremely simple (no code changes required) | Requires **stateless architecture** + Load Balancer |
 ```mermaid
 flowchart TD
-    subgraph Vert [Vertical Scaling: Scale Up]
-        Box1[" Small Server\n4 Core, 16GB RAM"] -->|Upgrade Machine| Box2[" Huge Server\n64 Core, 512GB RAM\n(Single Point of Failure)"]
+    subgraph Vert ["Vertical Scaling: Scale Up"]
+        Box1[" Small Server<br/>4 Core, 16GB RAM"] -->|Upgrade Machine| Box2[" Huge Server<br/>64 Core, 512GB RAM<br/>(Single Point of Failure)"]
     end
-    subgraph Horiz [Horizontal Scaling: Scale Out]
+    subgraph Horiz ["Horizontal Scaling: Scale Out"]
         LB[Load Balancer] --> S1[Server 1]
         LB --> S2[Server 2]
         LB --> S3[Server 3]
@@ -43,15 +43,15 @@ flowchart TD
 You cannot scale horizontally until your application servers are **completely stateless**.
 ```mermaid
 flowchart TD
-    subgraph StatefulBug [[-] Stateful Anti-Pattern: Local Memory Sessions]
-        UserA[User A] -->|1. Login Request| Serv1[Server 1: Saves Session in RAM]
-        UserA -.->|2. Next Request: View Cart| Serv2[Server 2: 'Session Not Found! Please Login!']
+    subgraph StatefulBug ["[-"] Stateful Anti-Pattern: Local Memory Sessions]
+        UserA[User A] -->|1. Login Request| Serv1["Server 1: Saves Session in RAM"]
+        UserA -.->|"2. Next Request: View Cart"| Serv2["Server 2: 'Session Not Found! Please Login!'"]
     end
-    subgraph StatelessFix [[+] Stateless Standard: Centralized State]
+    subgraph StatelessFix ["[+"] Stateless Standard: Centralized State]
         UserB[User B] --> LB2[Load Balancer]
         LB2 --> Serv3[Server 1]
         LB2 --> Serv4[Server 2]
-        Serv3 & Serv4 <--> RedisSession[(Centralized Redis / Memcached Session Store)]
+        Serv3 & Serv4 <--> RedisSession[("Centralized Redis / Memcached Session Store")]
     end
 ```
 
@@ -68,16 +68,16 @@ flowchart TD
 How your server handles concurrent connections dictates its scaling limit:
 ```mermaid
 flowchart LR
-    subgraph ThreadPerRequest [Thread-per-Request (e.g. Traditional Tomcat/Apache)]
+    subgraph ThreadPerRequest ["Thread-per-Request (e.g. Traditional Tomcat/Apache)"]
         direction TB
-        Req1[Req 1] --> T1[Thread 1: Blocks on DB query...]
-        Req2[Req 2] --> T2[Thread 2: Blocks on DB query...]
-        Req3[Req 3] --> T3[Thread 3: Memory limit reached! Out of Memory!]
+        Req1[Req 1] --> T1["Thread 1: Blocks on DB query..."]
+        Req2[Req 2] --> T2["Thread 2: Blocks on DB query..."]
+        Req3[Req 3] --> T3["Thread 3: Memory limit reached! Out of Memory!"]
     end
-    subgraph EventLoop [Event-Driven Non-Blocking (Node.js, Go Goroutines, Nginx)]
+    subgraph EventLoop ["Event-Driven Non-Blocking (Node.js, Go Goroutines, Nginx)"]
         direction TB
-        AllReqs[10,000 Concurrent Requests] --> Loop[Single Event Loop / Go Scheduler]
-        Loop -->|Dispatches async I/O| OS[OS Kernel / epoll]
+        AllReqs[10,000 Concurrent Requests] --> Loop["Single Event Loop / Go Scheduler"]
+        Loop -->|Dispatches async I/O| OS["OS Kernel / epoll"]
     end
 ```
 * **Thread-per-Request:** Each thread consumes 1MB–2MB of stack RAM. 5,000 concurrent threads consume 10GB of RAM just sitting idle waiting for database responses.
@@ -92,11 +92,11 @@ graph TD
     Start{Where is the system bottleneck?}
     Start -->|CPU / App Logic Saturated| App[App Servers]
     App --> MakeStateless[Make app stateless]
-    MakeStateless --> AddLB[Place behind Load Balancer & Autoscale horizontally]
+    MakeStateless --> AddLB["Place behind Load Balancer & Autoscale horizontally"]
     Start -->|Slow Database Queries| DB[Database Bottleneck]
     DB --> Index[1. Add B-Tree Indexes on query columns]
     Index --> Cache[2. Add Redis Cache for hot reads]
-    Cache --> Replicas[3. Add Read Replicas (Primary-Replica)]
+    Cache --> Replicas["3. Add Read Replicas (Primary-Replica)"]
     Replicas --> Shard[4. Shard data across multiple DB nodes]
 ```
 

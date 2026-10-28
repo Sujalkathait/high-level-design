@@ -10,17 +10,17 @@
 
 ```mermaid
 flowchart LR
-    subgraph ClientQuery [Client Request]
-        Q["query {\n  user(id: 12) {\n    name\n    orders {\n      id\n      total\n    }\n  }\n}"]
+    subgraph ClientQuery ["Client Request"]
+        Q["query {<br/>  user(id: 12) {<br/>    name<br/>    orders {<br/>      id<br/>      total<br/>    }<br/>  }<br/>}"]
     end
 
-    subgraph GraphQLServer [GraphQL Gateway Engine]
-        Schema[Typed Schema & Resolvers]
+    subgraph GraphQLServer ["GraphQL Gateway Engine"]
+        Schema["Typed Schema & Resolvers"]
     end
 
-    subgraph Backends [Microservices / DB]
-        UserDB[(User Service)]
-        OrderDB[(Order Service)]
+    subgraph Backends ["Microservices / DB"]
+        UserDB[("User Service")]
+        OrderDB[("Order Service")]
     end
 
     ClientQuery -->|POST /graphql| GraphQLServer

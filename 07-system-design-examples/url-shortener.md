@@ -21,15 +21,15 @@
 ```mermaid
 flowchart TD
     Client[Client Device] --> DNS[DNS Resolver]
-    DNS --> CDN[Edge CDN / Cloudflare]
+    DNS --> CDN["Edge CDN / Cloudflare"]
     CDN --> LB[Layer 7 Load Balancer]
     LB --> AppPool[Stateless App Servers]
     
-    AppPool <-->|1. Fast Cache Lookup| Cache[(Redis In-Memory Cache)]
-    AppPool -->|2. Miss / Writes| DB[(Primary Relational / NoSQL DB)]
+    AppPool <-->|1. Fast Cache Lookup| Cache[("Redis In-Memory Cache")]
+    AppPool -->|2. Miss / Writes| DB[("Primary Relational / NoSQL DB")]
     AppPool -.->|3. Async Click Telemetry| Queue[Kafka Event Stream]
     Queue --> AnalyticsWorker[Analytics Aggregator]
-    AnalyticsWorker --> AnalyticsDB[(Time-Series / Click DB)]
+    AnalyticsWorker --> AnalyticsDB[("Time-Series / Click DB")]
 ```
 
 ---

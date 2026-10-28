@@ -18,15 +18,15 @@ A server does not process only one request at a time. Its practical concurrency 
 ```mermaid
 flowchart TD
     Client[Client Device] -->|HTTP Request| NIC[Network Interface Card - OS Kernel]
-    NIC -->|Socket Buffer| WebServer[Web Server: Nginx / Envoy]
-    WebServer -->|Worker Threads / Event Loop| AppRuntime[App Runtime: Node / Go / Java]
+    NIC -->|Socket Buffer| WebServer["Web Server: Nginx / Envoy"]
+    WebServer -->|Worker Threads / Event Loop| AppRuntime["App Runtime: Node / Go / Java"]
     
-    subgraph Execution [Application Server Concurrency]
+    subgraph Execution ["Application Server Concurrency"]
         direction TB
-        Handler[Request Router & Auth]
+        Handler["Request Router & Auth"]
         Handler --> Pool{Connection Pool}
-        Pool -->|Worker A: DB Query| DB[(Database)]
-        Pool -->|Worker B: Computation| CPU[CPU Cores]
+        Pool -->|"Worker A: DB Query"| DB[("Database")]
+        Pool -->|"Worker B: Computation"| CPU[CPU Cores]
     end
 
     AppRuntime --> Execution
@@ -116,9 +116,9 @@ Suppose benchmarking shows a server sustains **200 requests/sec (RPS)** at 30ms 
 
 ```mermaid
 flowchart LR
-    Traffic[Incoming 400 RPS] --> Queue[OS Socket Backlog Queue: FILLING UP]
-    Queue --> Server[4-Core Server: Max Capacity 200 RPS]
-    Queue -.->|Queue Full| Drop[504 Gateway Timeout / Connection Refused]
+    Traffic[Incoming 400 RPS] --> Queue["OS Socket Backlog Queue: FILLING UP"]
+    Queue --> Server["4-Core Server: Max Capacity 200 RPS"]
+    Queue -.->|Queue Full| Drop["504 Gateway Timeout / Connection Refused"]
 ```
 
 ### Classic Symptoms of an Overloaded Server

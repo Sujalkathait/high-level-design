@@ -27,7 +27,15 @@ Almost **all keys change their destination server**. Your cache hit rate plummet
 
 ```mermaid
 flowchart TD
-    Ring["Consistent Hashing Ring (0 to 2^32 - 1)\n\n          [Server A (pos: 1000)]\n               /          \\\n              /            \\\n      Key 1 (pos: 500)      Key 2 (pos: 1500)\n           /                  \\\n[Server C (pos: 3000)]     [Server B (pos: 2000)]\n           \\                  /\n            \\                /\n             Key 3 (pos: 2500)"]
+    subgraph HashRing ["Consistent Hashing Ring: 0 to 2^32 - 1"]
+        direction TB
+        Key1["Key 1 (Pos: 500)"] -->|Walk Clockwise| ServerA["Server A (Pos: 1000)"]
+        ServerA -.-> Key2["Key 2 (Pos: 1500)"]
+        Key2 -->|Walk Clockwise| ServerB["Server B (Pos: 2000)"]
+        ServerB -.-> Key3["Key 3 (Pos: 2500)"]
+        Key3 -->|Walk Clockwise| ServerC["Server C (Pos: 3000)"]
+        ServerC -.->|Wrap Around 2^32 to 0| Key1
+    end
 ```
 1. **Hash the Servers:** Hash each server's IP/hostname to place it at a position on the $0$ to $2^{32}-1$ ring.
 2. **Hash the Keys:** Hash incoming request keys (e.g. `user_id`) to place them on the exact same ring.

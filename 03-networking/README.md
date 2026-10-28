@@ -10,7 +10,7 @@ Distributed systems rely entirely on networking protocols and API communication 
 
 ```mermaid
 flowchart LR
-    A[01. REST] --> B[02. RPC & gRPC]
+    A[01. REST] --> B["02. RPC & gRPC"]
     B --> C[03. GraphQL]
     C --> D[04. WebSockets]
     D --> E[05. Protocol Comparison]

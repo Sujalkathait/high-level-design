@@ -17,12 +17,12 @@ Client-Server is a distributed relationship where one program (the **Client**) a
 
 ```mermaid
 flowchart TD
-    subgraph P2P [Without Client-Server: Peer-to-Peer Chaos]
+    subgraph P2P ["Without Client-Server: Peer-to-Peer Chaos"]
         direction LR
         UserA[User A Phone] <-->|Direct Sync| UserB[User B Phone]
         UserB <--> UserC[User C Phone]
         UserA <--> UserC
-        Note1["Problems:\n1. If User B turns off phone, their data is lost\n2. Users can hack local code and change their bank balance\n3. Syncing 1M phones directly crashes the network"]
+        Note1["Problems:<br/>1. If User B turns off phone, their data is lost<br/>2. Users can hack local code and change their bank balance<br/>3. Syncing 1M phones directly crashes the network"]
     end
 ```
 * **Security & Trust:** You can **never trust the client**. If business rules lived on the client's phone, users could modify code to grant themselves unlimited credits or bypass paywalls. The server is the single source of truth.
@@ -35,20 +35,20 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    subgraph Clients [Client Devices]
+    subgraph Clients ["Client Devices"]
         Web[Web Browser]
         Mobile[Mobile App]
     end
-    subgraph Boundaries [Public Internet / TLS 1.3]
+    subgraph Boundaries ["Public Internet / TLS 1.3"]
         API[api.myapp.com]
     end
-    subgraph ServerSide [Secure Server Infrastructure]
+    subgraph ServerSide ["Secure Server Infrastructure"]
         direction TB
         LB[Load Balancer]
         App1[App Instance A]
         App2[App Instance B]
-        DB[(Primary Database)]
-        Cache[(Redis Cache)]
+        DB[("Primary Database")]
+        Cache[("Redis Cache")]
         LB --> App1 & App2
         App1 & App2 <--> Cache
         App1 & App2 --> DB
@@ -74,15 +74,15 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    subgraph Stateful [[-] Stateful Server (Antipattern for Scaling)]
-        C1[Client] --> S1[Server 1: Stores User Session in RAM]
-        C1 -.->|Next request hits Server 2| S2[Server 2: 'Who are you? Please log in again!']
+    subgraph Stateful ["[-"] Stateful Server (Antipattern for Scaling)]
+        C1[Client] --> S1["Server 1: Stores User Session in RAM"]
+        C1 -.->|Next request hits Server 2| S2["Server 2: 'Who are you? Please log in again!'"]
     end
-    subgraph Stateless [[+] Stateless Server (Cloud Native Standard)]
+    subgraph Stateless ["[+"] Stateless Server (Cloud Native Standard)]
         C2[Client] -->|Request with JWT Token| LB2[Load Balancer]
         LB2 --> S3[Server 1]
         LB2 --> S4[Server 2]
-        S3 & S4 <--> Shared[(Shared Redis Session Store)]
+        S3 & S4 <--> Shared[("Shared Redis Session Store")]
         Note2["Any server can handle any request!"]
     end
 ```

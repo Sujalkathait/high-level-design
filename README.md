@@ -49,11 +49,11 @@ A clean, visual, and practical guide to **High-Level System Design (HLD)**. No b
 **High-Level Design (HLD)** defines the overall architecture of a system: its services, data boundaries, communication protocols, and how it survives server failures and traffic surges.
 ```mermaid
 flowchart LR
-    Client([Client App]) -->|1. HTTPS| LB[Load Balancer]
+    Client(["Client App"]) -->|1. HTTPS| LB[Load Balancer]
     LB -->|2. Route| App1[App Server 1]
     LB -->|Route| App2[App Server 2]
-    App1 <-->|3. Fast Cache Hit| Cache[(Redis Cache)]
-    App1 -->|4. Miss / Writes| DB[(Primary DB)]
+    App1 <-->|3. Fast Cache Hit| Cache[("Redis Cache")]
+    App1 -->|4. Miss / Writes| DB[("Primary DB")]
 ```
 
 ### Rule: The 4 Rules of Good System Design
@@ -113,7 +113,7 @@ Everything (Web Server, Business Logic, Database) lives on a single machine.
 * **Bottleneck:** If the server runs out of RAM or crashes, the entire business goes offline.
 ```mermaid
 flowchart TD
-    User([Users]) -->|Single DNS Entry| Box[" Single Server ($10/mo VM)\n Nginx\n App Code (Node / Go / Java)\n SQLite / Postgres Local"]
+    User(["Users"]) -->|Single DNS Entry| Box[" Single Server ($10/mo VM)<br/> Nginx<br/> App Code (Node / Go / Java)<br/> SQLite / Postgres Local"]
 ```
 
 ---
@@ -124,8 +124,8 @@ Separate the App Server from the Database onto two distinct machines.
 * **Why:** The app server is CPU-heavy; the database is RAM- and Disk-heavy. Giving each dedicated resources doubles your headroom immediately.
 ```mermaid
 flowchart LR
-    User([Users]) --> App[" App Server (Compute)\nFocus: CPU & Network"]
-    App --> DB[(" Dedicated Database\nFocus: RAM & Fast NVMe SSD")]
+    User(["Users"]) --> App[" App Server (Compute)<br/>Focus: CPU & Network"]
+    App --> DB[(" Dedicated Database<br/>Focus: RAM & Fast NVMe SSD")]
 ```
 
 ---
@@ -136,11 +136,11 @@ Make the App Server **stateless** and place a **Load Balancer** in front of mult
 * **Why:** If App Server A crashes, the Load Balancer routes traffic to Server B with zero downtime.
 ```mermaid
 flowchart TD
-    User([Users]) --> LB[Load Balancer (HAProxy / ALB)]
+    User(["Users"]) --> LB["Load Balancer (HAProxy / ALB)"]
     LB --> App1[App Server 1]
     LB --> App2[App Server 2]
     LB --> App3[App Server 3]
-    App1 & App2 & App3 --> DB[(Primary Database)]
+    App1 & App2 & App3 --> DB[("Primary Database")]
 ```
 
 ---
@@ -152,12 +152,12 @@ Most apps have **90% Reads and 10% Writes**. Scaling the primary database direct
 * **Read Replicas:** Primary DB handles `INSERT/UPDATE/DELETE`; Replicas handle `SELECT` queries.
 ```mermaid
 flowchart TD
-    User([Users]) --> LB[Load Balancer]
+    User(["Users"]) --> LB[Load Balancer]
     LB --> App[Stateless App Servers]
-    App <-->|1. Read/Write Hot Keys| Cache[(Redis Cache Cluster)]
-    App -->|2. Writes Only| Primary[(Primary DB - Write Master)]
-    Primary -.->|Async Replication| Replica1[(Read Replica 1)]
-    Primary -.->|Async Replication| Replica2[(Read Replica 2)]
+    App <-->|1. Read/Write Hot Keys| Cache[("Redis Cache Cluster")]
+    App -->|2. Writes Only| Primary[("Primary DB - Write Master")]
+    Primary -.->|Async Replication| Replica1[("Read Replica 1")]
+    Primary -.->|Async Replication| Replica2[("Read Replica 2")]
     App -->|3. Reads| Replica1 & Replica2
 ```
 
@@ -170,16 +170,16 @@ flowchart TD
 * **Database Sharding:** Split rows across multiple database servers when a single disk cannot fit all data.
 ```mermaid
 flowchart TD
-    Client([Global Clients]) --> CDN[Global CDN / Edge]
+    Client(["Global Clients"]) --> CDN["Global CDN / Edge"]
     CDN -->|Dynamic Calls| LB[Load Balancer]
-    LB --> App[Microservices / App Pool]
-    App <--> Cache[(Redis Cluster)]
-    App -->|Async Tasks| Queue[Kafka / RabbitMQ Queue]
+    LB --> App["Microservices / App Pool"]
+    App <--> Cache[("Redis Cluster")]
+    App -->|Async Tasks| Queue["Kafka / RabbitMQ Queue"]
     Queue --> Worker1[Background Worker 1]
     Queue --> Worker2[Background Worker 2]
     App -->|Shard by user_id| Router{DB Shard Router}
-    Router --> ShardA[(DB Shard A: Users 0 - 5M)]
-    Router --> ShardB[(DB Shard B: Users 5M - 10M)]
+    Router --> ShardA[("DB Shard A: Users 0 - 5M")]
+    Router --> ShardB[("DB Shard B: Users 5M - 10M")]
 ```
 
 ---
@@ -203,7 +203,7 @@ flowchart TD
 Choosing how services talk to each other directly impacts latency and simplicity:
 ```mermaid
 flowchart LR
-    Browser([Browser / Mobile]) -->|REST or GraphQL| Gateway[API Gateway]
+    Browser(["Browser / Mobile"]) -->|REST or GraphQL| Gateway[API Gateway]
     Gateway -->|High-Performance gRPC| ServiceA[Billing Service]
     Gateway -->|High-Performance gRPC| ServiceB[Inventory Service]
     Browser <-->|Persistent WebSocket| ChatService[Live Chat Service]
@@ -228,14 +228,14 @@ A **Load Balancer** sits between clients and backend servers to distribute incom
 
 ```mermaid
 flowchart TD
-    subgraph L4 [Layer 4: Transport Level - Ultra Fast]
+    subgraph L4 ["Layer 4: Transport Level - Ultra Fast"]
         direction LR
-        ClientL4[Client] -->|IP:Port Routing Only| LB4[L4 LB: HAProxy / AWS NLB]
+        ClientL4[Client] -->|"IP:Port Routing Only"| LB4["L4 LB: HAProxy / AWS NLB"]
         LB4 -->|Raw TCP Stream| BackendL4[Backend Pool]
     end
-    subgraph L7 [Layer 7: Application Level - Smart Routing]
+    subgraph L7 ["Layer 7: Application Level - Smart Routing"]
         direction LR
-        ClientL7[Client] -->|Inspects HTTP Path & Headers| LB7[L7 LB: Nginx / Envoy / AWS ALB]
+        ClientL7[Client] -->|Inspects HTTP Path & Headers| LB7["L7 LB: Nginx / Envoy / AWS ALB"]
         LB7 -->|/api/v1/auth| AuthSvc[Auth Service]
         LB7 -->|/api/v1/video| VideoSvc[Video Service]
     end
@@ -250,8 +250,13 @@ Standard `hash(key) % N` breaks completely when a cache server is added or remov
 * When a node fails, **only $1/N$ of keys are remapped** to the next clockwise node!
 * **Virtual Nodes:** Add 100–250 virtual positions per server to evenly balance data and prevent hotspots.
 ```mermaid
-flowchart TD
-    Ring["Consistent Hashing Ring (0 to 2^32 - 1)\n\n[Server 1] ---> [Key A, Key B]\n     ^                |\n     |                v\n[Server 3] <--- [Server 2]"]
+flowchart LR
+    subgraph Ring ["Consistent Hashing Ring: 0 to 2^32 - 1"]
+        direction LR
+        S1["Server 1"] -->|Keys A & B| S2["Server 2"]
+        S2 -->|Keys C & D| S3["Server 3"]
+        S3 -.->|Wrap Around| S1
+    end
 ```
 
 ---
@@ -264,16 +269,16 @@ Caching stores the results of expensive calculations or database queries in fast
 
 ```mermaid
 flowchart LR
-    subgraph CacheAside [1. Cache-Aside / Lazy Loading (Most Popular)]
+    subgraph CacheAside ["1. Cache-Aside / Lazy Loading (Most Popular)"]
         direction TB
-        App1[App] -->|1. Check Cache| C1[(Cache)]
-        App1 -->|2. On Miss: Read DB| DB1[(Database)]
+        App1[App] -->|1. Check Cache| C1[("Cache")]
+        App1 -->|"2. On Miss: Read DB"| DB1[("Database")]
         App1 -->|3. Write Back to Cache| C1
     end
-    subgraph WriteThrough [2. Write-Through (Consistent)]
+    subgraph WriteThrough ["2. Write-Through (Consistent)"]
         direction TB
-        App2[App] -->|1. Write Data| C2[(Cache)]
-        C2 -->|2. Synchronously Writes| DB2[(Database)]
+        App2[App] -->|1. Write Data| C2[("Cache")]
+        C2 -->|2. Synchronously Writes| DB2[("Database")]
     end
 ```
 | Strategy | Read Path | Write Path | Best Used For |
@@ -298,12 +303,12 @@ flowchart LR
 ```mermaid
 graph TD
     Start{What is your primary access pattern?}
-    Start -->|Complex Queries, Joins, Financial Transactions| SQL[Use SQL: PostgreSQL / MySQL]
+    Start -->|Complex Queries, Joins, Financial Transactions| SQL["Use SQL: PostgreSQL / MySQL"]
     Start -->|High Velocity Key Lookups, Flexible Schema| NoSQL{Choose NoSQL Type}
-    NoSQL -->|Key-Value Store / Caching| KV[Redis / DynamoDB]
-    NoSQL -->|Documents / Nested JSON| Doc[MongoDB / Couchbase]
-    NoSQL -->|Time-Series / Write-Heavy Logs| Wide[Cassandra / ScyllaDB]
-    NoSQL -->|Full-Text Search & Analytics| Search[Elasticsearch / OpenSearch]
+    NoSQL -->|Key-Value Store / Caching| KV["Redis / DynamoDB"]
+    NoSQL -->|Documents / Nested JSON| Doc["MongoDB / Couchbase"]
+    NoSQL -->|Time-Series / Write-Heavy Logs| Wide["Cassandra / ScyllaDB"]
+    NoSQL -->|Full-Text Search & Analytics| Search["Elasticsearch / OpenSearch"]
 ```
 
 ### Scaling the Database: Replication vs. Sharding
@@ -312,16 +317,16 @@ graph TD
 flowchart TD
     subgraph Replication ["Replication: Scales READS (1 Primary + Many Read Replicas)"]
         direction LR
-        WApp[Write Traffic] --> PDB[(Primary DB)]
-        PDB -.->|Binlog Stream| RDB1[(Replica 1)]
-        PDB -.->|Binlog Stream| RDB2[(Replica 2)]
+        WApp[Write Traffic] --> PDB[("Primary DB")]
+        PDB -.->|Binlog Stream| RDB1[("Replica 1")]
+        PDB -.->|Binlog Stream| RDB2[("Replica 2")]
         RApp[Read Traffic] --> RDB1 & RDB2
     end
     subgraph Sharding ["Sharding: Scales WRITES & STORAGE (Horizontal Data Partitioning)"]
         direction LR
-        SApp[App Router] -->|user_id: 1 to 1M| Shard1[(Shard 1)]
-        SApp -->|user_id: 1M to 2M| Shard2[(Shard 2)]
-        SApp -->|user_id: 2M to 3M| Shard3[(Shard 3)]
+        SApp[App Router] -->|"user_id: 1 to 1M"| Shard1[("Shard 1")]
+        SApp -->|"user_id: 1M to 2M"| Shard2[("Shard 2")]
+        SApp -->|"user_id: 2M to 3M"| Shard3[("Shard 3")]
     end
 ```
 * **Replication:** Solves read bottlenecks. Write to Primary, read from Replicas.
@@ -336,9 +341,9 @@ flowchart TD
 In a distributed network, **Network Partitions ($P$) are inevitable** (cables get cut, switches fail). When a partition occurs, you must choose:
 ```mermaid
 flowchart TD
-    Partition[Note: Network Partition Occurs: Node A cannot talk to Node B]
-    Partition -->|Choice 1: CP - Consistency| CP["Cancel Request / Return Error\n'We guarantee no wrong data is returned.'\nBest for: Banking, Stock Trading, Payments"]
-    Partition -->|Choice 2: AP - Availability| AP["Accept Write Locally on Node A\n'System stays online, but data will be temporarily out-of-sync.'\nBest for: Social Feeds, YouTube views, Likes"]
+    Partition["Note: Network Partition Occurs: Node A cannot talk to Node B"]
+    Partition -->|"Choice 1: CP - Consistency"| CP["Cancel Request / Return Error<br/>'We guarantee no wrong data is returned.'<br/>Best for: Banking, Stock Trading, Payments"]
+    Partition -->|"Choice 2: AP - Availability"| AP["Accept Write Locally on Node A<br/>'System stays online, but data will be temporarily out-of-sync.'<br/>Best for: Social Feeds, YouTube views, Likes"]
 ```
 > Key Decision: **Key Rule:** You do NOT choose between C, A, and P. You **always have P**. Your architectural decision is **CP vs. AP**.
 
@@ -349,8 +354,8 @@ flowchart TD
 When an operation takes more than 100ms (sending emails, video encoding, push notifications), **never make the user wait on the HTTP request**. Offload it to a message broker.
 ```mermaid
 flowchart LR
-    User([User]) -->|POST /order/checkout| API[App Server]
-    API -->|1. Save Order| DB[(DB)]
+    User(["User"]) -->|POST /order/checkout| API[App Server]
+    API -->|1. Save Order| DB[("DB")]
     API -->|2. Publish 'OrderPlaced' Event| Queue[Event Broker]
     API -->>|3. Instant 200 OK Response| User
     Queue -->|Consume| EmailWorker[Email Service]

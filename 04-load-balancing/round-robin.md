@@ -31,8 +31,8 @@ In cloud environments, you might have mixed instance types (e.g. 16 vCPU machine
 ```mermaid
 flowchart TD
     LB[Weighted Load Balancer]
-    LB -->|Receives 75% of traffic| BoxBig[" Server A (Weight: 3)\n16 vCPUs, 64 GB RAM"]
-    LB -->|Receives 25% of traffic| BoxSmall[" Server B (Weight: 1)\n4 vCPUs, 16 GB RAM"]
+    LB -->|Receives 75% of traffic| BoxBig[" Server A (Weight: 3)<br/>16 vCPUs, 64 GB RAM"]
+    LB -->|Receives 25% of traffic| BoxSmall[" Server B (Weight: 1)<br/>4 vCPUs, 16 GB RAM"]
 ```
 
 ---

@@ -67,12 +67,12 @@ Code generation compilers (`protoc`) take this `.proto` file and automatically g
 
 ```mermaid
 flowchart LR
-    subgraph JSON_Text [JSON: Human-Readable Text]
-        JText["{ 'id': 101, 'total': 499.00 }\nBytes: ~32 bytes\nSlow ASCII Parsing"]
+    subgraph JSON_Text ["JSON: Human-Readable Text"]
+        JText["{ 'id': 101, 'total': 499.00 }<br/>Bytes: ~32 bytes<br/>Slow ASCII Parsing"]
     end
 
-    subgraph Protobuf_Binary [Protobuf: Tag-Value Binary Encoding]
-        PBin["08 65 11 00 00 00 00 00 30 7F 40\nBytes: ~11 bytes\nBlazing CPU Deserialization"]
+    subgraph Protobuf_Binary ["Protobuf: Tag-Value Binary Encoding"]
+        PBin["08 65 11 00 00 00 00 00 30 7F 40<br/>Bytes: ~11 bytes<br/>Blazing CPU Deserialization"]
     end
 ```
 

@@ -12,11 +12,11 @@ This case study traces the evolutionary journey of scaling this system step-by-s
 
 ```mermaid
 flowchart LR
-    S1[Stage 1: Single Server] --> S2[Stage 2: Code & DB Optimization]
-    S2 --> S3[Stage 3: In-Memory Caching]
-    S3 --> S4[Stage 4: Horizontal App Tier + LB]
-    S4 --> S5[Stage 5: Database Scaling]
-    S5 --> S6[Stage 6: Asynchronous Processing]
+    S1["Stage 1: Single Server"] --> S2["Stage 2: Code & DB Optimization"]
+    S2 --> S3["Stage 3: In-Memory Caching"]
+    S3 --> S4["Stage 4: Horizontal App Tier + LB"]
+    S4 --> S5["Stage 5: Database Scaling"]
+    S5 --> S6["Stage 6: Asynchronous Processing"]
 ```
 
 ---
@@ -29,8 +29,8 @@ The system begins with a single physical machine or virtual server hosting both 
 
 ```mermaid
 flowchart TD
-    Clients[Clients / Mobile & Web] --> App[Application Server]
-    App --> DB[(Database)]
+    Clients["Clients / Mobile & Web"] --> App[Application Server]
+    App --> DB[("Database")]
 ```
 
 * **Pros:** Extremely simple, fastest time to market, zero network latency between application and database, trivial CI/CD deployment.
@@ -48,7 +48,7 @@ Before spending budget on additional cloud servers and distributed systems compl
 
 ```mermaid
 flowchart TD
-    subgraph Optimizations [Optimization Checklist Before Scaling Out]
+    subgraph Optimizations ["Optimization Checklist Before Scaling Out"]
         O1["1. Profile CPU and memory bottlenecks"]
         O2["2. Optimize slow database queries (EXPLAIN ANALYZE)"]
         O3["3. Add missing database B-Tree composite indexes"]
@@ -69,8 +69,8 @@ Frequently accessed read-heavy records (such as product descriptions and categor
 ```mermaid
 flowchart TD
     Clients[Clients] --> App[Application Server]
-    App --> Cache[(In-Memory Cache: Redis)]
-    Cache -.->|Cache Miss Only| DB[(Database)]
+    App --> Cache[("In-Memory Cache: Redis")]
+    Cache -.->|Cache Miss Only| DB[("Database")]
 ```
 
 * **Benefits:**
@@ -90,8 +90,8 @@ Traffic is distributed across a horizontally scaled pool of stateless applicatio
 flowchart TD
     Clients[Clients] --> LB[Load Balancer]
     LB --> S1[Server A] & S2[Server B] & S3[Server C]
-    S1 & S2 & S3 --> Cache[(Distributed Cache)]
-    S1 & S2 & S3 --> DB[(Database)]
+    S1 & S2 & S3 --> Cache[("Distributed Cache")]
+    S1 & S2 & S3 --> DB[("Database")]
 ```
 
 * **Prerequisites for Success:**
@@ -107,9 +107,9 @@ When the single database becomes the primary bottleneck, scale it systematically
 
 ```mermaid
 flowchart TD
-    AppTier[Application Tier] -->|Writes: INSERT / UPDATE / DELETE| Primary[(Primary DB: Master)]
-    Primary -.->|Async Replication Stream| Rep1[(Read Replica 1)] & Rep2[(Read Replica 2)]
-    AppTier -->|Reads: SELECT| Rep1 & Rep2
+    AppTier[Application Tier] -->|"Writes: INSERT / UPDATE / DELETE"| Primary[("Primary DB: Master")]
+    Primary -.->|Async Replication Stream| Rep1[("Read Replica 1")] & Rep2[("Read Replica 2")]
+    AppTier -->|"Reads: SELECT"| Rep1 & Rep2
 ```
 
 1. **Add Read Replicas:** Route 90% of read queries (product browsing) to read replicas, reserving the primary database for writes (order placements).
@@ -124,11 +124,11 @@ Operations that do not require synchronous completion during the initial user HT
 
 ```mermaid
 flowchart LR
-    App[Application Server] -->|1. Order Placed| DB[(Primary DB)]
-    App -->|2. Publish Event| Queue[(Message Queue)]
+    App[Application Server] -->|1. Order Placed| DB[("Primary DB")]
+    App -->|2. Publish Event| Queue[("Message Queue")]
     Queue --> Worker[Background Worker Pool]
-    Worker --> Email[Email Service: Send Receipt]
-    Worker --> Inv[Inventory Service: Deduct Stock]
+    Worker --> Email["Email Service: Send Receipt"]
+    Worker --> Inv["Inventory Service: Deduct Stock"]
 ```
 
 * **Benefits:**
@@ -143,10 +143,10 @@ flowchart LR
 ```mermaid
 flowchart TD
     User[Client Devices] --> DNS[Global Anycast DNS]
-    DNS --> CDN[CDN: Cloudflare / CloudFront Edge]
+    DNS --> CDN["CDN: Cloudflare / CloudFront Edge"]
     CDN --> LB[High-Availability Load Balancers]
     
-    subgraph AppCluster [Horizontally Scaled Stateless App Fleet]
+    subgraph AppCluster ["Horizontally Scaled Stateless App Fleet"]
         App1[App Server A]
         App2[App Server B]
         App3[App Server C]
@@ -154,17 +154,17 @@ flowchart TD
     
     LB --> App1 & App2 & App3
     
-    App1 & App2 & App3 <--> CacheCluster[(Distributed Redis Cluster)]
-    App1 & App2 & App3 -->|Writes| PrimaryDB[(Primary Master Database)]
-    App1 & App2 & App3 -->|Reads| ReadReplicas[(Read Replica Pool)]
+    App1 & App2 & App3 <--> CacheCluster[("Distributed Redis Cluster")]
+    App1 & App2 & App3 -->|Writes| PrimaryDB[("Primary Master Database")]
+    App1 & App2 & App3 -->|Reads| ReadReplicas[("Read Replica Pool")]
     PrimaryDB -.->|Replication| ReadReplicas
     
-    App1 & App2 & App3 -->|Publish Events| MQ[(Kafka / RabbitMQ Queue)]
+    App1 & App2 & App3 -->|Publish Events| MQ[("Kafka / RabbitMQ Queue")]
     
-    subgraph BackgroundWorkers [Asynchronous Worker Fleet]
-        W1[Worker 1: Payments & Billing]
-        W2[Worker 2: Notifications & Email]
-        W3[Worker 3: Search Indexing]
+    subgraph BackgroundWorkers ["Asynchronous Worker Fleet"]
+        W1["Worker 1: Payments & Billing"]
+        W2["Worker 2: Notifications & Email"]
+        W3["Worker 3: Search Indexing"]
     end
     
     MQ --> W1 & W2 & W3

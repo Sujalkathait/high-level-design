@@ -14,11 +14,11 @@ Replication means keeping identical copies of the same database on multiple phys
 
 ```mermaid
 flowchart TD
-    AppW[App: Write Traffic] -->|INSERT / UPDATE / DELETE| Primary[(Primary / Leader DB)]
-    Primary -.->|Replication Stream: Binlog / WAL| Rep1[(Read Replica 1)]
-    Primary -.->|Replication Stream: Binlog / WAL| Rep2[(Read Replica 2)]
-    Primary -.->|Replication Stream: Binlog / WAL| Rep3[(Read Replica 3)]
-    AppR[App: Read Traffic] -->|SELECT Queries| Rep1 & Rep2 & Rep3
+    AppW["App: Write Traffic"] -->|INSERT / UPDATE / DELETE| Primary[("Primary / Leader DB")]
+    Primary -.->|"Replication Stream: Binlog / WAL"| Rep1[("Read Replica 1")]
+    Primary -.->|"Replication Stream: Binlog / WAL"| Rep2[("Read Replica 2")]
+    Primary -.->|"Replication Stream: Binlog / WAL"| Rep3[("Read Replica 3")]
+    AppR["App: Read Traffic"] -->|SELECT Queries| Rep1 & Rep2 & Rep3
 ```
 
 ---
@@ -60,14 +60,14 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    subgraph SingleLeader [1. Single-Leader (Primary-Replica)]
-        P1[(Primary)] --> R1[(Replica A)] & R2[(Replica B)]
+    subgraph SingleLeader ["1. Single-Leader (Primary-Replica)"]
+        P1[("Primary")] --> R1[("Replica A")] & R2[("Replica B")]
     end
-    subgraph MultiLeader [2. Multi-Leader (Active-Active)]
-        DC1[(Primary US-East)] <-->|Bidirectional Sync| DC2[(Primary EU-West)]
+    subgraph MultiLeader ["2. Multi-Leader (Active-Active)"]
+        DC1[("Primary US-East")] <-->|Bidirectional Sync| DC2[("Primary EU-West")]
     end
-    subgraph Leaderless [3. Leaderless (Dynamo / Cassandra)]
-        N1[(Node 1)] <--> N2[(Node 2)] <--> N3[(Node 3)]
+    subgraph Leaderless ["3. Leaderless (Dynamo / Cassandra)"]
+        N1[("Node 1")] <--> N2[("Node 2")] <--> N3[("Node 3")]
     end
 ```
 

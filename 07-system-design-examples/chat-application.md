@@ -21,18 +21,18 @@
 ```mermaid
 flowchart TD
     Sender[Sender Client] -->|WebSocket| Gateway[WebSocket Gateway Pool]
-    Gateway --> SessionRegistry[(Redis Session & Presence Registry)]
+    Gateway --> SessionRegistry[("Redis Session & Presence Registry")]
     Gateway --> MessageSvc[Chat Routing Service]
     
-    MessageSvc --> MessageQueue[Kafka / Pulsar Message Bus]
+    MessageSvc --> MessageQueue["Kafka / Pulsar Message Bus"]
     MessageQueue --> StorageWorker[Storage Worker]
-    StorageWorker --> MessageDB[(Cassandra / ScyllaDB Message Store)]
+    StorageWorker --> MessageDB[("Cassandra / ScyllaDB Message Store")]
     
     MessageSvc -->|Recipient Online| DestGateway[Recipient WebSocket Gateway]
     DestGateway --> Recipient[Recipient Client]
     
     MessageSvc -->|Recipient Offline| PushSvc[Push Notification Service]
-    PushSvc --> APNS[Apple APNS / Google FCM]
+    PushSvc --> APNS["Apple APNS / Google FCM"]
 ```
 
 ---

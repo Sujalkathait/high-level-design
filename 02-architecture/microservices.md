@@ -12,19 +12,19 @@ Each service models a distinct bounded business domain (e.g., Authentication, Or
 
 ```mermaid
 flowchart TD
-    Client[Client Device] --> Gateway[API Gateway / BFF]
+    Client[Client Device] --> Gateway["API Gateway / BFF"]
     
-    subgraph MicroserviceCluster [Independent Microservices]
+    subgraph MicroserviceCluster ["Independent Microservices"]
         Gateway -->|REST / gRPC| UserSvc[User Service]
         Gateway -->|REST / gRPC| OrderSvc[Order Service]
         Gateway -->|REST / gRPC| PaymentSvc[Payment Service]
         
-        UserSvc --> UserDB[(User DB)]
-        OrderSvc --> OrderDB[(Order DB)]
-        PaymentSvc --> PaymentDB[(Payment DB)]
+        UserSvc --> UserDB[("User DB")]
+        OrderSvc --> OrderDB[("Order DB")]
+        PaymentSvc --> PaymentDB[("Payment DB")]
     end
 
-    OrderSvc -.->|Publishes: OrderPlaced| EventBus[Kafka Event Bus]
+    OrderSvc -.->|"Publishes: OrderPlaced"| EventBus[Kafka Event Bus]
     EventBus -.->|Consumes| PaymentSvc
     EventBus -.->|Consumes| NotificationSvc[Notification Service]
 ```

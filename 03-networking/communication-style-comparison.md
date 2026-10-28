@@ -13,20 +13,20 @@ In modern distributed systems, no single protocol satisfies every communication 
 
 ```mermaid
 flowchart TD
-    Client[Web & Mobile Clients]
+    Client["Web & Mobile Clients"]
     
-    subgraph EdgeLayer [Edge & Ingress]
+    subgraph EdgeLayer ["Edge & Ingress"]
         LB[Load Balancer]
         Gateway[API Gateway]
     end
 
-    subgraph ServiceMesh [Internal Microservices VPC]
+    subgraph ServiceMesh ["Internal Microservices VPC"]
         UserSvc[User Service]
         OrderSvc[Order Service]
         InventorySvc[Inventory Service]
     end
 
-    subgraph RealTimeLayer [Real-Time Push Tier]
+    subgraph RealTimeLayer ["Real-Time Push Tier"]
         ChatSvc[WebSocket Gateway]
     end
 
@@ -66,8 +66,8 @@ graph TD
     Start -->|Internal service-to-service communication?| Internal{Latency & strict typing critical?}
     Start -->|Public-facing external API or CRUD web app?| Public{Do diverse clients need custom field shapes?}
 
-    Internal -->|Yes, ultra-high performance needed| GRPC[Use gRPC / Protobuf]
-    Internal -->|No, simple microservice integration| REST1[Use REST / JSON]
+    Internal -->|Yes, ultra-high performance needed| GRPC["Use gRPC / Protobuf"]
+    Internal -->|No, simple microservice integration| REST1["Use REST / JSON"]
 
     Public -->|Yes, mobile app needs precise field slices| GQL[Use GraphQL]
     Public -->|No, standard public resource endpoints| REST2[Use RESTful API]

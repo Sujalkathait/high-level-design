@@ -13,7 +13,7 @@ In database systems, **ACID** and **BASE** represent two fundamentally different
 
 ```mermaid
 flowchart LR
-    subgraph ACID_Philosophy [ACID: Pessimistic & Exact]
+    subgraph ACID_Philosophy ["ACID: Pessimistic & Exact"]
         direction TB
         A1[Atomicity] --- A2[Consistency]
         A2 --- A3[Isolation]
@@ -21,7 +21,7 @@ flowchart LR
         NoteA["Pessimistic locking guarantees 100% exact correctness."]
     end
 
-    subgraph BASE_Philosophy [BASE: Optimistic & Scalable]
+    subgraph BASE_Philosophy ["BASE: Optimistic & Scalable"]
         direction TB
         B1[Basically Available] --- B2[Soft State]
         B2 --- B3[Eventual Consistency]

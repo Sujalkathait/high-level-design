@@ -24,12 +24,12 @@ flowchart TD
     LB --> PostSvc[Post Publishing Service]
     LB --> FeedSvc[Feed Read Service]
     
-    PostSvc --> PostDB[(Post Storage DB)]
+    PostSvc --> PostDB[("Post Storage DB")]
     PostSvc --> FanoutQueue[Kafka Fanout Queue]
     
     FanoutQueue --> FanoutWorker[Fanout Workers]
-    FanoutWorker --> FollowerDB[(Graph / Social Graph DB)]
-    FanoutWorker --> FeedCache[(Redis Feed Timeline Cache)]
+    FanoutWorker --> FollowerDB[("Graph / Social Graph DB")]
+    FanoutWorker --> FeedCache[("Redis Feed Timeline Cache")]
     
     FeedSvc <--> FeedCache
 ```
