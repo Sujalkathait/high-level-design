@@ -2,99 +2,159 @@
  * @file lfu_cache.cpp
  * @brief Least Frequently Used (LFU) Cache in C++17 (O(1) Get and Put)
  * 
- * Features & Bug Fixes:
- * - O(1) time complexity using frequency lists + minimum frequency tracking
- * - Safe handling of capacity <= 0
- * - Clean tie-breaking: If frequencies match, least recently used is evicted
+ * Approach:
+ * - keyToValue: unordered_map<int, int> (Key -> Value)
+ * - keyToFrequency: unordered_map<int, int> (Key -> Frequency)
+ * - frequencyToKeys: unordered_map<int, list<int>> (Frequency -> Doubly Linked List of keys)
+ *   * Front = Least Recently Used (LRU tie-breaker)
+ *   * Back  = Most Recently Used (MRU)
+ * - keyToIterator: unordered_map<int, list<int>::iterator> (Key -> Iterator in its frequency list for O(1) removal)
+ * - minimumFrequency: int (Tracks lowest frequency present in cache)
  */
 
 #include <iostream>
-#include <unordered_map>
 #include <list>
-
-struct LFUNode {
-    int key;
-    int value;
-    int frequency;
-};
+#include <unordered_map>
+#include <iterator>
 
 class LFUCache {
 private:
     int capacity;
-    int minFreq;
-    std::unordered_map<int, std::list<LFUNode>::iterator> keyMap;
-    std::unordered_map<int, std::list<LFUNode>> freqLists;
+    int minimumFrequency;
 
-    void updateFrequency(std::list<LFUNode>::iterator nodeIt) {
-        int key = nodeIt->key;
-        int value = nodeIt->value;
-        int oldFreq = nodeIt->frequency;
-        int newFreq = oldFreq + 1;
+    // Stores each key's value
+    std::unordered_map<int, int> keyToValue;
 
-        freqLists[oldFreq].erase(nodeIt);
+    // Stores each key's usage frequency
+    std::unordered_map<int, int> keyToFrequency;
 
-        if (freqLists[oldFreq].empty()) {
-            freqLists.erase(oldFreq);
-            if (minFreq == oldFreq) {
-                minFreq = newFreq;
+    // Stores keys grouped by frequency:
+    // Front = Least Recently Used (LRU)
+    // Back  = Most Recently Used (MRU)
+    std::unordered_map<int, std::list<int>> frequencyToKeys;
+
+    // Stores each key's position in its frequency list for O(1) removal
+    std::unordered_map<int, std::list<int>::iterator> keyToIterator;
+
+    // Increases a key's frequency and updates its position in frequency lists
+    void increaseFrequency(int key) {
+        int oldFrequency = keyToFrequency[key];
+
+        // 1. Remove the key from its current frequency list in O(1)
+        frequencyToKeys[oldFrequency].erase(keyToIterator[key]);
+
+        // 2. If the old frequency list became empty, clean up the bucket
+        if (frequencyToKeys[oldFrequency].empty()) {
+            frequencyToKeys.erase(oldFrequency);
+
+            // If the minimum frequency bucket is now empty, increment it
+            if (minimumFrequency == oldFrequency) {
+                minimumFrequency++;
             }
         }
 
-        freqLists[newFreq].push_front({key, value, newFreq});
-        keyMap[key] = freqLists[newFreq].begin();
+        // 3. Increment the key's frequency
+        int newFrequency = oldFrequency + 1;
+        keyToFrequency[key] = newFrequency;
+
+        // 4. Append key to the back of its new frequency list (MRU within bucket)
+        frequencyToKeys[newFrequency].push_back(key);
+
+        // 5. Store the new iterator position
+        keyToIterator[key] = std::prev(frequencyToKeys[newFrequency].end());
     }
 
 public:
-    explicit LFUCache(int cap) : capacity(cap), minFreq(0) {
-        if (capacity < 0) capacity = 0;
-    }
+    // Initialize cache with maximum capacity
+    explicit LFUCache(int cap) : capacity(cap < 0 ? 0 : cap), minimumFrequency(0) {}
 
     int get(int key) {
-        if (capacity <= 0) return -1;
-
-        auto it = keyMap.find(key);
-        if (it == keyMap.end()) {
-            std::cout << "[GET " << key << "] -> MISS (-1)\n";
+        // Return -1 if key does not exist
+        if (keyToValue.find(key) == keyToValue.end()) {
+            std::cout << "[GET " << key << "] -> Cache MISS (-1)\n";
             return -1;
         }
 
-        int val = it->second->value;
-        updateFrequency(it->second);
-        std::cout << "[GET " << key << "] -> HIT (" << val 
-                  << ", new frequency=" << keyMap[key]->frequency << ")\n";
-        return val;
+        // Increase its frequency and update recency position
+        increaseFrequency(key);
+
+        int value = keyToValue[key];
+        std::cout << "[GET " << key << "] -> Cache HIT (Value: " << value 
+                  << ", new frequency: " << keyToFrequency[key] << ")\n";
+        return value;
     }
 
     void put(int key, int value) {
-        // Bug Fix: Zero/negative capacity check
-        if (capacity <= 0) {
-            std::cout << "[PUT " << key << "] -> Ignored: Capacity is 0.\n";
+        // Guard against zero-capacity cache
+        if (capacity == 0) {
+            std::cout << "[PUT " << key << ", " << value << "] -> Ignored: Capacity is 0.\n";
             return;
         }
 
-        auto it = keyMap.find(key);
-        if (it != keyMap.end()) {
-            it->second->value = value;
-            updateFrequency(it->second);
-            std::cout << "[PUT " << key << ", " << value << "] -> Updated existing key\n";
+        // Case 1: Key already exists
+        if (keyToValue.find(key) != keyToValue.end()) {
+            keyToValue[key] = value;
+            increaseFrequency(key);
+            std::cout << "[PUT " << key << ", " << value 
+                      << "] -> Updated existing key (new freq: " << keyToFrequency[key] << ")\n";
             return;
         }
 
-        if (static_cast<int>(keyMap.size()) >= capacity) {
-            auto nodeToEvict = freqLists[minFreq].back();
-            std::cout << "[EVICT] LFU Evicted Key " << nodeToEvict.key 
-                      << " (freq=" << nodeToEvict.frequency << ")\n";
-            keyMap.erase(nodeToEvict.key);
-            freqLists[minFreq].pop_back();
-            if (freqLists[minFreq].empty()) {
-                freqLists.erase(minFreq);
+        // Case 2: Cache is full -> Evict least frequently used key
+        if (static_cast<int>(keyToValue.size()) == capacity) {
+            // Front of minimumFrequency list is the LRU key among the least frequent
+            int leastUsedKey = frequencyToKeys[minimumFrequency].front();
+
+            // Remove from the frequency list
+            frequencyToKeys[minimumFrequency].pop_front();
+
+            if (frequencyToKeys[minimumFrequency].empty()) {
+                frequencyToKeys.erase(minimumFrequency);
             }
+
+            // Remove from all tracking maps
+            int evictedFreq = keyToFrequency[leastUsedKey];
+            int evictedVal = keyToValue[leastUsedKey];
+            keyToValue.erase(leastUsedKey);
+            keyToFrequency.erase(leastUsedKey);
+            keyToIterator.erase(leastUsedKey);
+
+            std::cout << "[EVICT] Cache full! Evicted Key: " << leastUsedKey 
+                      << " (Value: " << evictedVal << ", freq: " << evictedFreq << ")\n";
         }
 
-        minFreq = 1;
-        freqLists[1].push_front({key, value, 1});
-        keyMap[key] = freqLists[1].begin();
+        // Case 3: Insert new key with frequency 1
+        keyToValue[key] = value;
+        keyToFrequency[key] = 1;
+
+        // Add to frequency 1 list at back (MRU within bucket)
+        frequencyToKeys[1].push_back(key);
+
+        // Store its iterator
+        keyToIterator[key] = std::prev(frequencyToKeys[1].end());
+
+        // A brand new key always resets minimumFrequency to 1
+        minimumFrequency = 1;
+
         std::cout << "[PUT " << key << ", " << value << "] -> Inserted with frequency=1\n";
+    }
+
+    void printState() const {
+        std::cout << "  Cache State (minFreq = " << minimumFrequency << "):\n";
+        for (const auto& [freq, keys] : frequencyToKeys) {
+            std::cout << "    Freq " << freq << " [LRU -> MRU]: ";
+            for (int k : keys) {
+                auto itVal = keyToValue.find(k);
+                int v = (itVal != keyToValue.end()) ? itVal->second : -1;
+                std::cout << "{" << k << ":" << v << "} ";
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
+
+    size_t size() const {
+        return keyToValue.size();
     }
 };
 
@@ -105,17 +165,45 @@ int main() {
 
     LFUCache lfu(2);
 
-    lfu.put(1, 10); // freq: 1(1)
-    lfu.put(2, 20); // freq: 1(1), 2(1)
-    lfu.get(1);     // Key 1 freq -> 2
+    std::cout << "--- Step 1: lfu.put(1, 1) ---\n";
+    lfu.put(1, 1);
+    lfu.printState();
 
-    // Now key 2 has freq 1, key 1 has freq 2.
-    // Adding key 3 will evict key 2 because its frequency is lowest!
-    lfu.put(3, 30); // Evicts key 2
+    std::cout << "--- Step 2: lfu.put(2, 2) ---\n";
+    lfu.put(2, 2);
+    lfu.printState();
 
-    lfu.get(2); // Miss (-1)
-    lfu.get(3); // Hit (30)
+    std::cout << "--- Step 3: lfu.get(1) [Key 1 freq: 1 -> 2] ---\n";
+    lfu.get(1);
+    lfu.printState();
+
+    std::cout << "--- Step 4: lfu.put(3, 3) [Cache full: Evicts Key 2 (freq 1)] ---\n";
+    lfu.put(3, 3);
+    lfu.printState();
+
+    std::cout << "--- Step 5: lfu.get(2) [Key 2 was evicted] ---\n";
+    lfu.get(2);
+    lfu.printState();
+
+    std::cout << "--- Step 6: lfu.get(3) [Key 3 freq: 1 -> 2] ---\n";
+    lfu.get(3);
+    lfu.printState();
+
+    std::cout << "--- Step 7: lfu.put(4, 4) [Both 1 & 3 have freq 2; Key 1 is LRU, evicted!] ---\n";
+    lfu.put(4, 4);
+    lfu.printState();
+
+    std::cout << "--- Step 8: lfu.get(1) [Key 1 was evicted] ---\n";
+    lfu.get(1);
+    lfu.printState();
+
+    std::cout << "--- Step 9: lfu.get(3) [Key 3 freq: 2 -> 3] ---\n";
+    lfu.get(3);
+    lfu.printState();
+
+    std::cout << "--- Step 10: lfu.get(4) [Key 4 freq: 1 -> 2] ---\n";
+    lfu.get(4);
+    lfu.printState();
 
     return 0;
 }
-

@@ -71,10 +71,12 @@ flowchart LR
 * 📌 **[03. Cache Eviction Policies](./eviction-policies.md)**
   * **Least Recently Used (LRU)**:
     * Evicts items that haven't been accessed for the longest time.
-    * Implementation: Hash Map (for $O(1)$ lookup) + Doubly Linked List (for $O(1)$ node repositioning and eviction).
+    * Implementation: Hash Map (for $O(1)$ lookup) + Doubly Linked List with `splice()` (Front = LRU, Back = MRU).
+    * Detailed Guide: [🚀 LRU Cache in C++ — Complete Guide](./lru-cache.md).
   * **Least Frequently Used (LFU)**:
-    * Tracks access count frequency; evicts the least requested item.
-    * Trade-off: Historical hot items can linger long after their popularity wanes; requires frequency decay algorithms.
+    * Tracks access count frequency; evicts the least requested item (tie-broken by LRU).
+    * Implementation: 4 Hash Maps (`keyToValue`, `keyToFrequency`, `frequencyToKeys`, `keyToIterator`) + `minimumFrequency`.
+    * Detailed Guide: [🚀 LFU Cache in C++ — Complete Guide](./lfu-cache.md).
   * **First In, First Out (FIFO)**: Queue-based eviction; evicts oldest created key regardless of access patterns.
   * **Volatile / Allkeys TTL**: Evicts only keys with an explicit expiration (`EXPIRE`) configured or cleans up expired keys lazily/periodically.
 
@@ -109,28 +111,39 @@ flowchart LR
 
 All cache algorithm implementations are organized into the dedicated [`./code/`](./code/) directory:
 
-| Implementation | Source File | Core Data Structures | Key Test Scenario |
+| Implementation | Source File | Core Data Structures | Comprehensive Guide |
 |:---|:---|:---|:---|
-| **LRU Cache** | [`./code/lru_cache.cpp`](./code/lru_cache.cpp) | `std::list` + `std::unordered_map` | Cap=3: put(1,10), put(2,20), put(3,30), get(1), put(4,40) evicts key 2 |
-| **LFU Cache** | [`./code/lfu_cache.cpp`](./code/lfu_cache.cpp) | Double hash maps + frequency lists | Cap=2: Key 1 accessed 2x, Key 2 accessed 1x; put(3,30) evicts key 2 |
-| **FIFO Cache** | [`./code/fifo_cache.cpp`](./code/fifo_cache.cpp) | `std::queue` + `std::unordered_map` | Cap=3: Chronological insertion order eviction regardless of reads |
-| **TTL Cache** | [`./code/ttl_cache.cpp`](./code/ttl_cache.cpp) | `std::chrono` steady clock | Key set with 200ms TTL; lazy eviction + active background sweep |
-| **Cache-Aside Pattern** | [`./code/cache_aside.cpp`](./code/cache_aside.cpp) | Mock Redis + Mock PostgreSQL | Miss -> DB fetch -> Cache write; Penetration defense via null sentinels |
+| **LRU Cache** | [`./code/lru_cache.cpp`](./code/lru_cache.cpp) | `std::list` + `std::unordered_map` with `splice()` | [📖 LRU In-Depth Guide](./lru-cache.md) |
+| **LFU Cache** | [`./code/lfu_cache.cpp`](./code/lfu_cache.cpp) | 4 Hash Maps + Doubly Linked Lists + `minFreq` | [📖 LFU In-Depth Guide](./lfu-cache.md) |
+| **FIFO Cache** | [`./code/fifo_cache.cpp`](./code/fifo_cache.cpp) | `std::queue` + `std::unordered_map` | [Eviction Policies Guide](./eviction-policies.md#63-fifo-cache-complete-dry-run-capacity--3) |
+| **TTL Cache** | [`./code/ttl_cache.cpp`](./code/ttl_cache.cpp) | `std::chrono` steady clock | [Eviction Policies Guide](./eviction-policies.md#5-other-eviction-policies) |
+| **Cache-Aside Pattern** | [`./code/cache_aside.cpp`](./code/cache_aside.cpp) | Mock Redis + Mock PostgreSQL | [Caching Strategies Guide](./caching-strategies.md#1-cache-aside-lazy-loading) |
 
-### How to Compile and Run:
+### How to Compile and Run Separately:
+Navigate to the `code/` directory and compile/run any file directly:
+
 ```powershell
 # Navigate to the code directory
-cd "C:\Users\LENOVO\Desktop\c++ folder\c++ project\High Level design\05-caching\code"
+cd "05-caching\code"
 
-# Compile all 5 programs
+# 1. LRU Cache
 g++ -std=c++17 lru_cache.cpp -o lru_cache.exe
-g++ -std=c++17 lfu_cache.cpp -o lfu_cache.exe
-g++ -std=c++17 fifo_cache.cpp -o fifo_cache.exe
-g++ -std=c++17 ttl_cache.cpp -o ttl_cache.exe
-g++ -std=c++17 cache_aside.cpp -o cache_aside.exe
-
-# Execute any simulation
 .\lru_cache.exe
+
+# 2. LFU Cache
+g++ -std=c++17 lfu_cache.cpp -o lfu_cache.exe
+.\lfu_cache.exe
+
+# 3. FIFO Cache
+g++ -std=c++17 fifo_cache.cpp -o fifo_cache.exe
+.\fifo_cache.exe
+
+# 4. TTL Cache
+g++ -std=c++17 ttl_cache.cpp -o ttl_cache.exe
+.\ttl_cache.exe
+
+# 5. Cache-Aside Pattern Simulation
+g++ -std=c++17 cache_aside.cpp -o cache_aside.exe
 .\cache_aside.exe
 ```
 
