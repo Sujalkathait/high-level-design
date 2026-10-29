@@ -115,7 +115,78 @@ When a **New Item** arrives and the cache is full:
 
 ---
 
-## 6. Related Topics & Next Steps
+## 6. Comprehensive Dry Runs & State Transition Tables
+
+### 6.1 LRU Cache Complete Dry Run (Capacity = 3)
+
+We initialize an LRU cache with **Capacity = 3** and execute the following sequential operations:
+1. `put(1, 10)`
+2. `put(2, 20)`
+3. `put(3, 30)`
+4. `get(1)`
+5. `put(4, 40)`
+
+#### State Transition Table:
+| Step | Operation | Cache Contents (Most $\to$ Least Recent) | MRU Key | LRU Key | Evicted Key | Detailed Internal Explanation |
+|:---:|---|:---:|:---:|:---:|:---:|---|
+| **1** | `put(1, 10)` | `[1:10]` | `1` | `1` | *None* | Cache empty. Node `1` inserted at Head. Map stores pointer to Node `1`. |
+| **2** | `put(2, 20)` | `[2:20, 1:10]` | `2` | `1` | *None* | Node `2` inserted at Head. Node `1` pushed down. Capacity = 2/3. |
+| **3** | `put(3, 30)` | `[3:30, 2:20, 1:10]` | `3` | `1` | *None* | Node `3` inserted at Head. Cache reaches full capacity (3/3). |
+| **4** | `get(1)` $\to$ `10` | `[1:10, 3:30, 2:20]` | `1` | `2` | *None* | Cache Hit! Node `1` spliced from tail and moved to Head (now MRU). **Key 2 is now LRU!** |
+| **5** | `put(4, 40)` | `[4:40, 1:10, 3:30]` | `4` | `3` | **Key 2** | Capacity full (3/3). **Key 2 (LRU at tail) is evicted**. Key 4 inserted at Head. |
+
+#### Key Architectural Insights from Dry Run:
+* **Why was Key 2 evicted instead of Key 1?** Although Key 1 was inserted earlier than Key 2, `get(1)` at step 4 refreshed Key 1's recency, promoting it to the Head. Key 2 became the least recently used item.
+* **Time Complexity:** Both `get()` and `put()` run in strictly **$O(1)$** time because the `unordered_map` provides instant node lookup, and the `std::list` allows $O(1)$ node splicing without pointer loops.
+
+---
+
+### 6.2 LFU Cache Complete Dry Run (Capacity = 2)
+
+We initialize an LFU cache with **Capacity = 2** and execute:
+1. `put(1, 100)`
+2. `put(2, 200)`
+3. `get(1)`
+4. `put(3, 300)`
+
+#### State Transition Table:
+| Step | Operation | Frequency Buckets | `minFreq` | Evicted Key | Detailed Internal Explanation |
+|:---:|---|---|:---:|:---:|---|
+| **1** | `put(1, 100)` | `Freq 1: [1]` | `1` | *None* | Key 1 inserted with freq=1. Placed in bucket 1. |
+| **2** | `put(2, 200)` | `Freq 1: [2, 1]` | `1` | *None* | Key 2 inserted with freq=1. Cache at capacity (2/2). |
+| **3** | `get(1)` $\to$ `100` | `Freq 1: [2]`, `Freq 2: [1]` | `1` | *None* | Key 1 frequency increments to 2 ($1 \to 2$). Moved from bucket 1 to bucket 2. |
+| **4** | `put(3, 300)` | `Freq 1: [3]`, `Freq 2: [1]` | `1` | **Key 2** | Capacity full. Evicts from `minFreq` bucket (`Freq 1`). **Key 2 evicted**! Key 3 inserted into `Freq 1`. |
+
+---
+
+### 6.3 FIFO Cache Complete Dry Run (Capacity = 3)
+
+We initialize a FIFO cache with **Capacity = 3** and execute:
+1. `put(A)`
+2. `put(B)`
+3. `put(C)`
+4. `get(A)` (accessed again!)
+5. `put(D)`
+
+#### State Transition Table:
+| Step | Operation | FIFO Queue Contents | Oldest Item | Evicted Item | Detailed Internal Explanation |
+|:---:|---|:---:|:---:|:---:|---|
+| **1** | `put(A)` | `[A]` | `A` | *None* | A enters queue |
+| **2** | `put(B)` | `[A, B]` | `A` | *None* | B enters queue |
+| **3** | `put(C)` | `[A, B, C]` | `A` | *None* | Capacity full (3/3) |
+| **4** | `get(A)` | `[A, B, C]` | `A` | *None* | Cache hit on A! In FIFO, **accesses do NOT change queue order** |
+| **5** | `put(D)` | `[B, C, D]` | `B` | **Key A** | Despite being accessed in step 4, **A is evicted because it arrived first** |
+
+> [!TIP]
+> **Working C++ Implementations Available:**
+> Check the dedicated code directory for clean C++17 implementations:
+> * [`code/lru_cache.cpp`](./code/lru_cache.cpp) — $O(1)$ LRU Cache using `std::list` + `std::unordered_map`.
+> * [`code/lfu_cache.cpp`](./code/lfu_cache.cpp) — $O(1)$ LFU Cache using frequency bucket lists + `minFreq`.
+> * [`code/fifo_cache.cpp`](./code/fifo_cache.cpp) — $O(1)$ FIFO Cache using `std::queue` + `std::unordered_map`.
+
+---
+
+## 7. Related Topics & Next Steps
 
 * [Cache Fundamentals](./cache-fundamentals.md) — Hits, misses, and the 80/20 Pareto sizing rule.
 * [Caching Strategies](./caching-strategies.md) — Cache-Aside, Write-Through, Write-Back, and Write-Around.

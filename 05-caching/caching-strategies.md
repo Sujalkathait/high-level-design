@@ -210,7 +210,40 @@ flowchart TD
 
 ---
 
-## 8. Related Topics & Next Steps
+## 8. Comprehensive Dry Runs & State Transition Tables
+
+### 8.1 Cache-Aside (Lazy Loading) Read & Update Lifecycle Dry Run
+* Scenario: User profile lookup for `user:42` followed by an update.
+* Systems: App, In-Memory Cache (Redis), Primary Database (PostgreSQL).
+
+| Step | Trigger | Cache Check | Database Query | Cache Action | App Response | State & Latency Impact |
+|:---:|---|:---:|:---:|:---:|:---:|---|
+| **1** | User views profile (`GET user:42`) | **MISS** | `SELECT * FROM users WHERE id=42` | `SET user:42 'Alice' EX 300` | Return Alice | **Cold Read:** ~15ms total (Cache Miss + DB read + Cache write) |
+| **2** | User refreshes page (`GET user:42`) | **HIT** | *Bypassed* | *None* | Return Alice | **Warm Read:** ~0.5ms (Sub-millisecond memory hit) |
+| **3** | Alice changes name to 'Alicia' (`POST`) | *Bypassed* | `UPDATE users SET name='Alicia'` | `DEL user:42` (Invalidate!) | Return Success | **Write flow:** Cache key deleted to prevent stale reads |
+| **4** | Another user views profile (`GET user:42`)| **MISS** | `SELECT * FROM users WHERE id=42` | `SET user:42 'Alicia' EX 300` | Return Alicia | **Re-fill on demand:** Fresh data pulled from DB and cached |
+
+---
+
+### 8.2 TTL (Time-To-Live) Expiration Dry Run: Lazy vs. Active Expiration
+* Scenario: Key `session:token_99` set with TTL = 10 seconds at $t = 0$.
+
+| Time | Event / Operation | Lazy Check Method | Active Background Sweep | Result |
+|:---:|---|---|---|---|
+| **$t = 0\text{s}$** | `SET session:token_99 "valid" EX 10` | Key created with expiry $t=10\text{s}$ | Added to expiration dict | Key is valid |
+| **$t = 5\text{s}$** | `GET session:token_99` | Current time $5 < 10 \implies$ Valid | Not selected by sample sweep | **Cache HIT** (Returns "valid") |
+| **$t = 11\text{s}$** | *No read occurs yet* | *Not checked* | Background sweep samples 20 keys with TTL, finds expired key, deletes it | Key silently removed from memory |
+| **$t = 12\text{s}$** | `GET session:token_99` | Key not found in dictionary | Key already cleaned up | **Cache MISS** (Clean return) |
+
+> [!TIP]
+> **Working C++ Implementations Available:**
+> Check the dedicated code directory for clean C++17 implementations:
+> * [`code/cache_aside.cpp`](./code/cache_aside.cpp) — Complete Cache-Aside simulation with mock database and null-object cache penetration defense.
+> * [`code/ttl_cache.cpp`](./code/ttl_cache.cpp) — Thread-safe TTL cache with high-resolution timestamps, lazy eviction on access, and background cleanup threads.
+
+---
+
+## 9. Related Topics & Next Steps
 
 * [Cache Fundamentals](./cache-fundamentals.md) — Hits, misses, locations, and hit ratio math.
 * [Cache Eviction Policies](./eviction-policies.md) — LRU vs. LFU step-by-step algorithms.

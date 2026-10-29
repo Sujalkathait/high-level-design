@@ -67,6 +67,46 @@ flowchart TD
 
 ---
 
+### 5. Step-by-Step Dry Run & State Transition Tables
+
+#### 5.1 Simple Round Robin Dry Run (Modulo Arithmetic)
+* **Backend Pool:** `[Server A, Server B, Server C]` ($N = 3$)
+* **Algorithm:** `selected = servers[index % N]; index++`
+
+| Request | Index Before | Calculation (`Index % 3`) | Selected Server | Index After | State Note |
+|:---:|:---:|:---:|:---:|:---:|---|
+| **R1** | `0` | `0 % 3 = 0` | **Server A** | `1` | First request to Server A |
+| **R2** | `1` | `1 % 3 = 1` | **Server B** | `2` | Second request to Server B |
+| **R3** | `2` | `2 % 3 = 2` | **Server C** | `3` | Third request to Server C |
+| **R4** | `3` | `3 % 3 = 0` | **Server A** | `4` | Cycle restarts seamlessly |
+| **R5** | `4` | `4 % 3 = 1` | **Server B** | `5` | Uniform load distribution |
+| **R6** | `5` | `5 % 3 = 2` | **Server C** | `6` | Each server has served exactly 2 requests |
+| **R7** | `6` | `6 % 3 = 0` | **Server A** | `7` | Predictable $O(1)$ routing |
+
+#### 5.2 Weighted Round Robin Dry Run (Smooth Interleaving)
+* **Backend Pool:** `Server A (Weight: 3)`, `Server B (Weight: 2)`, `Server C (Weight: 1)`
+* **Total Weight:** $3 + 2 + 1 = 6$
+* Rather than sending all 3 requests to A consecutively (`A, A, A, B, B, C`), production balancers (like NGINX's smooth weighted round robin) interleave requests evenly to prevent burst overloading:
+
+| Request | Server A Effective Weight | Server B Effective Weight | Server C Effective Weight | Selected Server | Selected Server New Weight |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| **R1** | `+3 = 3` | `+2 = 2` | `+1 = 1` | **Server A** (Max: 3) | `3 - 6 = -3` |
+| **R2** | `-3 + 3 = 0` | `2 + 2 = 4` | `1 + 1 = 2` | **Server B** (Max: 4) | `4 - 6 = -2` |
+| **R3** | `0 + 3 = 3` | `-2 + 2 = 0` | `2 + 1 = 3` | **Server A** (Tie: 3) | `3 - 6 = -3` |
+| **R4** | `-3 + 3 = 0` | `0 + 2 = 2` | `3 + 1 = 4` | **Server C** (Max: 4) | `4 - 6 = -2` |
+| **R5** | `0 + 3 = 3` | `2 + 2 = 4` | `-2 + 1 = -1`| **Server B** (Max: 4) | `4 - 6 = -2` |
+| **R6** | `3 + 3 = 6` | `-2 + 2 = 0` | `-1 + 1 = 0` | **Server A** (Max: 6) | `6 - 6 = 0` |
+
+* **Final Traffic Ratio over 6 requests:** Server A received $3$ ($50\%$), Server B received $2$ ($33.3\%$), Server C received $1$ ($16.7\%$). No server experienced consecutive burst starvation!
+
+> [!TIP]
+> **Working C++ Implementations Available:**
+> Check the dedicated code directory for working C++17 implementations:
+> * [`code/round_robin.cpp`](./code/round_robin.cpp) — Thread-safe atomic Round Robin load balancer.
+> * [`code/weighted_round_robin.cpp`](./code/weighted_round_robin.cpp) — Smooth Weighted Round Robin load balancer.
+
+---
+
 ## Related Topics & Next Steps
 
 * [Layer 4 vs. Layer 7 Load Balancing](./layer-4-vs-layer-7.md) — Application vs. transport routing.

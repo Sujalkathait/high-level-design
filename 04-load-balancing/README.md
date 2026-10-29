@@ -121,6 +121,111 @@ g++ -std=c++17 health_check.cpp -o health_check.exe
 
 ---
 
+## 🧪 Comprehensive Load Balancing Dry Runs & State Tables
+
+### Dry Run 1: Round Robin (Modulo Distribution)
+* **Configuration:** 3 backend servers: `Server A` (0), `Server B` (1), `Server C` (2). $N = 3$.
+* **Formula:** `index = (currentIndex + 1) % N`
+* **Sequence of 7 Requests (R1 to R7):**
+
+| Request | `currentIndex` Before | Modulo Calculation | Assigned Server | `currentIndex` After | State Explanation |
+|:---:|:---:|:---|:---:|:---:|:---|
+| **R1** | 0 | `(0 + 1) % 3 = 1` | **Server A** | 1 | Request lands on server at index 0 (Server A). Counter steps to 1. |
+| **R2** | 1 | `(1 + 1) % 3 = 2` | **Server B** | 2 | Request lands on server at index 1 (Server B). Counter steps to 2. |
+| **R3** | 2 | `(2 + 1) % 3 = 0` | **Server C** | 0 | Request lands on index 2 (Server C). Counter wraps back to 0! |
+| **R4** | 0 | `(0 + 1) % 3 = 1` | **Server A** | 1 | Cycle 2 starts: Lands on Server A. Counter steps to 1. |
+| **R5** | 1 | `(1 + 1) % 3 = 2` | **Server B** | 2 | Lands on Server B. Counter steps to 2. |
+| **R6** | 2 | `(2 + 1) % 3 = 0` | **Server C** | 0 | Lands on Server C. Counter wraps back to 0. |
+| **R7** | 0 | `(0 + 1) % 3 = 1` | **Server A** | 1 | Lands on Server A. Counter steps to 1. |
+
+* **Final Result:** Server A received 3 requests (R1, R4, R7), Server B received 2 requests (R2, R5), Server C received 2 requests (R3, R6).
+
+---
+
+### Dry Run 2: Weighted Round Robin (Smooth Interleaving)
+* **Configuration:**
+  * `Server A`: Weight = 3 (e.g. 16 vCPU)
+  * `Server B`: Weight = 2 (e.g. 8 vCPU)
+  * `Server C`: Weight = 1 (e.g. 4 vCPU)
+  * Total Weight Sum: $S = 3 + 2 + 1 = 6$
+* **NGINX Algorithm Rule:**
+  1. Add static weight to `currentWeight` for all servers: `currentWeight += weight`.
+  2. Select the server with the maximum `currentWeight`.
+  3. Deduct total weight sum from selected server: `selected.currentWeight -= totalWeight`.
+
+| Req | Initial State `(A, B, C)` | After `+ weight` `(A+3, B+2, C+1)` | Max Server Selected | Subtract $S=6$ from Max | Resulting Weights `(A, B, C)` |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| **R1** | `(0, 0, 0)` | `(3, 2, 1)` | **Server A** (3) | `3 - 6 = -3` | `(-3, 2, 1)` |
+| **R2** | `(-3, 2, 1)` | `(0, 4, 2)` | **Server B** (4) | `4 - 6 = -2` | `(0, -2, 2)` |
+| **R3** | `(0, -2, 2)` | `(3, 0, 3)` | **Server A** (3)* | `3 - 6 = -3` | `(-3, 0, 3)` |
+| **R4** | `(-3, 0, 3)` | `(0, 2, 4)` | **Server C** (4) | `4 - 6 = -2` | `(0, 2, -2)` |
+| **R5** | `(0, 2, -2)` | `(3, 4, -1)` | **Server B** (4) | `4 - 6 = -2` | `(3, -2, -1)` |
+| **R6** | `(3, -2, -1)` | `(6, 0, 0)` | **Server A** (6) | `6 - 6 = 0` | `(0, 0, 0)` |
+
+*\*Tie-breaker defaults to lowest index (Server A).*
+* **Pattern Dispatched:** `A -> B -> A -> C -> B -> A`
+* **Distribution Verified:** Server A received exactly 3 requests (50%), Server B received 2 requests (33.3%), Server C received 1 request (16.7%). Notice requests are **smoothly interleaved** rather than sending a burst of 3 consecutive requests to A!
+
+---
+
+### Dry Run 3: Least Connections with Dynamic Concurrency
+* **Initial State:**
+  * `Server A`: 5 active connections
+  * `Server B`: 2 active connections
+  * `Server C`: 8 active connections
+* **Selection Metric:** Choose $\min(\text{activeConnections})$.
+
+| Event # | Incoming Event | Active Conns Before `(A, B, C)` | Decision / Minimum | Active Conns After `(A, B, C)` | Notes |
+|:---:|:---|:---:|:---:|:---:|:---|
+| **1** | Request **R1** arrives | `(5, 2, 8)` | **Server B** (2 is lowest) | `(5, 3, 8)` | Server B picks up R1; its count increments from 2 to 3. |
+| **2** | Server B completes 1 job | `(5, 3, 8)` | Completion event | `(5, 2, 8)` | A long-running request on Server B terminates; count drops to 2. |
+| **3** | Request **R2** arrives | `(5, 2, 8)` | **Server B** (2 is lowest) | `(5, 3, 8)` | Server B is still the least loaded node; takes R2. |
+| **4** | Server A finishes 4 jobs | `(5, 3, 8)` | Bulk completion | `(1, 3, 8)` | Server A finishes multiple background exports; count drops to 1. |
+| **5** | Request **R3** arrives | `(1, 3, 8)` | **Server A** (1 is lowest) | `(2, 3, 8)` | Workload shifted! Server A is now least loaded; takes R3. |
+
+---
+
+### Dry Run 4: Consistent Hashing Ring with Virtual Nodes
+* **Hash Ring Space:** $0^\circ$ to $360^\circ$ circular coordinate space (equivalent to $0$ to $2^{32}-1$).
+* **Virtual Nodes (3 vNodes per physical server):**
+  * `Server A`: Positions $30^\circ, 150^\circ, 270^\circ$
+  * `Server B`: Positions $70^\circ, 190^\circ, 310^\circ$
+  * `Server C`: Positions $110^\circ, 230^\circ, 350^\circ$
+* **Rule:** A key is assigned by hashing its identifier and walking **clockwise** to the first server node encountered.
+
+#### Step 1: Initial Key Assignments
+| Key Name | Hash Coordinate | Clockwise Search | Assigned Physical Server |
+|:---|:---:|:---|:---:|
+| `user:101` | $45^\circ$ | First node clockwise is Server B at $70^\circ$ | **Server B** |
+| `user:202` | $125^\circ$ | First node clockwise is Server A at $150^\circ$ | **Server A** |
+| `user:303` | $200^\circ$ | First node clockwise is Server C at $230^\circ$ | **Server C** |
+| `user:404` | $320^\circ$ | First node clockwise is Server C at $350^\circ$ | **Server C** |
+
+#### Step 2: Scaling Out — Adding Server D (Virtual Nodes at $60^\circ, 180^\circ, 300^\circ$)
+* `user:101` (Hash $45^\circ$): Clockwise search now hits **Server D ($60^\circ$)** before Server B ($70^\circ$)! $\implies$ **Migrated to Server D**.
+* `user:202` (Hash $125^\circ$): First node clockwise remains **Server A ($150^\circ$)** $\implies$ **No change**.
+* `user:303` (Hash $200^\circ$): First node clockwise remains **Server C ($230^\circ$)** $\implies$ **No change**.
+* `user:404` (Hash $320^\circ$): First node clockwise remains **Server C ($350^\circ$)** $\implies$ **No change**.
+* **Key Takeaway:** Adding Server D migrated **only 1 out of 4 keys (25%)**. Under naive modulo hashing, 100% of keys would have been scrambled!
+
+---
+
+### Dry Run 5: Server Failure & Health Check Failover
+* **Configuration:** Active cluster with `Server A`, `Server B`, `Server C`.
+* **Health Check Config:** Ping `GET /healthz` every 2 seconds; 2 consecutive timeout failures marks node DOWN.
+
+| Event # | State of Nodes | Incoming Request | Load Balancer Action | Routed Destination | User Impact |
+|:---:|:---|:---:|:---|:---:|:---|
+| **1** | A: Healthy, B: Healthy, C: Healthy | **R1** | Normal round robin | **Server A** | 200 OK |
+| **2** | A: Healthy, B: Healthy, C: Healthy | **R2** | Normal round robin | **Server B** | 200 OK |
+| **3** | **Server B crashes (Kernel panic)** | — | Heartbeat probe 1 to B: TIMEOUT (Fail 1/2) | — | Internal probe |
+| **4** | B still dead | — | Heartbeat probe 2 to B: TIMEOUT (Fail 2/2) | — | **B marked UNHEALTHY & dropped from pool** |
+| **5** | A: Healthy, **B: DOWN**, C: Healthy | **R3** | Skips B, selects C | **Server C** | 200 OK (Zero user impact) |
+| **6** | A: Healthy, **B: DOWN**, C: Healthy | **R4** | Skips B, selects A | **Server A** | 200 OK |
+| **7** | A: Healthy, **B: DOWN**, C: Healthy | **R5** | Skips B, selects C | **Server C** | 200 OK |
+
+---
+
 ## 💡 Key Architectural Rules of Thumb
 
 * **Use Layer 4 for Ingress, Layer 7 for Logic**: Front massive ingress traffic with Layer 4 (AWS NLB / IPVS) for raw throughput and route into Layer 7 (Envoy / Nginx) for path-based routing, JWT verification, and TLS termination.

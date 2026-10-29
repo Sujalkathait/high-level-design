@@ -64,6 +64,44 @@ When servers have different hardware specs, simple connection counts are not eno
 
 ---
 
+### 5. Step-by-Step Dry Run & State Transition Tables
+
+#### 5.1 Dynamic Workload Balancing Dry Run
+* **Backend Pool:** `[Server A, Server B, Server C]`
+* **Initial State:**
+  * Server A: $5$ active connections (e.g. processing image resize)
+  * Server B: $2$ active connections (fast REST queries)
+  * Server C: $8$ active connections (heavy CSV export)
+
+| Step / Event | Server A Active | Server B Active | Server C Active | Selected Server / Action | State Note |
+|:---:|:---:|:---:|:---:|:---:|---|
+| **Initial State** | `5` | `2` | `8` | — | Server B has least connections |
+| **Request R1 Arrives** | `5` | `2` | `8` | **Server B** selected | Routes to Server B ($2 \to 3$) |
+| **Request R2 Arrives** | `5` | `3` | `8` | **Server B** selected | Routes to Server B ($3 \to 4$) |
+| **Request R3 Arrives** | `5` | `4` | `8` | **Server B** selected | Routes to Server B ($4 \to 5$) |
+| **Request R4 Arrives** | `5` | `5` | `8` | **Server A** selected (Tie-break) | Server A and B tied at 5; picks A ($5 \to 6$) |
+| **Server C Finishes 4 Jobs**| `6` | `5` | `4` | Concurrency drop on C | Server C completed background tasks ($8 \to 4$) |
+| **Request R5 Arrives** | `6` | `5` | `4` | **Server C** selected | Automatically shifts traffic to newly freed Server C ($4 \to 5$) |
+
+#### 5.2 Weighted Least Connections Dry Run (Heterogeneous Fleet)
+* **Score Formula:** $\text{Load Score} = \frac{\text{Active Connections}}{\text{Weight}}$
+* **Servers:**
+  * Server A: 16 vCPUs (Weight = 4)
+  * Server B: 8 vCPUs (Weight = 2)
+  * Server C: 4 vCPUs (Weight = 1)
+
+| Current State | Server A (Weight 4) | Server B (Weight 2) | Server C (Weight 1) | Target Server | Routing Rationale |
+|:---:|:---:|:---:|:---:|:---:|---|
+| **Active Connections** | `12` | `5` | `3` | — | Raw counts: C seems lowest (3 vs 12) |
+| **Load Score Calculation** | $\frac{12}{4} = \mathbf{3.0}$ | $\frac{5}{2} = \mathbf{2.5}$ | $\frac{3}{1} = \mathbf{3.0}$ | **Server B** | Server B has lowest score ($2.5$), preventing Server C from being overwhelmed |
+
+> [!TIP]
+> **Working C++ Implementation Available:**
+> Check the dedicated code directory for the complete implementation:
+> * [`code/least_connections.cpp`](./code/least_connections.cpp) — Thread-safe atomic Least Connections load balancer with RAII connection guards.
+
+---
+
 ## Related Topics & Next Steps
 
 * [Round Robin](./round-robin.md) — The baseline rotational scheduling algorithm.

@@ -136,6 +136,100 @@ g++ -std=c++17 cache_aside.cpp -o cache_aside.exe
 
 ---
 
+## 🧪 Comprehensive Caching Dry Runs & State Tables
+
+### Dry Run 1: LRU Cache (Capacity = 3)
+* **Configuration:** Cache Capacity = 3.
+* **Internal Data Structures:**
+  * Doubly Linked List (DLL): Head = Most Recently Used (MRU), Tail = Least Recently Used (LRU).
+  * Hash Map: Key $\to$ Iterator pointing to DLL node ($O(1)$ lookup).
+* **Sequential Operations:**
+  1. `put(1, 10)`
+  2. `put(2, 20)`
+  3. `put(3, 30)`
+  4. `get(1)`
+  5. `put(4, 40)`
+
+| Step # | Operation | Action Taken | DLL State (MRU $\to$ LRU) | Hash Map Keys | Evicted Key | Detailed State Explanation |
+|:---:|:---|:---|:---:|:---:|:---:|:---|
+| **1** | `put(1, 10)` | Insert at head | `[{1:10}]` | `{1}` | *None* | Key 1 is inserted into the empty cache. It is both MRU and LRU. |
+| **2** | `put(2, 20)` | Insert at head | `[{2:20}, {1:10}]` | `{1, 2}` | *None* | Key 2 is pushed to the head (MRU). Key 1 is pushed towards tail. |
+| **3** | `put(3, 30)` | Insert at head | `[{3:30}, {2:20}, {1:10}]` | `{1, 2, 3}` | *None* | Key 3 is inserted at head. Cache reaches maximum capacity (3/3). |
+| **4** | `get(1)` | **Cache HIT** (10) | `[{1:10}, {3:30}, {2:20}]` | `{1, 2, 3}` | *None* | Key 1 is accessed! It is unlinked from its position and spliced to the head (MRU). **Notice: Key 2 is now shifted to the tail (LRU)!** |
+| **5** | `put(4, 40)` | **Cache FULL** | `[{4:40}, {1:10}, {3:30}]` | `{1, 3, 4}` | **Key 2** | Cache is full. Key 2 (at the tail/LRU) is evicted and erased from Hash Map. Key 4 enters at head (MRU). |
+
+* **Final Cache Contents (MRU $\to$ LRU):** `[{4:40}, {1:10}, {3:30}]`
+* **Why was Key 2 evicted instead of Key 1?** Even though Key 1 was inserted before Key 2, operation 4 (`get(1)`) refreshed Key 1's recency timestamp, making Key 2 the least recently used item!
+
+---
+
+### Dry Run 2: LFU Cache (Capacity = 2)
+* **Configuration:** Cache Capacity = 2.
+* **Internal Data Structures:**
+  * `keyMap`: Key $\to$ Node iterator.
+  * `freqLists`: Frequency Count $\to$ Doubly linked list of nodes with that frequency.
+  * `minFreq`: Tracks lowest access frequency present in cache.
+* **Sequential Operations:**
+  1. `put(1, 10)`
+  2. `put(2, 20)`
+  3. `get(1)`
+  4. `put(3, 30)`
+  5. `get(2)`
+  6. `get(3)`
+
+| Step # | Operation | Frequency Buckets | `minFreq` | Evicted Key | Explanation |
+|:---:|:---|:---|:---:|:---:|:---|
+| **1** | `put(1, 10)` | `freq[1] = [{1:10}]` | 1 | *None* | Key 1 inserted with initial access count = 1. |
+| **2** | `put(2, 20)` | `freq[1] = [{2:20}, {1:10}]` | 1 | *None* | Key 2 inserted with count = 1. Cache is at capacity (2/2). |
+| **3** | `get(1)` | `freq[1] = [{2:20}]`<br>`freq[2] = [{1:10}]` | 1 | *None* | Key 1 is accessed $\implies$ frequency increments to 2. Key 1 moves to bucket 2. Lowest frequency remaining is still 1. |
+| **4** | `put(3, 30)` | `freq[1] = [{3:30}]`<br>`freq[2] = [{1:10}]` | 1 | **Key 2** | Capacity full! Lowest frequency is `minFreq = 1` (Key 2 has 1 hit; Key 1 has 2 hits). **Key 2 is evicted!** Key 3 enters bucket 1. |
+| **5** | `get(2)` | Unchanged | 1 | *None* | **Cache MISS (-1)** (Key 2 was evicted). |
+| **6** | `get(3)` | `freq[2] = [{3:30}, {1:10}]` | 2 | *None* | **Cache HIT (30)**. Key 3 frequency increments from 1 to 2. Bucket 1 is now empty $\implies$ `minFreq` becomes 2! |
+
+---
+
+### Dry Run 3: FIFO Cache (Capacity = 3)
+* **Configuration:** Cache Capacity = 3.
+* **Rule:** Eviction strictly follows first-in, first-out insertion order. Reading/accessing an element does **not** alter its position in the queue.
+
+| Step # | Operation | FIFO Queue (Front $\to$ Back) | Hash Map Storage | Evicted Key | Notes |
+|:---:|:---|:---:|:---:|:---:|:---|
+| **1** | `put(1, 100)` | `[1]` | `{1: 100}` | *None* | First inserted. |
+| **2** | `put(2, 200)` | `[1, 2]` | `{1: 100, 2: 200}` | *None* | Pushed behind 1. |
+| **3** | `put(3, 300)` | `[1, 2, 3]` | `{1: 100, 2: 200, 3: 300}` | *None* | Cache at capacity 3/3. |
+| **4** | `get(1)` | `[1, 2, 3]` | Unchanged | *None* | **Cache HIT (100)**. In FIFO, Key 1 remains at the front of the eviction queue! |
+| **5** | `put(4, 400)` | `[2, 3, 4]` | `{2: 200, 3: 300, 4: 400}` | **Key 1** | **Key 1 is popped and evicted**, even though it was accessed in step 4! |
+| **6** | `get(1)` | `[2, 3, 4]` | Unchanged | *None* | **Cache MISS (-1)**. |
+
+---
+
+### Dry Run 4: TTL Cache (Lazy Eviction & Active Sweep)
+* **Configuration:** Expiration timestamps calculated via `std::chrono::steady_clock`.
+
+| Timestamp | Action | Key Queried | Cache State | Result / Behavior |
+|:---:|:---|:---:|:---:|:---|
+| $t = 0\text{ ms}$ | `set("session", "abc", 200ms)` | — | `store["session"]` expiry = $200\text{ms}$ | Key stored in memory. |
+| $t = 0\text{ ms}$ | `set("abandoned", "xyz", 100ms)` | — | `store["abandoned"]` expiry = $100\text{ms}$ | Temporary key stored. |
+| $t = 50\text{ ms}$ | `get("session")` | `"session"` | Expiry is $200\text{ms}$ ($50 < 200$) | **Cache HIT ("abc")** — Key still valid. |
+| $t = 250\text{ ms}$ | `get("session")` | `"session"` | Expiry was $200\text{ms}$ ($250 > 200$) | **LAZY EVICTION:** Key detected expired upon access. Erased from memory $\implies$ **Cache MISS**. |
+| $t = 300\text{ ms}$ | `cleanupExpired()` | — | Scans map for $t > \text{expiry}$ | **ACTIVE MEMORY SWEEP:** Sweeps `"abandoned"` (which was never queried with get). Memory freed! |
+
+---
+
+### Dry Run 5: Cache-Aside Pattern & Penetration Defense
+* **Storage Components:** Application Server, Redis Cache (RAM), PostgreSQL Database (Disk).
+
+| Step # | User Action | Cache Layer (Redis) | Database Layer (Postgres) | Flow Description & Defense |
+|:---:|:---|:---:|:---:|:---|
+| **1** | Request `user:1` | **MISS** | `SELECT * WHERE id = 1` $\implies$ Found "Alice" | **Cold Start:** App reads DB, populates Redis with 1-hour TTL, returns "Alice". |
+| **2** | Request `user:1` | **HIT ("Alice")** | *Bypassed (0 queries)* | **Warm Cache:** Returned in $<1\text{ ms}$ directly from Redis. DB completely idle. |
+| **3** | Update `user:1` | `DEL user:1` *(Invalidated)* | `UPDATE SET name = 'Alice Senior'` | **Write Invalidation:** Database is updated; stale cache key is immediately deleted. |
+| **4** | Request `user:1` | **MISS** | `SELECT * WHERE id = 1` $\implies$ Found "Alice Senior" | **Fresh Reload:** Next read repopulates Redis with fresh data. |
+| **5** | Malicious probe: `user:9999` | **MISS** | `SELECT * WHERE id = 9999` $\implies$ Not found! | **Penetration Defense Step 1:** App writes `SETEX user:9999 60 "__NULL__"`. |
+| **6** | Malicious probe: `user:9999` | **HIT ("__NULL__")** | *Bypassed (0 queries)* | **Penetration Defense Step 2:** Known nonexistent ID rejected at Redis layer without touching DB! |
+
+---
+
 ## 💡 Key Architectural Rules of Thumb
 
 * **Always Set a TTL (Time-To-Live)**: Never write a key to a cache without an explicit TTL; unbounded caches without expiration will eventually consume all RAM and force emergency evictions.

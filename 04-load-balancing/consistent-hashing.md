@@ -94,6 +94,45 @@ flowchart LR
 
 ---
 
+### 7. Step-by-Step Dry Run & State Transition Tables
+
+#### 7.1 Ring Coordinates & Key Mapping (3 Servers)
+* **Ring Space:** Integer coordinates $0$ to $10,000$ (normalized for clarity)
+* **Physical Servers placed at:**
+  * `Server A`: Hash coordinate `2000`
+  * `Server B`: Hash coordinate `5000`
+  * `Server C`: Hash coordinate `8000`
+* **Routing Rule:** Walk clockwise ($\to$), find first server with $\text{coord} \ge \text{hash}(\text{key})$. If none, wrap around to index 0.
+
+| Key | Hash Value | Clockwise Search | Assigned Server | Range Covered |
+|---|:---:|:---:|:---:|---|
+| `user:101` | `1200` | $\le 2000$ | **Server A** | $[8001 \dots 10000]$ and $[0 \dots 2000]$ |
+| `user:102` | `3400` | $\le 5000$ | **Server B** | $[2001 \dots 5000]$ |
+| `user:103` | `6500` | $\le 8000$ | **Server C** | $[5001 \dots 8000]$ |
+| `user:104` | `9200` | Wrap-around $\to 2000$ | **Server A** | Wraps around circle to lowest node |
+
+#### 7.2 Scaling Out: Adding Server D at Coordinate 6000
+Now we scale the cluster by adding `Server D` at coordinate `6000`.
+
+| Key | Hash Value | Search Before | Target Before | Search After | Target After | Remapped? |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| `user:101` | `1200` | $\le 2000$ | **Server A** | $\le 2000$ | **Server A** | ❌ No change |
+| `user:102` | `3400` | $\le 5000$ | **Server B** | $\le 5000$ | **Server B** | ❌ No change |
+| `user:105` | `5500` | $\le 8000$ | **Server C** | $\le \mathbf{6000}$ | **Server D** | ✅ **Remapped to D** |
+| `user:103` | `6500` | $\le 8000$ | **Server C** | $\le 8000$ | **Server C** | ❌ No change |
+| `user:104` | `9200` | Wrap $\to 2000$ | **Server A** | Wrap $\to 2000$ | **Server A** | ❌ No change |
+
+* **Impact Analysis:**
+  * With Naive Modulo Hashing (`hash % N`), adding a 4th server invalidated $75\%$ to $100\%$ of all cache entries.
+  * With Consistent Hashing, **only keys between 5001 and 6000 (roughly $1/N = 25\%$) moved to the new server**! The remaining $75\%$ of cached data stayed valid on Servers A, B, and C.
+
+> [!TIP]
+> **Working C++ Implementation Available:**
+> Check the dedicated code directory for the complete implementation:
+> * [`code/consistent_hashing.cpp`](./code/consistent_hashing.cpp) — Consistent Hashing with virtual nodes (`std::map` binary search with `upper_bound`).
+
+---
+
 ## Related Topics & Next Steps
 
 * [Least Connections](./least-connections.md) — Dynamic connection-aware load balancing.
