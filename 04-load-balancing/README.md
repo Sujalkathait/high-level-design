@@ -37,6 +37,7 @@ flowchart LR
 | **03** | **Round Robin Scheduling** | Sequential rotation, weighted balancing for mixed hardware fleets, trade-offs | [Read Guide ➡️](./round-robin.md) |
 | **04** | **Least Connections** | Active connection tracking, handling long-running requests, Least Requests in HTTP/2 | [Read Guide ➡️](./least-connections.md) |
 | **05** | **Consistent Hashing** | Hash ring ($0$ to $2^{32}-1$), virtual nodes (vNodes), avoiding cache stampedes | [Read Guide ➡️](./consistent-hashing.md) |
+| **⭐** | **Complete C++ Beginner Guide** | 7-step pedagogical explanation: real-life bank analogy, dry runs, clean code, line-by-line | [Read Guide ➡️](./load-balancing-guide.md) |
 
 ---
 
@@ -101,22 +102,36 @@ All algorithm implementations are organized into the dedicated [`./code/`](./cod
 | **Consistent Hashing** | [`./code/consistent_hashing.cpp`](./code/consistent_hashing.cpp) | Sorted map hash ring + vNodes | Adding Server D without reshuffling ring |
 | **Health Checks & Failover** | [`./code/health_check.cpp`](./code/health_check.cpp) | Heartbeat probe simulation | Server B fails; dynamically skipped and recovered |
 
-### How to Compile and Run:
+### How to Compile and Run Separately:
+Navigate to the `code/` directory and compile/run any file directly:
+
 ```powershell
 # Navigate to the code directory
-cd "C:\Users\LENOVO\Desktop\c++ folder\c++ project\High Level design\04-load-balancing\code"
+cd "04-load-balancing\code"
 
-# Compile all 6 programs
+# 1. Round Robin
 g++ -std=c++17 round_robin.cpp -o round_robin.exe
-g++ -std=c++17 weighted_round_robin.cpp -o weighted_round_robin.exe
-g++ -std=c++17 least_connections.cpp -o least_connections.exe
-g++ -std=c++17 ip_hash.cpp -o ip_hash.exe
-g++ -std=c++17 consistent_hashing.cpp -o consistent_hashing.exe
-g++ -std=c++17 health_check.cpp -o health_check.exe
-
-# Execute any simulation
 .\round_robin.exe
+
+# 2. Weighted Round Robin
+g++ -std=c++17 weighted_round_robin.cpp -o weighted_round_robin.exe
+.\weighted_round_robin.exe
+
+# 3. Least Connections
+g++ -std=c++17 least_connections.cpp -o least_connections.exe
+.\least_connections.exe
+
+# 4. IP Hash
+g++ -std=c++17 ip_hash.cpp -o ip_hash.exe
+.\ip_hash.exe
+
+# 5. Consistent Hashing
+g++ -std=c++17 consistent_hashing.cpp -o consistent_hashing.exe
 .\consistent_hashing.exe
+
+# 6. Health Checks & Failover
+g++ -std=c++17 health_check.cpp -o health_check.exe
+.\health_check.exe
 ```
 
 ---

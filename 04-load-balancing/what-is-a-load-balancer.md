@@ -10,6 +10,10 @@ A **Load Balancer (LB)** is a critical networking component that acts as the sin
 
 It prevents any single server from becoming a performance bottleneck, ensures high availability by routing traffic away from unhealthy servers, and allows systems to scale horizontally by adding instances on demand.
 
+> [!TIP]
+> 📖 **Complete C++ Beginner-Friendly Guide Available:**
+> Looking for step-by-step algorithms, real-world analogies, and clean C++ implementations? Read the [🚀 Complete Load Balancing in C++ Guide](./load-balancing-guide.md).
+
 ```mermaid
 flowchart TD
     subgraph Before ["Before Scaling: Single Point of Failure"]
