@@ -115,9 +115,9 @@ All cache algorithm implementations are organized into the dedicated [`./code/`]
 |:---|:---|:---|:---|
 | **LRU Cache** | [`./code/lru_cache.cpp`](./code/lru_cache.cpp) | `std::list` + `std::unordered_map` with `splice()` | [📖 LRU In-Depth Guide](./lru-cache.md) |
 | **LFU Cache** | [`./code/lfu_cache.cpp`](./code/lfu_cache.cpp) | 4 Hash Maps + Doubly Linked Lists + `minFreq` | [📖 LFU In-Depth Guide](./lfu-cache.md) |
-| **FIFO Cache** | [`./code/fifo_cache.cpp`](./code/fifo_cache.cpp) | `std::queue` + `std::unordered_map` | [Eviction Policies Guide](./eviction-policies.md#63-fifo-cache-complete-dry-run-capacity--3) |
-| **TTL Cache** | [`./code/ttl_cache.cpp`](./code/ttl_cache.cpp) | `std::chrono` steady clock | [Eviction Policies Guide](./eviction-policies.md#5-other-eviction-policies) |
-| **Cache-Aside Pattern** | [`./code/cache_aside.cpp`](./code/cache_aside.cpp) | Mock Redis + Mock PostgreSQL | [Caching Strategies Guide](./caching-strategies.md#1-cache-aside-lazy-loading) |
+| **FIFO Cache** | [`./code/fifo_cache.cpp`](./code/fifo_cache.cpp) | `std::queue` + `std::unordered_map` | [📖 FIFO In-Depth Guide](./fifo-cache.md) |
+| **TTL Cache** | [`./code/ttl_cache.cpp`](./code/ttl_cache.cpp) | `std::chrono` steady clock | [📖 TTL In-Depth Guide](./ttl-cache.md) |
+| **Cache-Aside Pattern** | [`./code/cache_aside.cpp`](./code/cache_aside.cpp) | Mock Redis + Mock PostgreSQL + Sentinels | [📖 Cache-Aside In-Depth Guide](./cache-aside.md) |
 
 ### How to Compile and Run Separately:
 Navigate to the `code/` directory and compile/run any file directly:

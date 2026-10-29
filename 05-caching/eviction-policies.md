@@ -194,7 +194,7 @@ We initialize a FIFO cache with **Capacity = 3** and execute:
 > Check the dedicated code directory and complete guides:
 > * [`code/lru_cache.cpp`](./code/lru_cache.cpp) — $O(1)$ LRU Cache using `std::list` + `std::unordered_map` with `splice()`. (📖 [LRU In-Depth Guide](./lru-cache.md))
 > * [`code/lfu_cache.cpp`](./code/lfu_cache.cpp) — $O(1)$ LFU Cache using 4 hash maps + frequency bucket lists. (📖 [LFU In-Depth Guide](./lfu-cache.md))
-> * [`code/fifo_cache.cpp`](./code/fifo_cache.cpp) — $O(1)$ FIFO Cache using `std::queue` + `std::unordered_map`.
+> * [`code/fifo_cache.cpp`](./code/fifo_cache.cpp) — $O(1)$ FIFO Cache using `std::queue` + `std::unordered_map`. (📖 [FIFO In-Depth Guide](./fifo-cache.md))
 
 ---
 

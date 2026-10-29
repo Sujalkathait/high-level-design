@@ -2,9 +2,9 @@
  * @file cache_aside.cpp
  * @brief Cache-Aside Pattern with Simulated Redis, PostgreSQL, and Penetration Defense in C++17
  * 
- * Features & Bug Fixes:
- * - Complete Read-Through (Cache Check -> DB Fallback -> Cache Write)
- * - Complete Write-Through/Invalidate (DB Write -> Cache Invalidation)
+ * Features:
+ * - Read-Through: Cache Check -> DB Fallback -> Cache Write
+ * - Write Invalidation: DB Write -> Cache DEL (Invalidation)
  * - Cache Penetration Defense: Caches empty sentinel value for non-existent IDs to protect DB
  */
 
@@ -25,7 +25,8 @@ public:
 
     std::string query(int id) {
         std::cout << "  --> [DATABASE DISK READ] Scanning table for user_id = " << id << "...\n";
-        if (db.find(id) != db.end()) return db[id];
+        auto it = db.find(id);
+        if (it != db.end()) return it->second;
         return "";
     }
 
@@ -56,6 +57,14 @@ public:
 
     void del(int id) {
         cache.erase(id);
+    }
+
+    void printState() const {
+        std::cout << "  Current Redis Cache Keys: [ ";
+        for (const auto& [k, v] : cache) {
+            std::cout << "{" << k << ":" << v << "} ";
+        }
+        std::cout << "]\n\n";
     }
 };
 
@@ -89,7 +98,7 @@ public:
             std::cout << "[CACHE WRITE] Stored in Redis with TTL for future requests.\n";
             redis.set(userId, profile);
         } else {
-            // Bug Fix / Pattern: Protect against Cache Penetration by caching sentinel "__NULL__"
+            // Protect against Cache Penetration by caching sentinel "__NULL__"
             std::cout << "[CACHE PENETRATION PREVENTION] ID " << userId 
                       << " not in DB. Caching NULL sentinel with short TTL.\n";
             redis.set(userId, "__NULL__");
@@ -99,42 +108,53 @@ public:
         return profile;
     }
 
-    void updateUserProfile(int userId, const std::string& newProfile) {
-        std::cout << "\n[UPDATE] User updates profile for ID: " << userId << "\n";
-        // Step 1: Write directly to Database
-        db.update(userId, newProfile);
+    void updateUserProfile(int userId, const std::string& newName) {
+        std::cout << "\n[WRITE] Updating user " << userId << " to '" << newName << "'...\n";
+        
+        // 1. Write to database first
+        db.update(userId, newName);
 
-        // Step 2: Invalidate Cache key to avoid serving stale data
-        std::cout << "[CACHE INVALIDATE] Evicted stale key from Redis (DEL user:" << userId << ")\n";
+        // 2. Invalidate (delete) cache entry to avoid stale reads
+        std::cout << "[CACHE INVALIDATE] Purging stale key " << userId << " from Redis\n";
         redis.del(userId);
+    }
+
+    void printCacheState() const {
+        redis.printState();
     }
 };
 
 int main() {
     std::cout << "=================================================\n";
-    std::cout << "         Cache-Aside Pattern Simulation          \n";
+    std::cout << "  Cache-Aside Pattern & Penetration Defense      \n";
     std::cout << "=================================================\n";
 
-    UserService service;
+    UserService userService;
 
-    // 1st request: Cache Miss -> Reads DB -> Populates Redis
-    service.getUserProfile(1);
+    std::cout << "--- 1. Cold Start Read (Cache Miss -> DB Fetch -> Cache Store) ---\n";
+    userService.getUserProfile(1);
+    userService.printCacheState();
 
-    // 2nd request: Cache Hit -> Reads directly from Redis (DB untouched)
-    service.getUserProfile(1);
+    std::cout << "--- 2. Warm Cache Read (Instant Cache Hit) ---\n";
+    userService.getUserProfile(1);
+    userService.printCacheState();
 
-    // Update user profile -> Writes DB -> Invalidates Redis
-    service.updateUserProfile(1, "Alice (Senior Staff Architect)");
+    std::cout << "--- 3. Database Write & Cache Invalidation ---\n";
+    userService.updateUserProfile(1, "Alice Senior Principal Engineer");
+    userService.printCacheState();
 
-    // 3rd request after update: Cache Miss -> Reads fresh data from DB
-    service.getUserProfile(1);
+    std::cout << "--- 4. Fresh Read After Invalidation (Reloads from DB) ---\n";
+    userService.getUserProfile(1);
+    userService.printCacheState();
 
-    std::cout << "\n--- Testing Cache Penetration Defense ---\n";
-    // Non-existent user 9999: 1st time queries DB and caches sentinel
-    service.getUserProfile(9999);
-    // 2nd time: Blocked at Redis layer without touching DB!
-    service.getUserProfile(9999);
+    std::cout << "--- 5. Malicious Probe on Non-Existent ID (Cache Penetration Defense) ---\n";
+    // First query misses in cache and misses in DB -> caches "__NULL__" sentinel
+    userService.getUserProfile(9999);
+    userService.printCacheState();
+
+    // Second query hits "__NULL__" sentinel -> DB completely protected!
+    userService.getUserProfile(9999);
+    userService.printCacheState();
 
     return 0;
 }
-

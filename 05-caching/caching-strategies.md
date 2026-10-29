@@ -238,8 +238,8 @@ flowchart TD
 > [!TIP]
 > **Working C++ Implementations Available:**
 > Check the dedicated code directory for clean C++17 implementations:
-> * [`code/cache_aside.cpp`](./code/cache_aside.cpp) — Complete Cache-Aside simulation with mock database and null-object cache penetration defense.
-> * [`code/ttl_cache.cpp`](./code/ttl_cache.cpp) — Thread-safe TTL cache with high-resolution timestamps, lazy eviction on access, and background cleanup threads.
+> * [`code/cache_aside.cpp`](./code/cache_aside.cpp) — Complete Cache-Aside simulation with mock database and null-object cache penetration defense. (📖 [Cache-Aside In-Depth Guide](./cache-aside.md))
+> * [`code/ttl_cache.cpp`](./code/ttl_cache.cpp) — Thread-safe TTL cache with high-resolution timestamps, lazy eviction on access, and active background sweeps. (📖 [TTL In-Depth Guide](./ttl-cache.md))
 
 ---
 
