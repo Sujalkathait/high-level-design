@@ -31,10 +31,10 @@ In a **Cache-Aside** design, the application is responsible for coordinating rea
 
 ```mermaid
 flowchart TD
-    App[Application] --> Cache[("Cache")]
-    Cache -->|Cache Hit| ReturnData[Return Data to Application]
-    Cache -->|Cache Miss| DB[("Database")]
-    DB --> PopulateCache[Populate Cache with TTL]
+    App["Application"] --> Cache[("In-Memory Cache")]
+    Cache -->|"Cache Hit"| ReturnData["Return Data to Application"]
+    Cache -->|"Cache Miss"| DB[("Persistent Database")]
+    DB --> PopulateCache["Populate Cache with TTL"]
     PopulateCache --> ReturnData
 ```
 
@@ -84,8 +84,8 @@ In a **Read-Through** architecture, the application treats the cache as the cent
 
 ```mermaid
 flowchart LR
-    App[Application] --> Cache[("Cache Layer")]
-    Cache -->|"On Miss: Auto-Fetch"| DB[("Database")]
+    App["Application"] --> Cache[("Cache Layer")]
+    Cache -->|"On Miss: Auto-Fetch"| DB[("Persistent Database")]
 ```
 
 The application does not implement database-fetching logic for each cache miss; that responsibility belongs to the cache integration or provider plugin.
@@ -116,8 +116,8 @@ In a **Write-Through** design, data is written to the backing store as part of t
 
 ```mermaid
 flowchart LR
-    App[Application] --> Cache[("Cache Layer")]
-    Cache -->|Synchronous Write| DB[("Database")]
+    App["Application"] --> Cache[("Cache Layer")]
+    Cache -->|"Synchronous Write"| DB[("Persistent Database")]
 ```
 
 The application writes to the cache layer, which synchronously persists the change to the database before confirming success to the caller.
@@ -141,8 +141,8 @@ In a **Write-Back** design (also called **Write-Behind**), the cache accepts the
 
 ```mermaid
 flowchart LR
-    App[Application] -->|"1. Fast Write (<1ms)"| Cache[("Cache")]
-    Cache -.->|2. Async Batched Persistence| DB[("Database")]
+    App["Application Server"] -->|"1. Fast Write (sub-1ms)"| Cache[("In-Memory Cache")]
+    Cache -.->|"2. Async Batched Persistence"| DB[("Persistent Database")]
 ```
 
 ### Advantages
@@ -168,14 +168,15 @@ In a **Write-Around** design, writes go directly to the persistent database with
 ```mermaid
 flowchart TD
     subgraph Write_Flow ["Write Flow: Direct to DB"]
-        AppW[Application] -->|Direct Write| DB[("Database")]
+        AppW["Application (Write)"] -->|"Direct Write"| DB[("Persistent Database")]
     end
 
     subgraph Read_Flow ["Read Flow: Lazy Load on Demand"]
-        AppR[Application] --> Cache[("Cache")]
-        Cache -->|Miss| DB
-        DB --> Pop[Populate Cache]
-        Pop --> Return[Return Data]
+        AppR["Application (Read)"] --> Cache[("In-Memory Cache")]
+        Cache -->|"Cache Miss"| DB
+        DB -->|"Fetch"| Pop["Populate Cache with TTL"]
+        Pop --> ReturnData["Return Data to Client"]
+        Cache -->|"Cache Hit"| ReturnData
     end
 ```
 

@@ -10,7 +10,7 @@
 
 ```mermaid
 flowchart LR
-    App[Application Server]
+    App["Application Server"]
     
     subgraph CachingTier ["High-Speed In-Memory Tier: RAM"]
         Cache[("Redis / Memcached")]
@@ -21,10 +21,10 @@ flowchart LR
     end
 
     App -->|"1. Check Cache (Sub-millisecond)"| Cache
-    Cache -->>|"Hit: Return cached data"| App
+    Cache -->|"Hit: Return cached data"| App
     Cache -.->|"Miss: Key absent"| DB
-    DB -->>|"2. Read from disk (10-50ms)"| App
-    App -.->|3. Backfill Cache with TTL| Cache
+    DB -->|"2. Read from disk (10-50ms)"| App
+    App -.->|"3. Backfill Cache with TTL"| Cache
 ```
 
 ---

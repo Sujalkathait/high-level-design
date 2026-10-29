@@ -56,12 +56,12 @@ GET user:12
 
 ```mermaid
 flowchart TD
-    Start{What are your workload requirements?} --> Q1{Need complex data structures\nlike Hashes, Lists, or Sorted Sets?}
-    Q1 -->|Yes| Redis[Choose Redis]
-    Q1 -->|No| Q2{Need persistence across restarts\nor native replication/failover?}
+    Start{"What are your workload requirements?"} --> Q1{"Need complex data structures<br/>like Hashes, Lists, or Sorted Sets?"}
+    Q1 -->|Yes| Redis["Choose Redis"]
+    Q1 -->|No| Q2{"Need persistence across restarts<br/>or native replication/failover?"}
     Q2 -->|Yes| Redis
-    Q2 -->|No| Q3{Primarily straightforward key-value\nobject caching on huge multi-core servers?}
-    Q3 -->|Yes| Memcached[Choose Memcached]
+    Q2 -->|No| Q3{"Primarily straightforward key-value<br/>object caching on huge multi-core servers?"}
+    Q3 -->|Yes| Memcached["Choose Memcached"]
     Q3 -->|No| Redis
 ```
 

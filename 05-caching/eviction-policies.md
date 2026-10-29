@@ -26,8 +26,11 @@ Because RAM is finite and expensive, an in-memory cache cannot expand indefinite
 
 ```mermaid
 flowchart LR
-    Head["Head: Most Recently Accessed"] <--> A[Item A] <--> C[Item C] <--> D[Item D] <--> Tail["Tail: Least Recently Accessed"]
-    Tail -.->|"Memory Full: Purged First!"| Evicted[Eviction Candidate]
+    Head["Head: Most Recently Used"] <--> A["Item A"]
+    A <--> C["Item C"]
+    C <--> D["Item D"]
+    D <--> Tail["Tail: Least Recently Used"]
+    Tail -.->|"Memory Full: Purged First"| Evicted["Eviction Candidate (D)"]
 ```
 
 ### Step-by-Step LRU Walkthrough Example
@@ -65,9 +68,9 @@ flowchart LR
     subgraph FrequencyCounters ["LFU Access Frequency Table"]
         A["Item A: 10 Hits"]
         C["Item C: 5 Hits"]
-        B["Item B: 2 Hits (Lowest Frequency!)"]
+        B["Item B: 2 Hits (Lowest Frequency)"]
     end
-    B -.->|"New Item Arrives: Capacity Full"| Evict[B is Evicted]
+    B -.->|"Capacity Full"| Evict["Item B Evicted"]
 ```
 
 When a **New Item** arrives and the cache is full:
@@ -94,6 +97,12 @@ When a **New Item** arrives and the cache is full:
 1. **FIFO (First-In, First-Out):**
    * Evicts the oldest inserted item regardless of how many times it was accessed.
    * *Trade-off:* Trivial to implement, but frequently evicts foundational cached data.
+
+   ```mermaid
+   flowchart LR
+       In["New Item Enters"] --> Q["FIFO Queue: [ Item 4 -> Item 3 -> Item 2 -> Item 1 ]"]
+       Q --> Out["Oldest Item 1 Evicted First"]
+   ```
 2. **Random Eviction:**
    * Evicts a randomly selected item uniformly.
    * *Trade-off:* Zero metadata tracking overhead, but risks evicting ultra-hot records.
