@@ -88,6 +88,39 @@ flowchart LR
 
 ---
 
+## 💻 Executable C++17 Load Balancing Implementations
+
+All algorithm implementations are organized into the dedicated [`./code/`](./code/) directory:
+
+| Implementation | Source File | Core Formula / Data Structure | Key Test Scenario |
+|:---|:---|:---|:---|
+| **Round Robin** | [`./code/round_robin.cpp`](./code/round_robin.cpp) | `(index + 1) % N` | Requests R1-R7 across 3 servers (A, B, C) + dynamic pool resize |
+| **Weighted Round Robin** | [`./code/weighted_round_robin.cpp`](./code/weighted_round_robin.cpp) | Smooth interleaved weights | Server A (3), Server B (2), Server C (1) |
+| **Least Connections** | [`./code/least_connections.cpp`](./code/least_connections.cpp) | Active connection counter | Initial: A=5, B=2, C=8; picks B (lowest) + underflow safety |
+| **IP Hash** | [`./code/ip_hash.cpp`](./code/ip_hash.cpp) | `std::hash<string>(ip) % N` | Deterministic client session routing |
+| **Consistent Hashing** | [`./code/consistent_hashing.cpp`](./code/consistent_hashing.cpp) | Sorted map hash ring + vNodes | Adding Server D without reshuffling ring |
+| **Health Checks & Failover** | [`./code/health_check.cpp`](./code/health_check.cpp) | Heartbeat probe simulation | Server B fails; dynamically skipped and recovered |
+
+### How to Compile and Run:
+```powershell
+# Navigate to the code directory
+cd "C:\Users\LENOVO\Desktop\c++ folder\c++ project\High Level design\04-load-balancing\code"
+
+# Compile all 6 programs
+g++ -std=c++17 round_robin.cpp -o round_robin.exe
+g++ -std=c++17 weighted_round_robin.cpp -o weighted_round_robin.exe
+g++ -std=c++17 least_connections.cpp -o least_connections.exe
+g++ -std=c++17 ip_hash.cpp -o ip_hash.exe
+g++ -std=c++17 consistent_hashing.cpp -o consistent_hashing.exe
+g++ -std=c++17 health_check.cpp -o health_check.exe
+
+# Execute any simulation
+.\round_robin.exe
+.\consistent_hashing.exe
+```
+
+---
+
 ## 💡 Key Architectural Rules of Thumb
 
 * **Use Layer 4 for Ingress, Layer 7 for Logic**: Front massive ingress traffic with Layer 4 (AWS NLB / IPVS) for raw throughput and route into Layer 7 (Envoy / Nginx) for path-based routing, JWT verification, and TLS termination.

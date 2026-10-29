@@ -36,6 +36,7 @@ flowchart LR
 | **03** | **Microservices Architecture** | Autonomous services, database per service, organizational scaling, Uber case study | [Read Guide ➡️](./microservices.md) |
 | **04** | **Modular Monolith** | Bounded contexts, in-memory domain events, logical schemas, Shopify case study | [Read Guide ➡️](./modular-monolith.md) |
 | **05** | **Server Engineering Guide** | Capacity math, Little's Law, Free vs Paid cloud limits, k6 load testing, scaling | [Read Master Guide ➡️](./server.md) |
+| **06** | **Caching & Load Balancing Integration** | End-to-end request lifecycle, 5 production scenarios, stateless tiering | [Read Integration Guide ➡️](./caching-and-load-balancing-integration.md) |
 
 ---
 
@@ -79,6 +80,10 @@ flowchart LR
   * **Comprehensive Deep-Dive**: How servers work from hardware/kernel to user space, concurrency models, and CPU/RAM sizing equations.
   * **Free vs. Paid Cloud Analysis**: Cold start sleep delays, database connection starvation, and burstable CPU throttling.
   * **Little's Law & Verification**: Real capacity calculation ($L = \lambda W$) and k6 stress testing playbooks.
+
+* 📌 **[06. Caching & Load Balancing Integration](./caching-and-load-balancing-integration.md)**
+  * **End-to-End System Integration**: How CDN, Load Balancers, Application Servers, Redis Cache, and PostgreSQL cooperate in production.
+  * **5 Request Scenarios**: Cold start cache miss, warm cache hit, stateless scaling, TTL expiration, and automated failover.
 
 
 ---

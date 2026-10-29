@@ -105,6 +105,37 @@ flowchart LR
 
 ---
 
+## 💻 Executable C++17 Caching Implementations
+
+All cache algorithm implementations are organized into the dedicated [`./code/`](./code/) directory:
+
+| Implementation | Source File | Core Data Structures | Key Test Scenario |
+|:---|:---|:---|:---|
+| **LRU Cache** | [`./code/lru_cache.cpp`](./code/lru_cache.cpp) | `std::list` + `std::unordered_map` | Cap=3: put(1,10), put(2,20), put(3,30), get(1), put(4,40) evicts key 2 |
+| **LFU Cache** | [`./code/lfu_cache.cpp`](./code/lfu_cache.cpp) | Double hash maps + frequency lists | Cap=2: Key 1 accessed 2x, Key 2 accessed 1x; put(3,30) evicts key 2 |
+| **FIFO Cache** | [`./code/fifo_cache.cpp`](./code/fifo_cache.cpp) | `std::queue` + `std::unordered_map` | Cap=3: Chronological insertion order eviction regardless of reads |
+| **TTL Cache** | [`./code/ttl_cache.cpp`](./code/ttl_cache.cpp) | `std::chrono` steady clock | Key set with 200ms TTL; lazy eviction + active background sweep |
+| **Cache-Aside Pattern** | [`./code/cache_aside.cpp`](./code/cache_aside.cpp) | Mock Redis + Mock PostgreSQL | Miss -> DB fetch -> Cache write; Penetration defense via null sentinels |
+
+### How to Compile and Run:
+```powershell
+# Navigate to the code directory
+cd "C:\Users\LENOVO\Desktop\c++ folder\c++ project\High Level design\05-caching\code"
+
+# Compile all 5 programs
+g++ -std=c++17 lru_cache.cpp -o lru_cache.exe
+g++ -std=c++17 lfu_cache.cpp -o lfu_cache.exe
+g++ -std=c++17 fifo_cache.cpp -o fifo_cache.exe
+g++ -std=c++17 ttl_cache.cpp -o ttl_cache.exe
+g++ -std=c++17 cache_aside.cpp -o cache_aside.exe
+
+# Execute any simulation
+.\lru_cache.exe
+.\cache_aside.exe
+```
+
+---
+
 ## 💡 Key Architectural Rules of Thumb
 
 * **Always Set a TTL (Time-To-Live)**: Never write a key to a cache without an explicit TTL; unbounded caches without expiration will eventually consume all RAM and force emergency evictions.
